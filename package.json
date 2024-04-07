@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "parcel-bundler": "^1.12.5"
+  },
+  "name": "ela-extension",
+  "description": "https://www.parceljs.cn/getting_started.html npm install parcel-bundler npm init -y",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .cache .parcel-cache",
+    "build:css": "tailwindcss build src/css/main.css -c tailwind.config.js -o dist/css/main.css",
+    "copy:assets": "./copy-assets.sh",
+    "watch": "NODE_ENV=development yarn build:css && yarn copy:assets && parcel watch src/{*.js,*.html}",
+    "build": "NODE_ENV=production yarn build:css && yarn copy:assets && parcel build src/{*.js,*.html}"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>英文学习助手ELA</title>
+    <link rel="stylesheet" href="../css/button.css">
+    <script src="../scripts/const.js"></script>
+    <script src="../scripts/util.js"></script>
+  </head>
+  <body>
+    <div class="flex-container">
+      <p id="definition-onoff"></p>
+      <label class="switch">
+        <input type="checkbox" id="toggleSwitch">
+        <span class="slider" ></span>
+      </label>
+    </div>
+   
+    <button id="btnSetting" class="button-round-large"><img src="../images/setting.png" alt="Delete" class="button-icon-large"></button>
+    <button id="btnDelete" class=" button-round-large"><img src="../images/delete.png" alt="Delete" class="button-icon-large"></button>
+
+    <hr/>
+    <div id="container-content">
+    </div>
+    <script src="sidepanel.js"></script>
+    <script src="playback.js"></script>
+  </body>
+</html>

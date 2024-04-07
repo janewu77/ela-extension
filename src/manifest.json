@@ -1,0 +1,46 @@
+{
+    "name": "英文学习助手ELA",
+    "version": "0.1.1",
+    "description": "英文学习助手 ELA(English Learner Assistant)",
+    "manifest_version": 3,
+    "author":"janewu2005@gmail.com",
+    "icons": {
+        "16": "images/j_logo_16.png",  
+        "32": "images/j_logo_32.png",   
+        "48": "images/j_logo_48.png",   
+        "128": "images/j_logo_128.png" 
+    },
+    "permissions": ["storage", "sidePanel", "scripting"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+          "js": ["scripts/const.js","scripts/content.js"],
+          "matches": [
+            "https://*/*"
+          ],
+          "all_frames": true
+    }],
+    "action": {
+        "default_icon": "images/j_logo_16.png"
+    },
+    "side_panel": {
+        "default_path": "sidepanels/sidepanel.html"
+    },
+    "options_ui": {
+      "page": "options/options.html",
+      "open_in_tab": false
+  },
+    "commands": {
+        "_execute_action": {
+          "suggested_key": {
+            "windows": "Ctrl+Shift+S",
+            "mac": "Command+Shift+S",
+            "chromeos": "Ctrl+Shift+S",
+            "linux": "Ctrl+Shift+S"
+          }
+        }
+      }
+}
+
