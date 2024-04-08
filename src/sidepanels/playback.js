@@ -29,23 +29,31 @@ function createMsgDiv(newContent, uuid) {
   mapAudioBufferCache.set(uuid, null)
   mapSource.set(uuid, null)
 
-  const newElement = document.createElement('div');
-  newElement.id = uuid;
-  newElement.className = " mt-4 "
-  newElement.innerHTML = `<p style="font-size: 16px;">${newContent}</p>`;
+  const newElementParent = document.createElement('div');
+  newElementParent.id = uuid;
+  newElementParent.className = " p-4 "
+
+  //content
+  const contentElement = document.createElement('div');
+  contentElement.innerHTML = `<p class="text-sm" >${newContent}</p>`;
 
   //button
-  newElement.innerHTML += `<div ">`;
-  newElement.innerHTML += `<button id="playAudio" class="button-round"><img src="../images/play.png" alt="Play" class="button-icon"></button>`;
-  newElement.innerHTML += `<button id="pauseAudio" class="button-round"><img src="../images/pause.png" alt="Pause" class="button-icon"></button>`;
-  newElement.innerHTML += `<button id="stopAudio" class="button-round"><img src="../images/stop.png" alt="Stop" class="button-icon"></button>`;
-  newElement.innerHTML += `<button id="btnDelete" class="button-round"><img src="../images/delete.png" alt="Delete" class="button-icon"></button>`;
-  newElement.innerHTML += "</div>";
+  const pannelElement = document.createElement('div');
+  pannelElement.className = "mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded-md " ;
+  const btnClassName = `class="flex tems-center justify-center gap-x-2.5 p-1 font-semibold text-gray-200 first:rounded-l-md last:rounded-r-md  hover:bg-blue-100 disabled:bg-gray-50 disabled:cursor-not-allowed"`;
+  pannelElement.innerHTML += ` <button id="playAudio" ${btnClassName}><img src="../images/play.png" alt="Play" class="h-5 w-5"></button> `;
+  pannelElement.innerHTML += ` <button id="pauseAudio" ${btnClassName}><img src="../images/pause.png" alt="Pause" class="h-5 w-5"></button> `;
+  pannelElement.innerHTML += ` <button id="stopAudio" ${btnClassName}><img src="../images/stop.png" alt="Stop" class="h-5 w-5"></button> `;
+  pannelElement.innerHTML += ` <button id="btnDelete" ${btnClassName}><img src="../images/delete.png" alt="Delete" class="h-5 w-5"></button> `;
 
-  let buttonPlay = newElement.querySelector('#playAudio');
-  let buttonPause = newElement.querySelector('#pauseAudio');
-  let buttonStop = newElement.querySelector('#stopAudio');
-  let btnDelete = newElement.querySelector('#btnDelete');
+  newElementParent.appendChild(contentElement);
+  newElementParent.appendChild(pannelElement);
+
+  let buttonPlay = pannelElement.querySelector('#playAudio');
+  let buttonPause = pannelElement.querySelector('#pauseAudio');
+  let buttonStop = pannelElement.querySelector('#stopAudio');
+  let btnDelete = pannelElement.querySelector('#btnDelete');
+  
 
   buttonPlay.disabled = false;
   buttonPause.disabled = true;
@@ -117,11 +125,11 @@ function createMsgDiv(newContent, uuid) {
     btnStopClicked(uuid);
     
     mapMsg.delete(uuid);
-    newElement.remove();
+    newElementParent.remove();
 
   });
 
-  return newElement;
+  return newElementParent;
 }
 
 

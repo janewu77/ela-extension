@@ -67,7 +67,7 @@ function createDiv(radioName, radioValue, currentValue) {
   newElement.innerHTML = '';
 
   //radio
-  newElement.innerHTML += `<input id="${radioName}_${radioValue}" value="${radioValue}" name="${radioName}" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">`;
+  newElement.innerHTML += `<input id="${radioName}_${radioValue}" value="${radioValue}" name="${radioName}" type="radio" class="h-4 w-4 border-gray-300 text-blue-500 focus:ring-blue-500">`;
   newElement.innerHTML += `<label for="${radioName}_${radioValue}" class="block text-sm font-medium leading-6 text-gray-900">${radioValue}</label>`;
   
   let radioInut = newElement.querySelector(`#${radioName}_${radioValue}`);
