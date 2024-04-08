@@ -17,6 +17,7 @@ done
 # single file
 # mkdir dist/images
 # cp src/images/* dist/images/
+mkdir dist/css
 cp src/css/button.css dist/css/
 # cp src/background.js dist/
 cp src/manifest.json dist/
