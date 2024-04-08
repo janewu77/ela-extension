@@ -1,31 +1,51 @@
-# 设置开发环境
+# Dev Env Setting
 
-## 安装 parcel
+### install parcel
 
 https://www.parceljs.cn/getting_started.html
+
+```bash
 npm install parcel-bundler --save-dev
 npm init -y
 
 npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
+```
 
-package.json:"scripts"
+config file(s)：
 
-## 安装 tailwindcss
+- package.json:"scripts"
+
+### install tailwindcss
 
 https://tailwindcss.com/docs/installation
+
+```bash
 npm install -D tailwindcss
 npm install @tailwindcss/forms
 
 npx tailwindcss init
+```
 
-tailwind.config.js
-'''
+config file(s)：
 
-## other
+- tailwind.config.js
+- main.css
 
+## config
+
+### other
+
+```bash
+cd sh
 chmod +x copy-assets.sh
+chmod +x zip.sh
+```
 
 ## deploy
 
+```bash
 npm run clean
 npm run build
+npm run pack
+
+```
