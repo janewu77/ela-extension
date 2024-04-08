@@ -3,7 +3,7 @@
 ## 安装 parcel
 
 https://www.parceljs.cn/getting_started.html
-npm install parcel-bundler
+npm install parcel-bundler --save-dev
 npm init -y
 
 npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
