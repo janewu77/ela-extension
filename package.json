@@ -13,9 +13,11 @@
   "scripts": {
     "clean": "rm -rf dist .cache .parcel-cache",
     "build:css": "tailwindcss build src/css/main.css -c tailwind.config.js -o dist/css/main.css",
-    "copy:assets": "./copy-assets.sh",
-    "watch": "NODE_ENV=development yarn build:css && yarn copy:assets && parcel watch src/{*.js,*.html}",
-    "build": "NODE_ENV=production yarn build:css && yarn copy:assets && parcel build src/{*.js,*.html}"
+    "copy:assets": "./sh/copy-assets.sh",
+    "watch": "NODE_ENV=development npm run build:css & npm run copy:assets & wait && parcel watch src/{*.js,*.html}",
+    "build": "NODE_ENV=production npm run build:css & npm run copy:assets & wait && parcel build src/{*.js,*.html}",
+    "zip":  "./sh/zip.sh",
+    "pack": "NODE_ENV=production npm run clean && npm run build && npm run zip"
   },
   "keywords": [],
   "author": "",

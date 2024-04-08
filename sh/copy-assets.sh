@@ -1,14 +1,11 @@
 #!/bin/bash
 
+# copy assets to dist
 
-# 定义源目录和目标目录列表
 src_dirs=("src/images" "src/options" "src/sidepanels" "src/scripts"  )
 dest_dirs=("dist/images" "dist/options" "dist/sidepanels" "dist/scripts" )
 
-# src_dirs=("src/images" "src/scripts")
-# dest_dirs=("dist/images" "dist/scripts")
-
-# 循环复制文件
+# copy files
 for ((i = 0; i < ${#src_dirs[@]}; i++)); do
   src="${src_dirs[$i]}"
   dest="${dest_dirs[$i]}"
@@ -17,7 +14,7 @@ for ((i = 0; i < ${#src_dirs[@]}; i++)); do
   cp -r "$src"/* "$dest"/
 done
 
-# # 单独复制的文件
+# single file
 # mkdir dist/images
 # cp src/images/* dist/images/
 cp src/css/button.css dist/css/
