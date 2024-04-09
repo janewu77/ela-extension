@@ -1,4 +1,10 @@
 
+let maskedKey = "";
+
+const SVGEdit = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-blue-600"><path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" /><path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" /></svg>`;
+const SVGCheck= `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-blue-600"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" /></svg>`
+const SVGCheckDisabled= `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-gray-600"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" /></svg>`
+
 
 function constructOptions() {
   const optionsForm = document.getElementById("optionsForm");
@@ -14,13 +20,61 @@ function constructOptions() {
 
 
   //auth_token
+  optionsForm.TTSOpenAIAPIKey.disabled = true;
+  optionsForm.onoffTTSOpenAIAPIKey.innerHTML=SVGEdit;
   chrome.storage.local.get("auth_token", (data) => {
-    optionsForm.TTSOpenAIAPIKey.value = data.auth_token;
+    if (data.auth_token == default_auth_token){
+      maskedKey = default_auth_token;
+      optionsForm.TTSOpenAIAPIKey.value = "";
+      optionsForm.TTSOpenAIAPIKey.disabled = false;
+
+      optionsForm.onoffTTSOpenAIAPIKey.disabled = true;
+      optionsForm.onoffTTSOpenAIAPIKey.innerHTML = SVGCheckDisabled;
+    }else{
+      maskedKey = maskMsg(data.auth_token);
+      optionsForm.TTSOpenAIAPIKey.value = maskedKey;
+      optionsForm.TTSOpenAIAPIKey.disabled = true;
+
+      optionsForm.onoffTTSOpenAIAPIKey.disabled = false;
+      optionsForm.onoffTTSOpenAIAPIKey.innerHTML = SVGEdit;
+    }
   });
-  optionsForm.TTSOpenAIAPIKey.addEventListener("change", (event) => {
+
+
+  optionsForm.onoffTTSOpenAIAPIKey.addEventListener("click", (event) => {
+    let onOff = !optionsForm.TTSOpenAIAPIKey.disabled;
+    // if (debug) console.log('onOff: ', onOff); 
+
+    if (onOff){
+      //save new key
+      let newKey = optionsForm.TTSOpenAIAPIKey.value;
+      if (newKey.length > 0){
+        chrome.storage.local.set({ "auth_token": newKey });
+        maskedKey = maskMsg(newKey);
+      }
+      optionsForm.TTSOpenAIAPIKey.value = maskedKey; 
+      optionsForm.TTSOpenAIAPIKey.disabled = true;
+
+      optionsForm.onoffTTSOpenAIAPIKey.disabled = false;
+      optionsForm.onoffTTSOpenAIAPIKey.innerHTML = SVGEdit;
+    }else{
+      optionsForm.TTSOpenAIAPIKey.value = "";
+      optionsForm.TTSOpenAIAPIKey.disabled = false;
+
+      optionsForm.onoffTTSOpenAIAPIKey.disabled = true;
+      optionsForm.onoffTTSOpenAIAPIKey.innerHTML = SVGCheckDisabled; //SVGCheck;
+      
+    }
+    
+  });
+
+  optionsForm.TTSOpenAIAPIKey.addEventListener("input", (event) => {
     if (debug) console.log('auth_token: ', event.target.value); 
-    chrome.storage.local.set({ "auth_token": event.target.value });
+    let hasContent = event.target.value.length > 0
+    optionsForm.onoffTTSOpenAIAPIKey.disabled = !hasContent;
+    optionsForm.onoffTTSOpenAIAPIKey.innerHTML = hasContent? SVGCheck: SVGCheckDisabled; //SVGCheck;
   });
+
 
   // const arrTTSModel = ["tts-1", "tts-1-hd"];
   // const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
