@@ -13,7 +13,7 @@ English learner Assistant
 
 ### 1. 通过 chrome store 安装
 
-（todo）
+（尚未上架）
 
 ### 2. 本地安装
 
@@ -34,13 +34,16 @@ step3: 设置
 3. 点击文字下文的播放键开始朗读。
    ![how to setting](/doc/images/demo1.png)
 
-#### 播放按钮说明
+#### 按钮说明
 
 play：播放/继续播放/重新播放  
 pause：暂停  
 stop：停止播放（停止后，再点击 play，将会重新生成声音并播放）  
-delete：删除这段内容  
-Clear all：删除所有内容。
+delete：删除这段内容
+
+On/OFF：ON 网页上选中的内容，会出现在侧边栏内待读；off 关闭，网页上选中的内容不会出现在侧边栏内。  
+Setting：参数设置，可以在这里指定声音模型。  
+Clear all：删除侧边栏内的所有朗读的内容。
 
 #### 打开/关闭侧边栏的快捷方式：
 
