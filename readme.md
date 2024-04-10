@@ -9,15 +9,11 @@ English learner Assistant
 
 - 朗读选择中的文字（base on OpenAI TTS）
 
-## 如何使用
-
-（todo）
-
 ## 如何安装
 
 ### 1. 通过 chrome store 安装
-（todo）     
 
+（todo）
 
 ### 2. 本地安装
 
@@ -29,11 +25,31 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 
 step3: 设置  
 打开“选项”填入 openAI-API-key  
-打开侧边栏，打开右上角的开关。
+![how to setting](/doc/images/setting.png)
 
-step4: 朗读  
-选中想要朗读的文字。文字将会出现在侧边栏内，点击文字下文的播放键开始朗读。
+## 如何使用
 
+1. 打开侧边栏，打开右上角的开关。
+2. 选中想要朗读的文字。文字将会出现在侧边栏内.
+3. 点击文字下文的播放键开始朗读。
+   ![how to setting](/doc/images/demo1.png)
+
+#### 播放按钮说明
+
+play：播放/继续播放/重新播放  
+pause：暂停  
+stop：停止播放（停止后，再点击 play，将会重新生成声音并播放）  
+delete：删除这段内容  
+Clear all：删除所有内容。
+
+#### 打开/关闭侧边栏的快捷方式：
+
+"windows": "Ctrl+Shift+S",
+"mac": "Command+Shift+S",
+"chromeos": "Ctrl+Shift+S",
+"linux": "Ctrl+Shift+S"
+
+注意：关闭侧边栏后，当前侧边栏上的所有朗读内容都会被删除。
 
 ## FAQ
 
@@ -41,14 +57,12 @@ step4: 朗读
   https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key  
   https://platform.openai.com/api-keys
 
-- 我的OpenAI-API-Key安全吗？
-  用户的OpenAI-API-Key只在调用接口时传递给openAI。
-  除此之外，您的OpenAI-API-Key会保存在您的浏览器存储中。您可以在“选项”中，随时删除您的OpenAI-API-Key。
+- 我的 OpenAI-API-Key 安全吗？
+  用户的 OpenAI-API-Key 只在调用接口时传递给 openAI。
+  除此之外，您的 OpenAI-API-Key 会保存在您的浏览器存储中。您可以在“选项”中，随时删除您的 OpenAI-API-Key。
 
 - 哪些地区可以使用？
-  如果您所在的地区，openAI并不提供服务，则同样的，你也无法在这个 extentions里使用。
-
-
+  如果您所在的地区，openAI 并不提供服务，则同样的，你也无法在这个 extentions 里使用。
 
 ## todo
 
@@ -61,18 +75,13 @@ step4: 朗读
 
 - archive/ela_0.1.1_20240409203228.zip
 
-
 ## Other
 
-为了方便自己练习口语，给自己写了一个Chrome插件。
+为了方便自己练习口语，给自己写了一个 Chrome 插件。
 用它来“读”一些网页，这样，我就能跟着反复读了。
 
 未来，还打算加一些翻译、查单词的功能。
 
 如果你也正好用得上，那就用用看吧。
 
-欢迎反馈意见 欢迎PR
-
-
-
-
+欢迎反馈意见 欢迎 PR
