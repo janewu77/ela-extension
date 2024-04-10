@@ -1,6 +1,6 @@
 {
     "name": "ELA-英文学习助手",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "英文学习的助手，帮你轻松朗读选中的文本(文本转语音tts)。",
     "manifest_version": 3,
     "author":"janewu2005@gmail.com",
@@ -10,7 +10,7 @@
         "48": "images/j_logo_48.png",   
         "128": "images/j_logo_128.png" 
     },
-    "permissions": ["storage", "sidePanel", "scripting"],
+    "permissions": ["storage", "sidePanel"],
     "background": {
         "service_worker": "background.js"
     },
@@ -18,7 +18,7 @@
         {
           "js": ["scripts/const.js","scripts/content.js"],
           "matches": [
-            "https://*/*"
+            "<all_urls>"
           ],
           "all_frames": true
     }],
