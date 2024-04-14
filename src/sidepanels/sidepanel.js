@@ -8,6 +8,10 @@ let current_auth_token = default_auth_token
 
 let toggleSwitch = document.getElementById('toggleSwitch');
 
+//button Setting
+const SVGSetting_6 = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-gray-600"><path d="M18.75 12.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM12 6a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 6ZM12 18a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 18ZM3.75 6.75h1.5a.75.75 0 1 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM5.25 18.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5ZM3 12a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 3 12ZM9 3.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM12.75 12a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM9 15.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" /></svg>`
+const divContentContainer = document.getElementById('container-content');
+
 chrome.storage.local.onChanged.addListener((changes) => {
 
   const changedOnoff = changes['onoff'];
@@ -61,9 +65,10 @@ function init(){
   });
 
 
-  const SVGSetting = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-gray-600"><path d="M18.75 12.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM12 6a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 6ZM12 18a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 18ZM3.75 6.75h1.5a.75.75 0 1 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM5.25 18.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5ZM3 12a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 3 12ZM9 3.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM12.75 12a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM9 15.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" /></svg>`
+  // setting button
   let btnSetting = document.getElementById('btnSetting');
-  btnSetting.innerHTML =  `${SVGSetting} Setting`;
+  btnSetting.id = "SettingButton";
+  btnSetting.innerHTML =  `${SVGSetting_6} Setting`;
 
   btnSetting.addEventListener('click', function() {
     if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
@@ -94,7 +99,7 @@ chrome.runtime.onMessage.addListener(
       if (debug) console.log(`[sidepanel]...selectedText:${request.msg}`);
 
       myuuid = myuuid + 1;
-      document.getElementById('container-content').appendChild(createMsgDiv(request.msg, myuuid));
+      divContentContainer.appendChild(createMsgDiv(request.msg, myuuid));
       sendResponse({data: "success"});
       // return true;  // Will respond asynchronously.
     }
