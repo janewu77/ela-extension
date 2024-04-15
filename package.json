@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "marked": "^12.0.1",
     "parcel-bundler": "^1.12.5"
   },
   "name": "ela-extension",
@@ -16,7 +17,7 @@
     "copy:assets": "./sh/copy-assets.sh",
     "watch": "NODE_ENV=development npm run build:css && npm run copy:assets && parcel watch src/{*.js,*.html}",
     "build": "NODE_ENV=production npm run build:css && npm run copy:assets && parcel build src/{*.js,*.html}",
-    "zip":  "./sh/zip.sh",
+    "zip": "./sh/zip.sh",
     "pack": "NODE_ENV=production npm run clean && npm run build && npm run zip"
   },
   "keywords": [],
