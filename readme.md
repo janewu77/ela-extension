@@ -1,8 +1,23 @@
 # 英文学习助手 ELA
 
+## pre
+
+为了方便自己练习口语，给自己写了一个 Chrome 插件。
+用它来“读”一些网页，这样，我就能跟着反复读了。
+
+未来，还打算加一些翻译、查单词的功能。
+
+如果你也正好用得上，那就用用看吧。
+
+欢迎反馈意见 欢迎 PR
+
+## basic info
+
 English learner Assistant
 
-- a chrome extentions
+https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga
+
+- a chrome extentions 
 - base on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
 
 ## 主要功能
@@ -13,7 +28,7 @@ English learner Assistant
 
 ### 1. 通过 chrome store 安装
 
-（尚未上架）
+[打开商店进行安装](https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga)
 
 ### 2. 本地安装
 
@@ -74,17 +89,8 @@ Clear all：删除侧边栏内的所有朗读的内容。
 - 翻译段落\查单词
 - 国际化 UI
 
-## zip
+## update.log
 
-- archive/ela_0.1.1_20240409203228.zip
+![how to setting](/doc/update.log.md)
 
-## Other
 
-为了方便自己练习口语，给自己写了一个 Chrome 插件。
-用它来“读”一些网页，这样，我就能跟着反复读了。
-
-未来，还打算加一些翻译、查单词的功能。
-
-如果你也正好用得上，那就用用看吧。
-
-欢迎反馈意见 欢迎 PR
