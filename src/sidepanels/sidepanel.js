@@ -86,7 +86,6 @@ function showOnoff(bOnoff) {
 
 
 let myuuid = 0; //换成uuid
-
 // onMessage
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -98,8 +97,15 @@ chrome.runtime.onMessage.addListener(
     if (request.type == 'selectedText') {
       if (debug) console.log(`[sidepanel]...selectedText:${request.msg}`);
 
+      let lastNode = document.getElementById(myuuid);
       myuuid = myuuid + 1;
-      divContentContainer.appendChild(createMsgDiv(request.msg, myuuid));
+      
+      if (myuuid == 1 ){
+        divContentContainer.appendChild(createMsgDiv(request.msg, myuuid));
+      }else{
+        divContentContainer.insertBefore(createMsgDiv(request.msg, myuuid), lastNode);
+      }
+      
       sendResponse({data: "success"});
       // return true;  // Will respond asynchronously.
     }
