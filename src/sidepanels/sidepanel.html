@@ -11,25 +11,27 @@
   </head>
   <body>
     <!-- onff switch -->
-    <div class="group relative flex items-center gap-x-6 rounded-lg p-4 ">
-      <div class="flex-auto"></div>
-      <div class="flex flex-none items-center justify-center rounded-lg gap-x-4 ">
-        <p id="definition-onoff" class="text-sm font-semibold"></p>
-        <label class="switch">
-          <input type="checkbox" id="toggleSwitch">
-          <span class="slider" ></span>
-        </label>
+    <!-- <div class=" flex-auto overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5"> -->
+    <div class="  bg-white  ring-1 ring-gray-900/5">
+      <div class="group relative flex items-center gap-x-6 rounded-lg p-4 ">
+        <div id="debuginfo" class="flex-auto"></div>
+        <div class="flex flex-none items-center justify-center rounded-lg gap-x-4 ">
+          <p id="definition-onoff" class="text-sm font-semibold"></p>
+          <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider" ></span>
+          </label>
+        </div>
       </div>
-    </div>
-    <!-- Setting &&  Clear all buttons -->
-    <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 p-2 ">
-      <a href="#" id="btnSetting" class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100">
-      </a>
-       <a href="#" id="btnDeleteAll" class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100">
-      </a> 
-    </div>
-
-    <hr class="mt-2 mb-2"/>
+      <!-- Setting &&  Clear all buttons -->
+      <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 p-2 ">
+        <a href="#" id="btnSetting" class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100">
+        </a>
+        <a href="#" id="btnDeleteAll" class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100">
+        </a> 
+      </div>
+  </div>
+    <!-- <hr class="mt-2 mb-2"/> -->
     <div id="container-content" class=" ">
     </div>
     <script src="sidepanel.js"></script>

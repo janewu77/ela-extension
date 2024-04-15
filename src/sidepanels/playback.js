@@ -15,7 +15,12 @@ const SVGDeleteAll_6 = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 
 
 //class name
 const ClassNameForPlayButton = `flex items-center justify-center gap-x-2.5 p-1 font-semibold text-gray-600 first:rounded-l last:rounded-r hover:bg-blue-100 disabled:bg-gray-50 disabled:cursor-not-allowed`;
-  
+
+if (debug){
+  // debuginfo
+  divDebuginfo = document.getElementById('debuginfo');
+  divDebuginfo.innerHTML = "debug";
+}
 
 // button delete all 
 btnDeleteAll = document.getElementById('btnDeleteAll');
@@ -55,7 +60,8 @@ function createMsgDiv(newContent, uuid) {
 
   const divContainer = document.createElement('div');
   divContainer.id = uuid;
-  divContainer.className = " p-4 "
+  divContainer.className = "pl-2 pr-2 pt-6 pb-6 flex-auto overflow-hidden  bg-white ring-1 ring-gray-900/5 "
+
 
   //content
   const contentElement = document.createElement('div');
