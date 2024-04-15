@@ -39,15 +39,19 @@ btnDeleteAll.addEventListener('click', function() {
   }
 });
 
-// only for error msg
-const btnSetting = document.createElement('a');
-// btnSetting.id = "btnSetting";
-btnSetting.className = "flex items-center justify-center gap-x-1.5 p-1 font-semibold text-red-600 hover:bg-blue-100 hover:underline "
-// btnSetting.innerHTML = SVGSetting;
-btnSetting.innerHTML = `<span aria-hidden="true">→</span>${SVGSetting}Setting`;
-btnSetting.addEventListener('click', function() {
-  if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
-});
+
+function getBtnSetting(){
+    // only for error msg
+    const btnSetting = document.createElement('a');
+    // btnSetting.id = "btnSetting";
+    btnSetting.className = "flex items-center justify-center gap-x-1.5 p-1 font-semibold text-red-600 hover:bg-blue-100 hover:underline "
+    // btnSetting.innerHTML = SVGSetting;
+    btnSetting.innerHTML = `<span aria-hidden="true">→</span>${SVGSetting}Setting`;
+    btnSetting.addEventListener('click', function() {
+      if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+    });
+    return btnSetting;
+}
 
 
 // 生成内容段
@@ -70,19 +74,20 @@ function createMsgDiv(newContent, uuid) {
 
   //error msg
   const divSysMsg = document.createElement('div');
-  // divSysMsg.id = uuid;
+  // divSysMsg.id = `SysMsg_${uuid}`;
   divSysMsg.className = " p-1 text-red-600"
   divSysMsg.hidden = true;
   divSysMsg.innerHTML = ""
   // divSysMsg.appendChild(btnSetting);
 
-  let pannelElement = createPlayerPannel(uuid, divContainer, divSysMsg);
-  let customPannelElement = createCustomPannel(uuid);
-  
   divContainer.appendChild(contentElement);
   divContainer.appendChild(divSysMsg);
+
+  let pannelElement = createPlayerPannel(uuid, divContainer, divSysMsg);
+  let customPannelElement = createCustomPannel(uuid);
   divContainer.appendChild(pannelElement);
   divContainer.appendChild(customPannelElement);
+
   return divContainer;
 }
 
@@ -110,25 +115,24 @@ function createPlayerPannel(uuid, container, divSysMsg){
   btnStop.innerHTML = SVGStop;
   pannelElement.appendChild(btnStop);
 
-
   btnPlay.disabled = false;
   btnPause.disabled = true;
   btnStop.disabled = true;
 
   //events
-  onBeforePlay = function() {
+  const onBeforePlay = function() {
     btnPause.disabled = false;
     btnStop.disabled = false;
   };
 
-  onPlayEnded = function() {
+  const onPlayEnded = function() {
     //play ended
     btnPlay.disabled = false;
     btnPause.disabled = true;
     // btnStop.disabled = true;
   };
 
-  onErrorAudio = function(error) {
+  const onErrorAudio = function(error) {
     btnPlay.disabled = false;
     btnPause.disabled = true;
     btnStop.disabled = true;
@@ -136,10 +140,10 @@ function createPlayerPannel(uuid, container, divSysMsg){
     //show error msg
     divSysMsg.hidden = false;
     divSysMsg.innerHTML = `!!! ${error}`;
-    divSysMsg.appendChild(btnSetting);
+    divSysMsg.appendChild(getBtnSetting());
   };
 
-  onReqSuccess = function(uuid, data){
+  const onReqSuccess = function(uuid, data){
       // let audioContext = mapAudioContext.get(uuid);
       let audioContext = new (window.AudioContext || window.webkitAudioContext)();
       mapAudioContext.set(uuid, audioContext);
@@ -158,28 +162,28 @@ function createPlayerPannel(uuid, container, divSysMsg){
 
   //button: play
   btnPlay.addEventListener('click', function() {
-  if (debug) console.log(`buttonPlay clicked. ${uuid}`);
+      if (debug) console.log(`buttonPlay clicked. ${uuid}`);
 
-  //clear error msg
-  divSysMsg.innerHTML = "";
-  divSysMsg.hidden = true;
+      //clear error msg
+      divSysMsg.innerHTML = "";
+      divSysMsg.hidden = true;
 
-  // disable play button
-  btnPlay.disabled = true;
-  // btnPause.disabled = false;
-  // btnStop.disabled = false;
+      // disable play button
+      btnPlay.disabled = true;
+      // btnPause.disabled = false;
+      // btnStop.disabled = false;
 
-  // let audioContext = mapAudioContext.get(uuid);
-  let audioBufferCache = mapAudioBufferCache.get(uuid);
-  // let source = mapSource.get(uuid);
+      // let audioContext = mapAudioContext.get(uuid);
+      let audioBufferCache = mapAudioBufferCache.get(uuid);
+      // let source = mapSource.get(uuid);
 
-  // 检查是否有缓存的音频数据
-  if (audioBufferCache) {
-    playAudioBuffer(uuid, onBeforePlay, onPlayEnded); // 使用缓存的音频数据播放
-  } else {
-    //fetch & play(when success)
-    fetchAudio(uuid, onReqSuccess, onErrorAudio); // 如果没有缓存，则获取音频数据
-  }
+      // 检查是否有缓存的音频数据
+      if (audioBufferCache) {
+        playAudioBuffer(uuid, onBeforePlay, onPlayEnded); // 使用缓存的音频数据播放
+      } else {
+        //fetch & play(when success)
+        fetchAudio(uuid, onReqSuccess, onErrorAudio); // 如果没有缓存，则获取音频数据
+      }
   });
 
   //button: pause
@@ -244,14 +248,14 @@ function createCustomPannel(uuid){
   const actionPannel = document.createElement('div');
   actionPannel.className = "mt-1 grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
-  onError = function(error) {
+  const onError = function(error) {
     //show error msg
     // divMsg.hidden = false;
     divMsg.innerHTML = `!!! ${error}`;
-    divMsg.appendChild(btnSetting);
+    divMsg.appendChild(getBtnSetting());
   };
 
-  onSuccess = function(uuid, data) {
+  const onSuccess = function(uuid, data) {
     if (debug) console.log(`uuid: ${uuid} data: ${data}`);
     //show error msg
     // divMsg.hidden = false;
@@ -261,18 +265,24 @@ function createCustomPannel(uuid){
     divMsg.innerHTML = markdownContent;
   };
 
-
-
-
   // button btnOp1
   let actionName = "查单词";
   let btnAction = document.createElement('button');
   btnAction.id = "btnOp1";
   btnAction.className = ClassNameForPlayButton;// + " bg-gray-100 ";
   btnAction.innerHTML = actionName;
-  
   actionPannel.appendChild(btnAction);
   
+
+  // button delete
+  let btnDelete = document.createElement('button');
+  btnDelete.id = `btnDelete_${uuid}`;
+  btnDelete.className = ClassNameForPlayButton;
+  btnDelete.innerHTML = SVGDelete;
+  btnDelete.disabled = true;
+  actionPannel.appendChild(btnDelete);
+  
+
   btnAction.addEventListener('click', function() {
     if (debug) console.log(`${actionName} clicked. ${uuid}`);
     btnDelete.disabled = false;
@@ -280,19 +290,10 @@ function createCustomPannel(uuid){
     fetchChat(uuid, onSuccess, onError);
   });
 
-
-  // button delete
-  let btnDelete = document.createElement('button');
-  btnDelete.id = "btnDelete";
-  btnDelete.className = ClassNameForPlayButton;
-  btnDelete.innerHTML = SVGDelete;
-  btnDelete.disabled = true;
-  actionPannel.appendChild(btnDelete);
-  
   btnDelete.addEventListener('click', function() {
       if (debug) console.log(`btnDelete clicked. ${uuid}`);
+      btnDelete.disabled = true;
       divMsg.innerHTML = "";
-
   });
 
   container.appendChild(divMsg)
