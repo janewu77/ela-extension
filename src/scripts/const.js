@@ -11,3 +11,12 @@ const default_tts_voice = "onyx"; //alloy, echo, fable, onyx, nova, and shimmer
 const arrTTSModel = ["tts-1", "tts-1-hd"];
 const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
 
+
+
+const default_prompt_word = `  
+- explain the word in detail in English
+- phonetic notation
+- common collocations or frequent word combinations
+- examples in English
+- explain the word in detail in Chinese
+`;
