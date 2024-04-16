@@ -5,7 +5,7 @@
 为了方便自己练习口语，给自己写了一个 Chrome 插件。
 用它来“读”一些网页，这样，我就能跟着反复读了。
 
-未来，还打算加一些翻译、查单词的功能。
+还有翻译、查单词的功能。
 
 如果你也正好用得上，那就用用看吧。
 
@@ -17,12 +17,15 @@ English learner Assistant
 
 https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga
 
-- a chrome extentions 
+- a chrome extentions
 - base on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
+- base on OpenAI gpt-3.5-turbo, gpt-4-turbo model [https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo]
 
 ## 主要功能
 
-- 朗读选择中的文字（base on OpenAI TTS）
+- 朗读选择中的文字
+- 翻译选择的文字段落
+- 查单词
 
 ## 如何安装
 
@@ -41,13 +44,15 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 step3: 设置  
 打开“选项”填入 openAI-API-key  
 ![how to setting](/doc/images/setting.png)
+（todo: 重新截图）
 
 ## 如何使用
 
 1. 打开侧边栏，打开右上角的开关。
 2. 选中想要朗读的文字。文字将会出现在侧边栏内.
-3. 点击文字下文的播放键开始朗读。
+3. 点击文字下文的【播放键】开始朗读；点击【英翻中】【查单词】，也将执行相应的功能。
    ![how to setting](/doc/images/demo1.png)
+（todo: 重新截图）
 
 #### 按钮说明
 
@@ -84,13 +89,11 @@ Clear all：删除侧边栏内的所有朗读的内容。
 
 ## todo
 
-- 下载声音文件
-- 将内容导出至 notion
-- 翻译段落\查单词
+- 自定义按钮功能
 - 国际化 UI
+- 将内容导出至 notion
+- 下载声音文件
 
 ## update.log
 
 ![how to setting](/doc/update.log.md)
-
-
