@@ -33,6 +33,28 @@ btnDeleteAll.addEventListener('click', function() {
   }
 });
 
+function calculateLines(textarea, className) {
+  // 创建一个隐藏的 div 来模拟 textarea
+  const dummy = document.createElement('div');
+  textareaElement.className = className;
+  document.body.appendChild(dummy);
+  // dummy.style.width = textarea.offsetWidth + 'px';
+  dummy.style.font = window.getComputedStyle(textarea).font;
+  dummy.style.visibility = 'hidden';
+  dummy.style.whiteSpace = 'pre-wrap'; // 保持空白符处理方式相同
+  dummy.style.wordWrap = 'break-word'; // 允许单词在必要时断行
+
+  // 将文本设置到 dummy 中，替换换行符为 <br> 来确保效果
+  dummy.textContent = textarea.value;
+  dummy.innerHTML = dummy.innerHTML.replace(/\n/g, '<br>');
+
+  // 计算 dummy 高度和单行高度
+  const singleLineHeight = dummy.clientHeight;
+  dummy.textContent = 'A'; // 设置为单个字符来计算单行高度
+  const lineHeight = dummy.clientHeight;
+  document.body.removeChild(dummy);
+  return Math.ceil(singleLineHeight / lineHeight);
+}
 
 // 生成内容段
 function createMsgDiv(newContent, uuid) {
@@ -44,12 +66,25 @@ function createMsgDiv(newContent, uuid) {
 
   const divContainer = document.createElement('div');
   divContainer.id = uuid;
-  divContainer.className = "pl-2 pr-2 pt-6 pb-6 flex-auto overflow-hidden  bg-white ring-1 ring-gray-900/5 "
+  divContainer.className = "pl-2 pr-2 pt-6 pb-6 flex-auto overflow-hidden bg-white ring-1 ring-gray-900/5 "
 
   //content
   const contentElement = document.createElement('div');
   contentElement.className = " mb-2 "
-  contentElement.innerHTML = `<p class="text-sm" >${newContent}</p>`;
+  // contentElement.innerHTML = `<p class="text-sm" >${newContent}</p>`;
+
+  let textareaElement = document.createElement('textarea');
+  textareaElement.name = "message";
+  let textareaClassName = "block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
+  textareaElement.className = textareaClassName;
+  textareaElement.readOnly = true;
+  textareaElement.textContent = newContent;
+
+  const lineCount = calculateLines(textareaElement, textareaClassName);
+  console.info(`linecount:${lineCount}`);
+  textareaElement.rows = lineCount > 20 ? 20: lineCount;
+  contentElement.appendChild(textareaElement);
+
 
   //error msg
   const divSysMsg = document.createElement('div');
@@ -67,8 +102,11 @@ function createMsgDiv(newContent, uuid) {
   divContainer.appendChild(pannelElement);
   divContainer.appendChild(customPannelElement);
 
+  // console.log(divContainer.innerHTML);
   return divContainer;
 }
+
+
 
 //create pannel for player
 function createPlayerPannel(uuid, container, divSysMsg){
