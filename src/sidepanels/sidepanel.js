@@ -10,9 +10,11 @@ let current_auth_token = default_auth_token
 //chat
 let current_chat_endpoint = default_chat_endpoint
 let current_chat_model = default_chat_model
-//chat - actions
+
+//chat - actions: action_translate,action_word
 let current_action_word = default_action_word;
-let current_action_transalate = default_action_transalate;
+let current_action_translate = default_action_translate;
+
 
 //ui
 let toggleSwitch = document.getElementById('toggleSwitch');
@@ -59,6 +61,15 @@ chrome.storage.local.onChanged.addListener((changes) => {
   if (changes['chat_model']) {
     current_chat_model = changes['chat_model'].newValue;
   }
+
+  //chat - actions: action_translate,action_word
+  if (changes['action_translate']) {
+    current_action_translate = changes['action_translate'].newValue;
+  }
+  if (changes['action_word']) {
+    current_action_word = changes['action_word'].newValue;
+  }
+
   
 });
 
@@ -96,6 +107,14 @@ function init(){
     current_chat_model = data.chat_model;
   });
 
+  //current_action_translate  current_action_word
+  chrome.storage.local.get("action_translate", (data) => {
+    current_action_translate = data.action_translate;
+  });
+  chrome.storage.local.get("action_word", (data) => {
+    current_action_word = data.action_word;
+  });
+
 
   // setting button
   let btnSetting = document.getElementById('btnSetting');
@@ -105,7 +124,6 @@ function init(){
   btnSetting.addEventListener('click', function() {
     if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
   });
-
   
 }
 

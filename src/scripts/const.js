@@ -30,7 +30,7 @@ const default_action_word = {
     "other":false
   };
 
-const default_action_transalate = {
+const default_action_translate = {
     "name": '英翻中', 
     "prompt":  `  
         你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。

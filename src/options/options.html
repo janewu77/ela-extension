@@ -52,58 +52,70 @@
         </fieldset>
       </div>
     </div>
-
-
   </div>
 
-  <div>
-
-
-    <!-- llm begin -->
-    <div class="border-b border-gray-900/10 pb-4">
-      <!-- endpoint -->
-      <div class="sm:col-span-2 mt-6 ">
-        <h2 class="text-base font-semibold leading-7 text-gray-900">OpenAI Chat</h2>
-        <!-- <legend class="text-sm font-semibold leading-6 text-gray-900">OpenAI-API-Key</legend> -->
-        <div class="mt-1">
-          <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 sm:max-w-md">
-            <input type="text" name="key" id="ChatEndpoint"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://api.openai.com/v1/chat/completions">
-          </div>
-        </div>
-        <p class="mt-1 text-xs leading-6 text-gray-600">我要怎么填?<a href="https://platform.openai.com/docs/api-reference/chat" target="_blank" class="text-xs font-semibold leading-6 text-gray-900">了解更多<span aria-hidden="true">→</span></a></p>
-        <!-- <p class="mt-1 text-xs leading-6 text-gray-600">查看api的可用性 <a href="https://status.openai.com/" target="_blank" class="text-xs font-semibold leading-6 text-gray-900">了解更多<span aria-hidden="true">→</span></a></p> -->
-      </div>
-      <div class="mt-6 space-y-6">
-        <fieldset>
-          <h2 class="text-base font-semibold leading-7 text-gray-900">语言模型【gpt-3.5-turbo gpt-4-turbo】</h2>
-          <!-- <legend class="text-sm font-semibold leading-6 text-gray-900">tts模型</legend> -->
-          <div class="mt-1 grid grid-cols-2 " id="chat_model_container"></div>
-          <!-- <p class="mt-1 text-xs leading-6 text-gray-600">我要怎么选? <a href="https://platform.openai.com/docs/guides/text-to-speech" target="_blank" class="text-xs font-semibold leading-6 text-gray-900">了解更多<span aria-hidden="true">→</span></a></p> -->
-        </fieldset>
-
-      </div>
-      <!-- custom actions -->
-      <!-- <div class="sm:col-span-2 mt-6 ">
-        <h2 class="text-base font-semibold leading-7 text-gray-900">自定义按钮名称</h2>
-        <div class="mt-1">
-          <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 sm:max-w-md">
-            <input type="text" name="xx" id="xx"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="查单词">
-          </div>
+  <!-- llm begin -->
+  <div class="border-b border-gray-900/10 pb-4">
+    <!-- endpoint -->
+    <div class="sm:col-span-2 mt-6 ">
+      <h2 class="text-base font-semibold leading-7 text-gray-900">OpenAI Chat</h2>
+      <!-- <legend class="text-sm font-semibold leading-6 text-gray-900">OpenAI-API-Key</legend> -->
+      <div class="mt-1">
+        <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 sm:max-w-md">
+          <input type="text" name="key" id="ChatEndpoint"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="https://api.openai.com/v1/chat/completions">
         </div>
       </div>
-      <div class="sm:col-span-2 mt-6 "></div>
-        <h2 class="text-base font-semibold leading-7 text-gray-900">自定义Prompt</h2>
-        <div class="mt-1">
-          <div class="mt-2.5">
-            <textarea name="bb" id="bb" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6">asdf</textarea>
-          </div>
-        </div>
-      </div> -->
-
+      <p class="mt-1 text-xs leading-6 text-gray-600">我要怎么填?<a href="https://platform.openai.com/docs/api-reference/chat" target="_blank" class="text-xs font-semibold leading-6 text-gray-900">了解更多<span aria-hidden="true">→</span></a></p>
+      <!-- <p class="mt-1 text-xs leading-6 text-gray-600">查看api的可用性 <a href="https://status.openai.com/" target="_blank" class="text-xs font-semibold leading-6 text-gray-900">了解更多<span aria-hidden="true">→</span></a></p> -->
     </div>
-     <!-- llm end -->
+    <div class="mt-6 space-y-6">
+      <fieldset>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">语言模型</h2>
+        <!-- <legend class="text-sm font-semibold leading-6 text-gray-900">tts模型</legend> -->
+        <div class="mt-1 grid grid-cols-2 " id="chat_model_container"></div>
+        <!-- <p class="mt-1 text-xs leading-6 text-gray-600">我要怎么选? <a href="https://platform.openai.com/docs/guides/text-to-speech" target="_blank" class="text-xs font-semibold leading-6 text-gray-900">了解更多<span aria-hidden="true">→</span></a></p> -->
+      </fieldset>
+    </div>
+    <div class="mt-8 space-y-6 ">
+      <h2 class="text-base font-semibold leading-7 text-gray-900">按钮定义</h2>
+    </div>
+    <div class=" grid grid-cols-2 gap-x-8 ">
+      <div>
+        <div class=" mt-4 ">
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义按钮名称</h3>
+          <div class="mt-1">
+            <div class=" rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 ">
+              <input type="text" id="ActionTranslateName"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="查单词">
+            </div>
+          </div>
+        </div>
+        <div class=" mt-4 ">
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义Prompt</h3>
+          <div class="mt-1">
+              <textarea  id="ActionTranslatePrompt" rows="8" class="block  w-full  rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6">asdf</textarea>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class=" mt-4 ">
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义按钮名称</h3>
+          <div class="mt-1">
+            <div class=" rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 ">
+              <input type="text"  id="ActionWordName"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="查单词">
+            </div>
+          </div>
+        </div>
+        <div class=" mt-4 ">
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义Prompt</h3>
+          <div class="mt-1">
+              <textarea  id="ActionWordPrompt" rows="8" class="block  w-full  rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6">asdf</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
+    <!-- llm end -->
 
   <div class="m-2 flex items-center justify-end gap-x-6 ">
     <button type="button" id="btnReset" class="text-sm font-semibold leading-6 text-gray-700 pl-6 pr-6 pt-2 pb-2 hover:bg-blue-100 rounded-md">复位</button>

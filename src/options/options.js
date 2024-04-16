@@ -6,6 +6,9 @@ const SVGCheck= `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
 const SVGCheckDisabled= `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 fill-gray-600"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" /></svg>`
 
 
+let current_action_word = default_action_word;
+let current_action_translate = default_action_translate;
+
 function constructOptions() {
   const optionsForm = document.getElementById("optionsForm");
 
@@ -112,6 +115,40 @@ function constructOptions() {
   });
 
 
+  //actions
+  chrome.storage.local.get("action_translate", (data) => {
+    current_action_translate = data.action_translate;
+    optionsForm.ActionTranslateName.value = current_action_translate.name;
+    optionsForm.ActionTranslatePrompt.value = current_action_translate.prompt;
+  });
+  optionsForm.ActionTranslateName.addEventListener("change", (event) => {
+    if (debug) console.log('ActionTranslateName: ', event.target.value); 
+    current_action_translate.name = event.target.value;
+    chrome.storage.local.set({ "action_translate": current_action_translate });
+  });
+  optionsForm.ActionTranslatePrompt.addEventListener("input", (event) => {
+    if (debug) console.log('ActionTranslatePrompt: ', event.target.value); 
+    current_action_translate.prompt = event.target.value;
+    chrome.storage.local.set({ "action_translate": current_action_translate });
+  });
+
+  chrome.storage.local.get("action_word", (data) => {
+    current_action_word = data.action_word;
+    optionsForm.ActionWordName.value = current_action_word.name;
+    optionsForm.ActionWordPrompt.value = current_action_word.prompt;
+  });
+  optionsForm.ActionWordName.addEventListener("change", (event) => {
+    if (debug) console.log('ActionWordName: ', event.target.value); 
+    current_action_word.name = event.target.value;
+    chrome.storage.local.set({ "action_word": current_action_word });
+  });
+  optionsForm.ActionWordPrompt.addEventListener("input", (event) => {
+    if (debug) console.log('ActionWordPrompt: ', event.target.value); 
+    current_action_word.prompt = event.target.value;
+    chrome.storage.local.set({ "action_word": current_action_word });
+  });
+
+
   //btnReset
   const btnReset = document.getElementById("btnReset");
   btnReset.addEventListener('click', function() {
@@ -133,6 +170,16 @@ function constructOptions() {
     optionsForm.ChatEndpoint.value = default_chat_endpoint;
     let formatedValue = default_chat_model.replace(".", 'dot');
     document.getElementById(`chat_model_${formatedValue}`).checked = true;
+
+    //actions 
+    chrome.storage.local.set({ "action_translate": default_action_translate });
+    chrome.storage.local.set({ "action_word": default_action_word });
+    
+    optionsForm.ActionTranslateName.value = default_action_translate.name;
+    optionsForm.ActionTranslatePrompt.value = default_action_translate.prompt;
+    optionsForm.ActionWordName.value = default_action_word.name;
+    optionsForm.ActionWordPrompt.value = default_action_word.prompt;
+
 
   });
 }

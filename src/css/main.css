@@ -807,12 +807,16 @@ select {
   margin-top: 0.5rem;
 }
 
-.mt-2\.5 {
-  margin-top: 0.625rem;
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .mt-6 {
   margin-top: 1.5rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
 }
 
 .block {
@@ -928,6 +932,11 @@ select {
 .gap-x-6 {
   -moz-column-gap: 1.5rem;
        column-gap: 1.5rem;
+}
+
+.gap-x-8 {
+  -moz-column-gap: 2rem;
+       column-gap: 2rem;
 }
 
 .space-y-6 > :not([hidden]) ~ :not([hidden]) {

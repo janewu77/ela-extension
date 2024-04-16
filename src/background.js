@@ -43,6 +43,15 @@ chrome.runtime.onInstalled.addListener(() => {
       chrome.storage.local.set({ "chat_model": chat_model });
     });
 
+    //actions: action_translate,action_word
+    chrome.storage.local.get("action_translate", (data) => {
+      action_translate = data.action_translate == null ? default_action_translate : data.action_translate;
+      chrome.storage.local.set({ "action_translate": action_translate });
+    });
+    chrome.storage.local.get("action_word", (data) => {
+      action_word = data.action_word == null ? default_action_word : data.action_word;
+      chrome.storage.local.set({ "action_word": action_word });
+    });
 
     //set side pannel
     chrome.sidePanel

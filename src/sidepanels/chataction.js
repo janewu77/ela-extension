@@ -14,7 +14,7 @@ function createCustomPannel(uuid){
     let btnActionTrans = document.createElement('button');
     btnActionTrans.id = "btnOpTrans";
     btnActionTrans.className = ClassNameForPlayButton;
-    btnActionTrans.innerHTML = current_action_transalate.name;
+    btnActionTrans.innerHTML = current_action_translate.name;
     btnActionTrans.disabled = false;
     actionPannel.appendChild(btnActionTrans);
     
@@ -81,14 +81,14 @@ function createCustomPannel(uuid){
     });
 
     btnActionTrans.addEventListener('click', function() {
-      if (debug) console.log(`${current_action_transalate.name} clicked. ${uuid}`);
+      if (debug) console.log(`${current_action_translate.name} clicked. ${uuid}`);
 
       btnActionWord.disabled = true;
       btnActionTrans.disabled = true;
       btnDelete.disabled = true;
 
       divMsg.innerHTML = "";
-      fetchChat(mapMsg.get(uuid), current_action_transalate.prompt, onSuccess, onError);
+      fetchChat(mapMsg.get(uuid), current_action_translate.prompt, onSuccess, onError);
     });
   
     btnDelete.addEventListener('click', function() {
