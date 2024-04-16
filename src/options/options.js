@@ -123,7 +123,9 @@ function constructOptions() {
   });
   optionsForm.ActionTranslateName.addEventListener("change", (event) => {
     if (debug) console.log('ActionTranslateName: ', event.target.value); 
-    current_action_translate.name = event.target.value;
+    let name = event.target.value.slice(0, 10);
+    current_action_translate.name = name.length == 0 ?  current_action_translate.name : name;
+    optionsForm.ActionTranslateName.value = current_action_translate.name;
     chrome.storage.local.set({ "action_translate": current_action_translate });
   });
   optionsForm.ActionTranslatePrompt.addEventListener("input", (event) => {
@@ -139,7 +141,9 @@ function constructOptions() {
   });
   optionsForm.ActionWordName.addEventListener("change", (event) => {
     if (debug) console.log('ActionWordName: ', event.target.value); 
-    current_action_word.name = event.target.value;
+    let name = event.target.value.slice(0, 10);
+    current_action_word.name = name.length == 0 ?  current_action_word.name : name;
+    optionsForm.ActionWordName.value = current_action_word.name;
     chrome.storage.local.set({ "action_word": current_action_word });
   });
   optionsForm.ActionWordPrompt.addEventListener("input", (event) => {

@@ -79,36 +79,36 @@
     <div class="mt-8 space-y-6 ">
       <h2 class="text-base font-semibold leading-7 text-gray-900">按钮定义</h2>
     </div>
-    <div class=" grid grid-cols-2 gap-x-8 ">
+    <div class=" grid grid-cols-2 gap-x-10 ">
       <div>
-        <div class=" mt-4 ">
-          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义按钮名称</h3>
+        <div class=" mt-2 ">
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义按钮名称1</h3>
           <div class="mt-1">
             <div class=" rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 ">
-              <input type="text" id="ActionTranslateName"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="查单词">
+              <input type="text" id="ActionTranslateName" minlength="3" maxlength="10" class="block border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="翻译">
             </div>
           </div>
         </div>
         <div class=" mt-4 ">
-          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义Prompt</h3>
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">Prompt1</h3>
           <div class="mt-1">
-              <textarea  id="ActionTranslatePrompt" rows="8" class="block  w-full  rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6">asdf</textarea>
+              <textarea  id="ActionTranslatePrompt" rows="8" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"></textarea>
           </div>
         </div>
       </div>
       <div>
-        <div class=" mt-4 ">
-          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义按钮名称</h3>
+        <div class=" mt-2 ">
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义按钮名称2</h3>
           <div class="mt-1">
             <div class=" rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 ">
-              <input type="text"  id="ActionWordName"  class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="查单词">
+              <input type="text"  id="ActionWordName"  minlength="3" maxlength="10" class="block  border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="查单词">
             </div>
           </div>
         </div>
         <div class=" mt-4 ">
-          <h3 class="text-sm font-semibold leading-7 text-gray-900">自定义Prompt</h3>
+          <h3 class="text-sm font-semibold leading-7 text-gray-900">Prompt2</h3>
           <div class="mt-1">
-              <textarea  id="ActionWordPrompt" rows="8" class="block  w-full  rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6">asdf</textarea>
+              <textarea  id="ActionWordPrompt" rows="8" class="block  w-full  rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"></textarea>
           </div>
         </div>
       </div>
@@ -116,6 +116,7 @@
 
   </div>
     <!-- llm end -->
+
 
   <div class="m-2 flex items-center justify-end gap-x-6 ">
     <button type="button" id="btnReset" class="text-sm font-semibold leading-6 text-gray-700 pl-6 pr-6 pt-2 pb-2 hover:bg-blue-100 rounded-md">复位</button>
