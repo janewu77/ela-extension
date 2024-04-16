@@ -53,7 +53,7 @@ function createCustomPannel(uuid){
       divMsg.innerHTML = '';
       let textareaElement = document.createElement('textarea');
       // textareaElement.name = "message";
-      let textareaClassName = "block w-full rounded-md border-1 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
+      let textareaClassName = "block w-full rounded-md border-0 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
       textareaElement.className = textareaClassName;
       textareaElement.readOnly = true;
       textareaElement.textContent = msg;
@@ -95,7 +95,7 @@ function createCustomPannel(uuid){
         if (debug) console.log(`btnDelete clicked. ${uuid}`);
 
         divMsg.innerHTML = "";
-        
+
         btnActionWord.disabled = false;
         btnActionTrans.disabled = false;
         btnDelete.disabled = true;
