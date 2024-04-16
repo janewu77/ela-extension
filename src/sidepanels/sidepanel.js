@@ -1,17 +1,20 @@
 
 let currentOnoff = true;
 
+//tts
 let current_tts_endpoint = default_tts_endpoint
 let current_tts_model = default_tts_model
 let current_tts_voice = default_tts_voice
 let current_auth_token = default_auth_token
 
+//chat
 let current_chat_endpoint = default_chat_endpoint
-let current_llm_model = defalut_llm_model
+let current_chat_model = default_chat_model
+//chat - actions
+let current_action_word = default_action_word;
+let current_action_transalate = default_action_transalate;
 
-let current_action_word = defalut_action_word;
-let current_action_transalate = defalut_action_transalate;
-
+//ui
 let toggleSwitch = document.getElementById('toggleSwitch');
 
 //button Setting
@@ -48,6 +51,14 @@ chrome.storage.local.onChanged.addListener((changes) => {
   if (changes['auth_token']) {
     current_auth_token = changes['auth_token'].newValue;
   }
+
+  //chat
+  if (changes['chat_endpoint']) {
+    current_chat_endpoint = changes['chat_endpoint'].newValue;
+  }
+  if (changes['chat_model']) {
+    current_chat_model = changes['chat_model'].newValue;
+  }
   
 });
 
@@ -75,6 +86,14 @@ function init(){
 
   chrome.storage.local.get("auth_token", (data) => {
     current_auth_token = data.auth_token;
+  });
+
+  //tts
+  chrome.storage.local.get("chat_endpoint", (data) => {
+    current_chat_endpoint = data.chat_endpoint;
+  });
+  chrome.storage.local.get("chat_model", (data) => {
+    current_chat_model = data.chat_model;
   });
 
 

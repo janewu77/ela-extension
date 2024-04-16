@@ -82,7 +82,7 @@ function constructOptions() {
   chrome.storage.local.get("tts_model", (data) => {
     let tts_model_container = document.getElementById("tts_model_container");
     arrTTSModel.map(model => {
-      tts_model_container.appendChild(createDiv("tts_model", model, data.tts_model));
+      tts_model_container.appendChild(createDivWithRadioes("tts_model", model, data.tts_model));
     });
   });
 
@@ -90,10 +90,28 @@ function constructOptions() {
   chrome.storage.local.get("tts_voice", (data) => {
     let tts_voice_container = document.getElementById("tts_voice_container");
     arrTTSVoice.map(voice => {
-      tts_voice_container.appendChild(createDiv("tts_voice", voice, data.tts_voice));
+      tts_voice_container.appendChild(createDivWithRadioes("tts_voice", voice, data.tts_voice));
     });
   });
-  
+
+  //chat_endpoint
+  chrome.storage.local.get("chat_endpoint", (data) => {
+    optionsForm.ChatEndpoint.value = data.chat_endpoint;
+  });
+  optionsForm.ChatEndpoint.addEventListener("change", (event) => {
+    if (debug) console.log('chat_endpoint: ', event.target.value); 
+    chrome.storage.local.set({ "chat_endpoint": event.target.value });
+  });
+
+  chrome.storage.local.get("chat_model", (data) => {
+    let chat_model_container = document.getElementById("chat_model_container");
+    // if (debug) console.log('chat_model: ',  data.chat_model); 
+    arrChatModel.map(model => {
+      chat_model_container.appendChild(createDivWithRadioes("chat_model", model, data.chat_model));
+    });
+  });
+
+
   //btnReset
   const btnReset = document.getElementById("btnReset");
   btnReset.addEventListener('click', function() {
@@ -115,23 +133,38 @@ function constructOptions() {
 constructOptions();
 
 
-function createDiv(radioName, radioValue, currentValue) {
+function createDivWithRadioes(radioName, radioValue, currentValue) {
   const newElement = document.createElement('div');
   newElement.className = " flex items-center gap-x-3 "
   newElement.innerHTML = '';
 
+  let formatedValue = radioValue.replace(".", 'dot');
+  let radio_id = `${radioName}_${formatedValue}`;
+
   //radio
-  newElement.innerHTML += `<input id="${radioName}_${radioValue}" value="${radioValue}" name="${radioName}" type="radio" class="h-4 w-4 border-gray-300 text-blue-500 focus:ring-blue-500">`;
+  let radioInput = document.createElement('input');
+  radioInput.id = radio_id;
+  radioInput.type = "radio";
+  radioInput.className = "h-4 w-4 border-gray-300 text-blue-500 focus:ring-blue-500";
+  radioInput.defaultChecked = radioValue === currentValue;
+  radioInput.value = radioValue;
+  radioInput.name = radioName;
+
+  newElement.appendChild(radioInput);
   newElement.innerHTML += `<label for="${radioName}_${radioValue}" class="block text-sm font-medium leading-6 text-gray-900">${radioValue}</label>`;
   
-  let radioInut = newElement.querySelector(`#${radioName}_${radioValue}`);
-  radioInut.checked = radioValue == currentValue;
-
-  radioInut.addEventListener("change", (event) => {
-    if (event.target.checked){
-      if (debug) console.log(`${radioName}`, event.target.value); 
-      chrome.storage.local.set({ [radioName]: event.target.value });
-    }
-  });
+  let radioInput2 = newElement.querySelector(`#${radio_id}`);
+  if (radioInput2 != null){
+    // console.log(`!!!!${radioName}`);
+    radioInput2.addEventListener("change", (event) => {
+      // console.log(event.target.value);
+      if (event.target.checked){
+        if (debug) console.log(`${radioName}`, event.target.value); 
+        chrome.storage.local.set({ [radioName]: event.target.value });
+      }
+    });
+  }
+ 
+  // console.log(newElement.innerHTML);
   return newElement;
 }

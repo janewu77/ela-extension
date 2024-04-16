@@ -8,10 +8,41 @@ chrome.runtime.onInstalled.addListener(() => {
 
     chrome.storage.local.set({ "onoff": defaultOnoff });
 
-    chrome.storage.local.set({ "tts_endpoint": default_tts_endpoint });
-    chrome.storage.local.set({ "tts_model": default_tts_model });
-    chrome.storage.local.set({ "tts_voice": default_tts_voice });
-    chrome.storage.local.set({ "auth_token": default_auth_token });
+    // chrome.storage.local.set({ "auth_token": default_auth_token });
+    chrome.storage.local.get("auth_token", (data) => {
+      auth_token = data.auth_token == null ? default_auth_token : data.auth_token;
+      chrome.storage.local.set({ "auth_token": auth_token });
+    });
+
+    //tts
+    // chrome.storage.local.set({ "tts_endpoint": default_tts_endpoint });
+    chrome.storage.local.get("tts_endpoint", (data) => {
+      tts_endpoint = data.tts_endpoint == null ? default_tts_endpoint : data.tts_endpoint;
+      chrome.storage.local.set({ "tts_endpoint": tts_endpoint });
+    });
+
+    // chrome.storage.local.set({ "tts_model": default_tts_model });
+    chrome.storage.local.get("tts_model", (data) => {
+      tts_model = data.tts_model == null ? default_tts_model : data.tts_model;
+      chrome.storage.local.set({ "tts_model": tts_model });
+    });
+
+    // chrome.storage.local.set({ "tts_voice": default_tts_voice });
+    chrome.storage.local.get("tts_voice", (data) => {
+      tts_voice = data.tts_voice == null ? default_tts_voice : data.tts_voice;
+      chrome.storage.local.set({ "tts_voice": tts_voice });
+    });
+    
+    //chat
+    chrome.storage.local.get("chat_endpoint", (data) => {
+      chat_endpoint = data.chat_endpoint == null ? default_chat_endpoint : data.chat_endpoint;
+      chrome.storage.local.set({ "chat_endpoint": chat_endpoint });
+    });
+    chrome.storage.local.get("chat_model", (data) => {
+      chat_model = data.chat_model == null ? default_chat_model : data.chat_model;
+      chrome.storage.local.set({ "chat_model": chat_model });
+    });
+
 
     //set side pannel
     chrome.sidePanel

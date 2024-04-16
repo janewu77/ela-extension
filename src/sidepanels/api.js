@@ -34,7 +34,8 @@ function fetchAudio(msg, onSuccess, onError) {
     });
 }
 
-//current_chat_endpoint current_llm_model
+//current_chat_endpoint current_chat_model
+//current_auth_token
 function fetchChat(msg, prompt, onSuccess, onError) {
     if (debug) console.log(`fetchChat ${msg}`);
   
@@ -45,7 +46,7 @@ function fetchChat(msg, prompt, onSuccess, onError) {
         'authorization': `Bearer ${current_auth_token}`
       },
       body: JSON.stringify({
-        "model": current_llm_model, 
+        "model": current_chat_model, 
         "messages": [
            {"role": "assistant", "content": prompt},
            {"role": "user", "content": msg} 

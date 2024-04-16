@@ -4,6 +4,7 @@ const defaultOnoff = false; //是否打开功能
 
 const default_auth_token="Your-OpenAI-API-Key";
 
+//tts
 const default_tts_endpoint="https://api.openai.com/v1/audio/speech";
 const default_tts_model= "tts-1"; //tts-1 tts-1-hd
 const default_tts_voice = "onyx"; //alloy, echo, fable, onyx, nova, and shimmer
@@ -11,13 +12,12 @@ const default_tts_voice = "onyx"; //alloy, echo, fable, onyx, nova, and shimmer
 const arrTTSModel = ["tts-1", "tts-1-hd"];
 const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
 
-
+//llm : chat
 const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
 const arrChatModel = ["gpt-3.5-turbo", "gpt-4-turbo"];
-const defalut_llm_model = "gpt-3.5-turbo";
-
-
-const defalut_action_word = {
+const default_chat_model = "gpt-3.5-turbo";
+//actions
+const default_action_word = {
     "name": '查单词', 
     "prompt":  `  
     - explain the word in detail in English
@@ -29,7 +29,7 @@ const defalut_action_word = {
     "other":false
   };
 
-const defalut_action_transalate = {
+const default_action_transalate = {
     "name": '英翻中', 
     "prompt":  `  
         你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
