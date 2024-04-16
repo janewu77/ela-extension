@@ -126,6 +126,14 @@ function constructOptions() {
     document.getElementById(`tts_model_${default_tts_model}`).checked = true;
     document.getElementById(`tts_voice_${default_tts_voice}`).checked = true;
 
+    //chat
+    chrome.storage.local.set({ "chat_endpoint": default_chat_endpoint });
+    chrome.storage.local.set({ "chat_model": default_chat_model });
+
+    optionsForm.ChatEndpoint.value = default_chat_endpoint;
+    let formatedValue = default_chat_model.replace(".", 'dot');
+    document.getElementById(`chat_model_${formatedValue}`).checked = true;
+
   });
 }
 

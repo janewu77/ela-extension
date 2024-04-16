@@ -16,6 +16,7 @@ const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
 const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
 const arrChatModel = ["gpt-3.5-turbo", "gpt-4-turbo"];
 const default_chat_model = "gpt-3.5-turbo";
+
 //actions
 const default_action_word = {
     "name": '查单词', 
