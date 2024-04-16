@@ -8,8 +8,9 @@ let current_auth_token = default_auth_token
 
 let current_chat_endpoint = default_chat_endpoint
 let current_llm_model = defalut_llm_model
-let current_action_prompt = default_action_prompt
-let current_action_name = default_action_name
+
+let current_action_word = defalut_action_word;
+let current_action_transalate = defalut_action_transalate;
 
 let toggleSwitch = document.getElementById('toggleSwitch');
 
