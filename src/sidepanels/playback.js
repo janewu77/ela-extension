@@ -118,11 +118,13 @@ function createPlayerPannel(uuid, container, divSysMsg){
 
   //events
   const onBeforePlay = function() {
+    btnPlay.innerHTML = SVGPlay;
     btnPause.disabled = false;
     btnStop.disabled = false;
   };
 
   const onPlayEnded = function() {
+    btnPlay.innerHTML = SVGPlay;
     //play ended
     btnPlay.disabled = false;
     btnPause.disabled = true;
@@ -130,6 +132,8 @@ function createPlayerPannel(uuid, container, divSysMsg){
   };
 
   const onErrorAudio = function(error) {
+    btnPlay.innerHTML = SVGPlay;
+
     btnPlay.disabled = false;
     btnPause.disabled = true;
     btnStop.disabled = true;
@@ -141,25 +145,29 @@ function createPlayerPannel(uuid, container, divSysMsg){
   };
 
   const onReqSuccess = function(data){
-      // let audioContext = mapAudioContext.get(uuid);
-      let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      mapAudioContext.set(uuid, audioContext);
-      mapAudioBufferCache.set(uuid, null)
-      mapSource.set(uuid, null)
+    btnPlay.innerHTML = SVGPlay;
 
-      audioContext.decodeAudioData(data, buffer => {
-          mapAudioBufferCache.set(uuid, buffer)
-          // audioBufferCache = buffer;
-          playAudioBuffer(uuid, onBeforePlay, onPlayEnded);
-      }, e => {
-          console.log('Audio decoding failed', e);
-      });
+    // let audioContext = mapAudioContext.get(uuid);
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    mapAudioContext.set(uuid, audioContext);
+    mapAudioBufferCache.set(uuid, null)
+    mapSource.set(uuid, null)
+
+    audioContext.decodeAudioData(data, buffer => {
+        mapAudioBufferCache.set(uuid, buffer)
+        // audioBufferCache = buffer;
+        playAudioBuffer(uuid, onBeforePlay, onPlayEnded);
+    }, e => {
+        console.log('Audio decoding failed', e);
+    });
 
   };
 
   //button: play
   btnPlay.addEventListener('click', function() {
       if (debug) console.log(`buttonPlay clicked. ${uuid}`);
+
+      btnPlay.innerHTML = SVGLoadingSpin;
 
       //clear error msg
       divSysMsg.innerHTML = "";

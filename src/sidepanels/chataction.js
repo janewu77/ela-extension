@@ -1,3 +1,5 @@
+
+
 // let current_action_word = defalut_action_word;
 // let current_action_transalate = defalut_action_transalate;
 //for custom buttons
@@ -45,9 +47,10 @@ function createCustomPannel(uuid){
     btnDelete.disabled = true;
     actionPannel.appendChild(btnDelete);
   
-
-
     const onError = function(error) {
+      btnActionTrans.innerHTML = current_action_translate.name;
+      btnActionWord.innerHTML = current_action_word.name;
+
       while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
 
       const divErrMsg = document.createElement('div');
@@ -61,6 +64,9 @@ function createCustomPannel(uuid){
     };
 
     const onSuccess = function(response, stream){
+      btnActionTrans.innerHTML = current_action_translate.name;
+      btnActionWord.innerHTML = current_action_word.name;
+
       if (debug) console.log(` onSuccess stream:${stream}`);
       // if (debug) console.log(` onSuccess divMsg.hasChildNodes():${divMsg.hasChildNodes()}`);
 
@@ -95,6 +101,7 @@ function createCustomPannel(uuid){
   
     btnActionWord.addEventListener('click', function() {
       if (debug) console.log(`${current_action_word.name} clicked. ${uuid}`);
+      btnActionWord.innerHTML = SVGLoadingSpin + current_action_word.name;
       
       btnActionWord.disabled = true;
       btnActionTrans.disabled = true;
@@ -105,6 +112,7 @@ function createCustomPannel(uuid){
 
     btnActionTrans.addEventListener('click', function() {
       if (debug) console.log(`${current_action_translate.name} clicked. ${uuid}`);
+      btnActionTrans.innerHTML = SVGLoadingSpin + current_action_translate.name;
 
       btnActionWord.disabled = true;
       btnActionTrans.disabled = true;
