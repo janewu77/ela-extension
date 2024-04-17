@@ -17,9 +17,10 @@ const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
 const arrChatModel = ["gpt-3.5-turbo", "gpt-4-turbo"];
 const default_chat_model = "gpt-3.5-turbo";
 
+
 //actions
 const default_action_word = {
-    "name": '查单词', 
+    "name": '查单词📖', 
     "prompt":  `  
     - explain the word in detail in English
     - phonetic notation
@@ -27,11 +28,12 @@ const default_action_word = {
     - examples in English
     - explain the word in detail in Chinese
     `,
+    "active":true,
     "other":false
   };
 
 const default_action_translate = {
-    "name": '英翻中', 
+    "name": '翻译🇺🇸🇨🇳', 
     "prompt":  `  
         你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
 
@@ -76,5 +78,8 @@ const default_action_translate = {
 
  
     `,
+    "active":true,
     "other":false
   }
+
+  const arrActions = [default_action_translate, default_action_word];
