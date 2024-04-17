@@ -36,8 +36,8 @@ function fetchAudio(msg, onSuccess, onError) {
 
 //current_chat_endpoint current_chat_model
 //current_auth_token
-function fetchChat(msg, prompt, onSuccess, onError) {
-    if (debug) console.log(`fetchChat ${msg}`);
+function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
+    if (debug) console.log(`fetchChat stream: ${stream} `);
   
     fetch(current_chat_endpoint, {
       method: 'POST',
@@ -52,7 +52,7 @@ function fetchChat(msg, prompt, onSuccess, onError) {
            {"role": "user", "content": msg} 
         ],
         "temperature": 0.8,
-        "stream":false
+        "stream":stream
       }),
     })
     .then(response => {
@@ -62,13 +62,49 @@ function fetchChat(msg, prompt, onSuccess, onError) {
           throw new Error(`${msg}[${response.status}]`);
       }
       // return response; //.arrayBuffer();
+      if (stream) return response;
       return response.json();
     })
     .then(data => {
-      onSuccess(data);
+      onSuccess(data, stream);
     })
     .catch(error => {
       onError(error);
       console.error('Request failed', error);
+    });
+  }
+
+  const decoder = new TextDecoder("utf-8");
+  function streamResponseRead(reader, afterGetContent) {
+
+    // const reader = response.body.getReader();
+    reader.read().then(({ done, value }) => {
+      if (done) {
+        console.log('Stream 已经读取完毕');
+        return;
+      }
+      let data = decoder.decode(value, {stream: true}); 
+      // 按行拆分
+      let dataArray = data.split('\n');
+
+      for (const element of dataArray) {
+        // console.log(`element:[${element}]`);
+        if (element.length <= 0 || element === "data: [DONE]"){
+            continue;
+        }
+        // 在这里处理每个元素
+        try {
+            let json = JSON.parse(element.substring(6)); // 假设每个项前有 'data: ' 需要去掉
+            let content = json['choices'][0]['delta']['content'];
+            if (content != null){
+              // console.log(`content:${content}`);
+              afterGetContent(content);
+            }
+        } catch (e) {
+            console.error('解析错误', e);
+        }
+    }
+      // 递归调用，继续读取下一个数据块
+      streamResponseRead(reader, afterGetContent);
     });
   }

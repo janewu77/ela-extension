@@ -48,6 +48,7 @@ function createMsgDiv(newContent, uuid) {
 
   //content
   const contentElement = document.createElement('div');
+  contentElement.id =  `Content_${uuid}`;
   contentElement.className = " mb-2 "
   contentElement.innerHTML = `<p class="text-sm" >${newContent}</p>`;
 
@@ -66,7 +67,7 @@ function createMsgDiv(newContent, uuid) {
 
   //error msg
   const divSysMsg = document.createElement('div');
-  // divSysMsg.id = `SysMsg_${uuid}`;
+  divSysMsg.id = `SysMsg_${uuid}`;
   divSysMsg.className = " p-1 text-red-600"
   divSysMsg.hidden = true;
   divSysMsg.innerHTML = ""
@@ -90,6 +91,7 @@ function createMsgDiv(newContent, uuid) {
 function createPlayerPannel(uuid, container, divSysMsg){
   //pannel && buttons
   const pannelElement = document.createElement('div');
+  pannelElement.id = `PlayerPannel_${uuid}`;
   pannelElement.className = "mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
   let btnPlay = document.createElement('button');
