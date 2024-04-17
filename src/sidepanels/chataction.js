@@ -1,4 +1,7 @@
 
+function showBtn(btnCopy, visible){
+  btnCopy.className = ClassNameForTxtAreaButton + ` visibility: ${visible} `; //hidden: visible
+}
 
 // let current_action_word = defalut_action_word;
 // let current_action_transalate = defalut_action_transalate;
@@ -9,7 +12,7 @@ function createCustomPannel(uuid){
   
     const divMsg = document.createElement('div');
     divMsg.id = `CustomPannel_SysMsg_${uuid}`;
-    divMsg.className = "mt-2 rounded" ;
+    divMsg.className = "mt-2 rounded relative " ;
 
     const textareaElement = document.createElement('textarea');
     const textareaElementID = `CustomPannel_Response_${uuid}`;
@@ -21,7 +24,7 @@ function createCustomPannel(uuid){
   
     const actionPannel = document.createElement('div');
     actionPannel.id = `CustomPannel_ActionPannel_${uuid}`;
-    actionPannel.className = "mt-1 grid grid-cols-3 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
+    actionPannel.className = "mt-1 grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
     // button btnActionTrans
     let btnActionTrans = document.createElement('button');
@@ -39,17 +42,30 @@ function createCustomPannel(uuid){
     btnActionWord.disabled = false;
     actionPannel.appendChild(btnActionWord);
     
-    // button delete
-    let btnDelete = document.createElement('button');
-    btnDelete.id = `btnDelete_${uuid}`;
-    btnDelete.className = ClassNameForPlayButton;
-    btnDelete.innerHTML = SVGDelete;
-    btnDelete.disabled = true;
-    actionPannel.appendChild(btnDelete);
+    // container for btnClear, btnCopy
+    let divTxtAreaMenu = document.createElement('div');
+    divTxtAreaMenu.className = " absolute top-0 right-0 ";
+
+    // button clear
+    let btnClear = document.createElement('button');
+    btnClear.id = `btnClear_${uuid}`;
+    btnClear.className = ClassNameForTxtAreaButton + " visibility: hidden "
+    btnClear.innerHTML = SVGDelete_light;
+    divTxtAreaMenu.appendChild(btnClear);
+
+    // button copy
+    let btnCopy = document.createElement('button');
+    btnCopy.id = `btnCopy_${uuid}`;
+    btnCopy.className = ClassNameForTxtAreaButton + " visibility: hidden "; //visibility: visible
+    btnCopy.innerHTML = SVGCopy_light;
+    divTxtAreaMenu.appendChild(btnCopy);
+
   
     const onError = function(error) {
       btnActionTrans.innerHTML = current_action_translate.name;
       btnActionWord.innerHTML = current_action_word.name;
+      showBtn(btnClear, "hidden");
+      showBtn(btnCopy, "hidden");
 
       while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
 
@@ -60,7 +76,7 @@ function createCustomPannel(uuid){
 
       btnActionTrans.disabled = false;
       btnActionWord.disabled = false;
-      btnDelete.disabled = false;
+      // btnDelete.disabled = false;
     };
 
     const onSuccess = function(response, stream){
@@ -76,6 +92,8 @@ function createCustomPannel(uuid){
       }else{
         while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
         divMsg.appendChild(textareaElement);
+        divMsg.appendChild(divTxtAreaMenu);
+        // divMsg.appendChild(btnCopy);
       }
       
       if (stream){
@@ -83,6 +101,9 @@ function createCustomPannel(uuid){
         textareaElement.rows = 12;
         streamResponseRead(response.body.getReader(), (content) => {
           textareaElement.textContent += content;
+        }, ()=>{
+          showBtn(btnClear, "visible");
+          showBtn(btnCopy, "visible");
         });
 
       }else{
@@ -91,21 +112,23 @@ function createCustomPannel(uuid){
         const lineCount = calculateLines(textareaElement, textareaClassName);
         // console.info(`linecount:${lineCount}`);
         textareaElement.rows = lineCount > 12 ? 12: lineCount;
+        showBtn(btnClear, "visible");
+        showBtn(btnCopy, "visible");
       }
 
       btnActionTrans.disabled = false;
       btnActionWord.disabled = false;
-      btnDelete.disabled = false;
     }
 
-  
     btnActionWord.addEventListener('click', function() {
       if (debug) console.log(`${current_action_word.name} clicked. ${uuid}`);
       btnActionWord.innerHTML = SVGLoadingSpin + current_action_word.name;
+
+      showBtn(btnClear, "hidden");
+      showBtn(btnCopy, "hidden");
       
       btnActionWord.disabled = true;
       btnActionTrans.disabled = true;
-      btnDelete.disabled = true;
 
       fetchChat(mapMsg.get(uuid), current_action_word.prompt, onSuccess, onError, true);
     });
@@ -113,24 +136,30 @@ function createCustomPannel(uuid){
     btnActionTrans.addEventListener('click', function() {
       if (debug) console.log(`${current_action_translate.name} clicked. ${uuid}`);
       btnActionTrans.innerHTML = SVGLoadingSpin + current_action_translate.name;
+      showBtn(btnClear, "hidden");
+      showBtn(btnCopy, "hidden");
 
       btnActionWord.disabled = true;
       btnActionTrans.disabled = true;
-      btnDelete.disabled = true;
 
       fetchChat(mapMsg.get(uuid), current_action_translate.prompt, onSuccess, onError, true);
     });
   
-    btnDelete.addEventListener('click', function() {
-        if (debug) console.log(`btnDelete clicked. ${uuid}`);
+    btnClear.addEventListener('click', function() {
+        if (debug) console.log(`btnClear clicked. ${uuid}`);
 
-        // divMsg.innerHTML = "";
-        while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
+        showBtn(btnClear, "hidden");
+        showBtn(btnCopy, "hidden");
+        textareaElement.textContent = ''
 
         btnActionWord.disabled = false;
         btnActionTrans.disabled = false;
-        btnDelete.disabled = true;
         
+    });
+
+    btnCopy.addEventListener('click', function() {
+      if (debug) console.log(`btnCopy clicked. ${uuid}`);
+      navigator.clipboard.writeText(textareaElement.textContent);
     });
   
     container.appendChild(divMsg)

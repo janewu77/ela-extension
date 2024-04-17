@@ -12,8 +12,10 @@ const SVGDelete = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" f
 const SVGSetting = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 fill-red-600"><path d="M18.75 12.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM12 6a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 6ZM12 18a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 18ZM3.75 6.75h1.5a.75.75 0 1 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM5.25 18.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5ZM3 12a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 3 12ZM9 3.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM12.75 12a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM9 15.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" /></svg>`
 
 
+
 //class name
 const ClassNameForPlayButton = `flex items-center justify-center gap-x-2.5 p-1 font-semibold text-gray-600 first:rounded-l last:rounded-r hover:bg-blue-100 disabled:bg-gray-50 disabled:cursor-not-allowed`;
+const ClassNameForTxtAreaButton = `flex items-center justify-center gap-x-2.5 p-1 font-semibold text-gray-600 rounded rounded hover:bg-blue-100 disabled:bg-gray-50 disabled:cursor-not-allowed`;
 
 
 // button delete all 
@@ -44,12 +46,12 @@ function createMsgDiv(newContent, uuid) {
 
   const divContainer = document.createElement('div');
   divContainer.id = uuid;
-  divContainer.className = "pl-2 pr-2 pt-6 pb-6 flex-auto overflow-hidden bg-white ring-1 ring-gray-900/5 "
+  divContainer.className = " relative pl-2 pr-2 pt-6 pb-2 flex-auto overflow-hidden bg-white ring-1 ring-gray-900/5 "
 
   //content
   const contentElement = document.createElement('div');
   contentElement.id =  `Content_${uuid}`;
-  contentElement.className = " mb-2 "
+  contentElement.className = " mb-2"
   contentElement.innerHTML = `<p class="text-sm" >${newContent}</p>`;
 
   // let textareaElement = document.createElement('textarea');
@@ -85,14 +87,12 @@ function createMsgDiv(newContent, uuid) {
   return divContainer;
 }
 
-
-
 //create pannel for player
 function createPlayerPannel(uuid, container, divSysMsg){
   //pannel && buttons
   const pannelElement = document.createElement('div');
   pannelElement.id = `PlayerPannel_${uuid}`;
-  pannelElement.className = "mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
+  pannelElement.className = " mt-2 grid grid-cols-3 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
   let btnPlay = document.createElement('button');
   btnPlay.id = "playAudio";
@@ -217,13 +217,20 @@ function createPlayerPannel(uuid, container, divSysMsg){
     btnStopClicked(uuid);
   });
 
+
+  // container for btnDelete
+  let divTxtAreaMenu = document.createElement('div');
+  divTxtAreaMenu.className = " absolute top-1 right-1 ";
+  container.appendChild(divTxtAreaMenu);
+
   // button delete
   let btnDelete = document.createElement('button');
   btnDelete.id = "btnDelete";
-  btnDelete.className = ClassNameForPlayButton;
-  btnDelete.innerHTML = SVGDelete;
+  btnDelete.className = ClassNameForTxtAreaButton;
+  btnDelete.innerHTML = SVGClose_light;
   btnDelete.disabled = false;
-  pannelElement.appendChild(btnDelete);
+  divTxtAreaMenu.appendChild(btnDelete);
+  
   btnDelete.addEventListener('click', function() {
       if (debug) console.log(`btnDelete clicked. ${uuid}`);
 

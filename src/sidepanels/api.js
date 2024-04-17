@@ -75,12 +75,13 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
   }
 
   const decoder = new TextDecoder("utf-8");
-  function streamResponseRead(reader, afterGetContent) {
+  function streamResponseRead(reader, afterGetContent, onDone) {
 
     // const reader = response.body.getReader();
     reader.read().then(({ done, value }) => {
       if (done) {
         console.log('Stream 已经读取完毕');
+        onDone();
         return;
       }
       let data = decoder.decode(value, {stream: true}); 
@@ -105,6 +106,6 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
         }
     }
       // 递归调用，继续读取下一个数据块
-      streamResponseRead(reader, afterGetContent);
+      streamResponseRead(reader, afterGetContent, onDone);
     });
   }

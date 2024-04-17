@@ -783,12 +783,36 @@ select {
   }
 }
 
+.visible {
+  visibility: visible;
+}
+
 .static {
   position: static;
 }
 
+.absolute {
+  position: absolute;
+}
+
 .relative {
   position: relative;
+}
+
+.right-0 {
+  right: 0px;
+}
+
+.right-1 {
+  right: 0.25rem;
+}
+
+.top-0 {
+  top: 0px;
+}
+
+.top-1 {
+  top: 0.25rem;
 }
 
 .m-2 {
@@ -891,10 +915,6 @@ select {
 
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .items-center {
@@ -1030,6 +1050,10 @@ select {
   fill: #2563eb;
 }
 
+.fill-gray-400 {
+  fill: #9ca3af;
+}
+
 .fill-gray-600 {
   fill: #4b5563;
 }
@@ -1089,10 +1113,6 @@ select {
 
 .pb-4 {
   padding-bottom: 1rem;
-}
-
-.pb-6 {
-  padding-bottom: 1.5rem;
 }
 
 .pl-2 {
