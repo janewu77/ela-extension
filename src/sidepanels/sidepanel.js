@@ -10,11 +10,7 @@ let current_auth_token = default_auth_token
 //chat
 let current_chat_endpoint = default_chat_endpoint
 let current_chat_model = default_chat_model
-
-//chat - actions: action_translate,action_word
-let current_action_word = default_action_word;
-let current_action_translate = default_action_translate;
-
+let current_action_items = default_action_items;
 
 //ui
 let toggleSwitch = document.getElementById('toggleSwitch');
@@ -66,14 +62,10 @@ chrome.storage.local.onChanged.addListener((changes) => {
     current_chat_model = changes['chat_model'].newValue;
   }
 
-  //chat - actions: action_translate,action_word
-  if (changes['action_translate']) {
-    current_action_translate = changes['action_translate'].newValue;
+  //chat - actions
+  if (changes['action_items']) {
+    current_action_items = changes['action_items'].newValue;
   }
-  if (changes['action_word']) {
-    current_action_word = changes['action_word'].newValue;
-  }
-
   
 });
 
@@ -110,15 +102,9 @@ function init(){
   chrome.storage.local.get("chat_model", (data) => {
     current_chat_model = data.chat_model;
   });
-
-  //current_action_translate  current_action_word
-  chrome.storage.local.get("action_translate", (data) => {
-    current_action_translate = data.action_translate;
+  chrome.storage.local.get("action_items", (data) => {
+    current_action_items = data.action_items;
   });
-  chrome.storage.local.get("action_word", (data) => {
-    current_action_word = data.action_word;
-  });
-
 
   // setting button
   let btnSetting = document.getElementById('btnSetting');

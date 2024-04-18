@@ -1,12 +1,17 @@
 
-function showBtn(btnCopy, visible){
-  btnCopy.className = ClassNameForTxtAreaButton + ` visibility: ${visible} `; //hidden: visible
+function showBtn(btnCopy, visibility){
+  btnCopy.className = ClassNameForTxtAreaButton + ` visibility: ${visibility} `; //hidden: visible
 }
 
-// let current_action_word = defalut_action_word;
-// let current_action_transalate = defalut_action_transalate;
+function disableAllBtn(arrBtn, disabled){
+  arrBtn.forEach(btnAction => {
+    btnAction.disabled = disabled;
+  }); 
+}
+
 //for custom buttons
 function createCustomPannel(uuid){
+    let arrActionButton = [];
     const container = document.createElement('div');
     container.id = `CustomPannel_${uuid}`;
   
@@ -26,21 +31,85 @@ function createCustomPannel(uuid){
     actionPannel.id = `CustomPannel_ActionPannel_${uuid}`;
     actionPannel.className = "mt-1 grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
-    // button btnActionTrans
-    let btnActionTrans = document.createElement('button');
-    btnActionTrans.id = "btnOpTrans";
-    btnActionTrans.className = ClassNameForPlayButton;
-    btnActionTrans.innerHTML = current_action_translate.name;
-    btnActionTrans.disabled = false;
-    actionPannel.appendChild(btnActionTrans);
+    //action items
+    for (let index = 0; index < current_action_items.length; index++) {
+      let actionItem = current_action_items[index];
+      let i = index + 1;
+      console.log(actionItem);
+      if (!actionItem.active) continue;
+      let btnAction = document.createElement('button');
+      btnAction.id = `btnAction${i}`;
+      btnAction.className = ClassNameForPlayButton;
+      btnAction.innerHTML = actionItem.name;
+      btnAction.disabled = false;
+      actionPannel.appendChild(btnAction);
+
+      arrActionButton.push(btnAction);
+
+      btnAction.addEventListener('click', function() {
+        if (debug) console.log(`${actionItem.name} clicked. ${uuid}`);
+        btnAction.innerHTML = SVGLoadingSpin + actionItem.name;
+  
+        showBtn(btnClear, "hidden");
+        showBtn(btnCopy, "hidden");
+        
+        disableAllBtn(arrActionButton, true);
+  
+        fetchChat(mapMsg.get(uuid), actionItem.prompt, function(response, stream){
+          btnAction.innerHTML = actionItem.name;
     
-    // button btnOpWord
-    let btnActionWord = document.createElement('button');
-    btnActionWord.id = "btnOpWord";
-    btnActionWord.className = ClassNameForPlayButton;
-    btnActionWord.innerHTML = current_action_word.name;
-    btnActionWord.disabled = false;
-    actionPannel.appendChild(btnActionWord);
+          if (debug) console.log(` onSuccess stream:${stream}`);
+          // if (debug) console.log(` onSuccess divMsg.hasChildNodes():${divMsg.hasChildNodes()}`);
+    
+          const txtArea = divMsg.querySelector(`#${textareaElementID}`);
+          if (txtArea != null){
+            txtArea.textContent = '';
+          }else{
+            while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
+            divMsg.appendChild(textareaElement);
+            divMsg.appendChild(divTxtAreaMenu);
+            // divMsg.appendChild(btnCopy);
+          }
+          
+          if (stream){
+            //read stream data
+            textareaElement.rows = 12;
+            streamResponseRead(response.body.getReader(), (content) => {
+              textareaElement.textContent += content;
+            }, ()=>{
+              showBtn(btnClear, "visible");
+              showBtn(btnCopy, "visible");
+            });
+    
+          }else{
+            let msg = response["choices"][0]["message"]["content"];
+            textareaElement.textContent = msg;
+            const lineCount = calculateLines(textareaElement, textareaClassName);
+            // console.info(`linecount:${lineCount}`);
+            textareaElement.rows = lineCount > 12 ? 12: lineCount;
+            showBtn(btnClear, "visible");
+            showBtn(btnCopy, "visible");
+          }
+    
+          disableAllBtn(arrActionButton, false);
+        }, function(error) {
+          // loadedAllBtn(arrActionButton);
+          // btnActionTrans.innerHTML = current_action_translate.name;
+          btnAction.innerHTML = actionItem.name;
+          showBtn(btnClear, "hidden");
+          showBtn(btnCopy, "hidden");
+    
+          while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
+    
+          const divErrMsg = document.createElement('div');
+          divErrMsg.innerHTML = `!!! ${error}`;
+          divErrMsg.appendChild(getBtnSetting());
+          divMsg.appendChild(divErrMsg);
+    
+          disableAllBtn(arrActionButton, false);
+        }, true);
+      });
+    };
     
     // container for btnClear, btnCopy
     let divTxtAreaMenu = document.createElement('div');
@@ -60,101 +129,14 @@ function createCustomPannel(uuid){
     btnCopy.innerHTML = SVGCopy_light;
     divTxtAreaMenu.appendChild(btnCopy);
 
-  
-    const onError = function(error) {
-      btnActionTrans.innerHTML = current_action_translate.name;
-      btnActionWord.innerHTML = current_action_word.name;
-      showBtn(btnClear, "hidden");
-      showBtn(btnCopy, "hidden");
 
-      while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
-
-      const divErrMsg = document.createElement('div');
-      divErrMsg.innerHTML = `!!! ${error}`;
-      divErrMsg.appendChild(getBtnSetting());
-      divMsg.appendChild(divErrMsg);
-
-      btnActionTrans.disabled = false;
-      btnActionWord.disabled = false;
-      // btnDelete.disabled = false;
-    };
-
-    const onSuccess = function(response, stream){
-      btnActionTrans.innerHTML = current_action_translate.name;
-      btnActionWord.innerHTML = current_action_word.name;
-
-      if (debug) console.log(` onSuccess stream:${stream}`);
-      // if (debug) console.log(` onSuccess divMsg.hasChildNodes():${divMsg.hasChildNodes()}`);
-
-      const txtArea = divMsg.querySelector(`#${textareaElementID}`);
-      if (txtArea != null){
-        txtArea.textContent = '';
-      }else{
-        while (divMsg.firstChild) divMsg.removeChild(divMsg.firstChild);
-        divMsg.appendChild(textareaElement);
-        divMsg.appendChild(divTxtAreaMenu);
-        // divMsg.appendChild(btnCopy);
-      }
-      
-      if (stream){
-        //read stream data
-        textareaElement.rows = 12;
-        streamResponseRead(response.body.getReader(), (content) => {
-          textareaElement.textContent += content;
-        }, ()=>{
-          showBtn(btnClear, "visible");
-          showBtn(btnCopy, "visible");
-        });
-
-      }else{
-        let msg = response["choices"][0]["message"]["content"];
-        textareaElement.textContent = msg;
-        const lineCount = calculateLines(textareaElement, textareaClassName);
-        // console.info(`linecount:${lineCount}`);
-        textareaElement.rows = lineCount > 12 ? 12: lineCount;
-        showBtn(btnClear, "visible");
-        showBtn(btnCopy, "visible");
-      }
-
-      btnActionTrans.disabled = false;
-      btnActionWord.disabled = false;
-    }
-
-    btnActionWord.addEventListener('click', function() {
-      if (debug) console.log(`${current_action_word.name} clicked. ${uuid}`);
-      btnActionWord.innerHTML = SVGLoadingSpin + current_action_word.name;
-
-      showBtn(btnClear, "hidden");
-      showBtn(btnCopy, "hidden");
-      
-      btnActionWord.disabled = true;
-      btnActionTrans.disabled = true;
-
-      fetchChat(mapMsg.get(uuid), current_action_word.prompt, onSuccess, onError, true);
-    });
-
-    btnActionTrans.addEventListener('click', function() {
-      if (debug) console.log(`${current_action_translate.name} clicked. ${uuid}`);
-      btnActionTrans.innerHTML = SVGLoadingSpin + current_action_translate.name;
-      showBtn(btnClear, "hidden");
-      showBtn(btnCopy, "hidden");
-
-      btnActionWord.disabled = true;
-      btnActionTrans.disabled = true;
-
-      fetchChat(mapMsg.get(uuid), current_action_translate.prompt, onSuccess, onError, true);
-    });
-  
     btnClear.addEventListener('click', function() {
         if (debug) console.log(`btnClear clicked. ${uuid}`);
 
         showBtn(btnClear, "hidden");
         showBtn(btnCopy, "hidden");
         textareaElement.textContent = ''
-
-        btnActionWord.disabled = false;
-        btnActionTrans.disabled = false;
-        
+        disableAllBtn(arrActionButton, false);
     });
 
     btnCopy.addEventListener('click', function() {
