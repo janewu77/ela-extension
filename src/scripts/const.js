@@ -78,13 +78,13 @@ const _default_action_translate = {
 
  
     `,
-    "active":false,
+    "active":true,
     "other":false
   }
 
 const _default_action_3 = {
-    "name": 'action 3', 
-    "prompt": ``,
+    "name": '总结', 
+    "prompt": `summary`,
     "active":false,
     "other":false
 };
