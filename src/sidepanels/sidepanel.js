@@ -11,6 +11,7 @@ let current_auth_token = default_auth_token
 let current_chat_endpoint = default_chat_endpoint
 let current_chat_model = default_chat_model
 let current_action_items = default_action_items;
+let current_action_items_active = current_action_items.filter(item => item.active===true );
 
 //ui
 let toggleSwitch = document.getElementById('toggleSwitch');
@@ -65,6 +66,7 @@ chrome.storage.local.onChanged.addListener((changes) => {
   //chat - actions
   if (changes['action_items']) {
     current_action_items = changes['action_items'].newValue;
+    current_action_items_active = current_action_items.filter(item => item.active );
   }
   
 });
@@ -104,6 +106,7 @@ function init(){
   });
   chrome.storage.local.get("action_items", (data) => {
     current_action_items = data.action_items;
+    current_action_items_active = current_action_items.filter(item => item.active );
   });
 
   // setting button
