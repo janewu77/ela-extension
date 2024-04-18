@@ -44,13 +44,9 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 
     //actions: action_translate,action_word
-    chrome.storage.local.get("action_translate", (data) => {
-      action_translate = data.action_translate == null ? default_action_translate : data.action_translate;
-      chrome.storage.local.set({ "action_translate": action_translate });
-    });
-    chrome.storage.local.get("action_word", (data) => {
-      action_word = data.action_word == null ? default_action_word : data.action_word;
-      chrome.storage.local.set({ "action_word": action_word });
+    chrome.storage.local.get("action_items", (data) => {
+      action_items = data.action_items == null ? default_action_items : data.action_items;
+      chrome.storage.local.set({ "action_items": action_items });
     });
 
     //set side pannel

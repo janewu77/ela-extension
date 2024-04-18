@@ -19,7 +19,7 @@ const default_chat_model = "gpt-3.5-turbo";
 
 
 //actions
-const default_action_word = {
+const _default_action_word = {
     "name": '查单词📖', 
     "prompt":  `  
     - explain the word in detail in English
@@ -32,7 +32,7 @@ const default_action_word = {
     "other":false
   };
 
-const default_action_translate = {
+const _default_action_translate = {
     "name": '翻译🇺🇸🇨🇳', 
     "prompt":  `  
         你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
@@ -78,8 +78,27 @@ const default_action_translate = {
 
  
     `,
-    "active":true,
+    "active":false,
     "other":false
   }
 
-  const arrActions = [default_action_translate, default_action_word];
+const _default_action_3 = {
+    "name": 'action 3', 
+    "prompt": ``,
+    "active":false,
+    "other":false
+};
+const _default_action_4 = {
+    "name": 'action 4', 
+    "prompt": ``,
+    "active":false,
+    "other":false
+};
+const _default_action_5 = {
+    "name": 'action 5', 
+    "prompt": ``,
+    "active":false,
+    "other":false
+};
+
+const default_action_items = [_default_action_translate, _default_action_word, _default_action_3, _default_action_4, _default_action_5];
