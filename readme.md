@@ -36,7 +36,7 @@ https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A
 ### 2. 本地安装
 
 step1: 下载 zip & 解压  
-archive/ela_0.1.1_20240409203228.zip
+archive/ela_{最新的版本}.zip
 
 step2: 安指令进行安装  
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=zh-cn#load-unpacked
@@ -89,7 +89,6 @@ Clear all：删除侧边栏内的所有朗读的内容。
 
 ## todo
 
-- 自定义按钮功能（+2 个）
 - 选中后的文字可修改（side Page）
 - 国际化 UI
 - 设定可导入/导出
