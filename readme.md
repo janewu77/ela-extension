@@ -117,4 +117,4 @@ step3: 设置
 
 ## update.log
 
-![how to setting](/doc/update.log.md)
+![update.log](/doc/update.log.md)
