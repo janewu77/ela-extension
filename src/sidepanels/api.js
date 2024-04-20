@@ -48,11 +48,14 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
       body: JSON.stringify({
         "model": current_chat_model, 
         "messages": [
-           {"role": "assistant", "content": prompt},
+           {"role": "system", "content": prompt},
            {"role": "user", "content": msg} 
         ],
-        "temperature": 0.8,
-        "stream":stream
+        "stream":stream,
+        "temperature": 1,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0
       }),
     })
     .then(response => {
