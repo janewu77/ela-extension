@@ -1,7 +1,7 @@
 {
     "name": "ELA-英文学习助手",
     "version": "0.2.0",
-    "description": "英文学习的助手，帮你轻松朗读选中的文本(文本转语音tts)。",
+    "description": "掌握英语，提升效率！集成了先进的TTS和LLM技术，提供个性化学习解决方案，适合帮助用户提高语言能力。",
     "manifest_version": 3,
     "author":"janewu2005@gmail.com",
     "icons": {
