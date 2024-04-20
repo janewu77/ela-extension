@@ -95,7 +95,7 @@ step3: 设置
 
 ## FAQ
 
-- **在哪里能找到我的 OpenAI API Key?**
+- **在哪里能找到我的 OpenAI API Key?**  
   https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key  
   https://platform.openai.com/api-keys
 
@@ -103,7 +103,7 @@ step3: 设置
   用户的 OpenAI-API-Key 只在调用接口时传递给 openAI。
   除此之外，您的 OpenAI-API-Key 会保存在您的浏览器存储中。您可以在“选项”中，随时删除您的 OpenAI-API-Key。
 
-- **哪些地区可以使用？**
+- **哪些地区可以使用？**  
   如果您所在的地区，openAI 并不提供服务，则同样的，你也无法在这个 extentions 里使用。
 
 ## todo
