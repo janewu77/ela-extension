@@ -13,6 +13,7 @@ https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A
 ## 概述
 
 一款帮助您提升英语水平的 AI 工具，采用了最新的文字转语音（Text to Speech TTS）、大语言模型(Large Language Model LLM)等 AI 技术来支持您的学习。
+
 这款工具的易用性、高度定制性不仅使其适用于学习英语，还适合专业人士或学者深入阅读专业英文材料，以及用于学习其他语言，从而有效提高工作和学习效率。
 
 ![demo](/doc/images/0.2/demo.png)
@@ -54,7 +55,6 @@ step3: 设置
   ![how to setting - key](/doc/images/0.2/setting1.png)
 - 配置自定义按钮
   ![how to setting - 1](/doc/images/0.2/setting2.png)
-  （todo: 重新截图）
 
 ## 如何使用
 
@@ -72,7 +72,7 @@ step3: 设置
 
 ![how to setting](/doc/images/0.2/sidepage.png)
 
-- 开关[On/OFF]：ON 网页上选中的内容，会出现在侧边栏内待读；off 关闭，网页上选中的内容不会出现在侧边栏内。
+- 开关[On/OFF]：ON 网页上选中的内容，会出现在侧边栏内；off 关闭，网页上选中的内容不会出现在侧边栏内。
 - 设置[Setting]：参数设置，可以在这里指定声音、语言的 AI 模型。
 - 清除[Clear all]：清空侧边栏内的选中的内容。
 
@@ -80,30 +80,30 @@ step3: 设置
 - 暂停[pause]：暂停
 - 停止[stop]：停止播放。停止后，再次点击播放，将会重新生成声音并播放。
 
-- 英翻中：将英文翻译成中文
-- 查单词：查询单词的意义
-- 自定义：自定义的功能
+- 英翻中：将英文翻译成中文。
+- 查单词：查询单词的意义。
+- 自定义：自定义的功能。
 
 #### 打开/关闭侧边栏的快捷方式：
 
-"windows": "Ctrl+Shift+S",
-"mac": "Command+Shift+S",
-"chromeos": "Ctrl+Shift+S",
+"windows": "Ctrl+Shift+S"  
+"mac": "Command+Shift+S"  
+"chromeos": "Ctrl+Shift+S"  
 "linux": "Ctrl+Shift+S"
 
 注意：关闭侧边栏后，当前侧边栏上的所有内容都会被清除。
 
 ## FAQ
 
-- 在哪里能找到我的 OpenAI API Key?  
+- **在哪里能找到我的 OpenAI API Key?**
   https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key  
   https://platform.openai.com/api-keys
 
-- 我的 OpenAI-API-Key 安全吗？
+- **我的 OpenAI-API-Key 安全吗？**  
   用户的 OpenAI-API-Key 只在调用接口时传递给 openAI。
   除此之外，您的 OpenAI-API-Key 会保存在您的浏览器存储中。您可以在“选项”中，随时删除您的 OpenAI-API-Key。
 
-- 哪些地区可以使用？
+- **哪些地区可以使用？**
   如果您所在的地区，openAI 并不提供服务，则同样的，你也无法在这个 extentions 里使用。
 
 ## todo
