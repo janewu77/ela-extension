@@ -1,7 +1,7 @@
 {
-    "name": "ELA-英文学习助手",
     "version": "0.2.0",
-    "description": "掌握英语，提升效率！集成了先进的TTS和LLM技术，提供个性化学习解决方案，适合帮助用户提高语言能力。",
+    "name": "__MSG_app_name__",
+    "description": "__MSG_app_description__",
     "manifest_version": 3,
     "author":"janewu2005@gmail.com",
     "icons": {
@@ -31,7 +31,7 @@
     "options_ui": {
       "page": "options/options.html",
       "open_in_tab": true
-  },
+    },
     "commands": {
         "_execute_action": {
           "suggested_key": {
@@ -41,6 +41,7 @@
             "linux": "Ctrl+Shift+S"
           }
         }
-      }
+    },
+    "default_locale":"en"
 }
 

@@ -18,9 +18,10 @@ const ClassNameForTxtAreaButton = `flex items-center justify-center gap-x-2.5 p-
 
 
 // button delete all 
+let btnName = chrome.i18n.getMessage("btn_clearall");// Clear all
 btnDeleteAll = document.getElementById('btnDeleteAll');
 btnDeleteAll.id = "DeleteAll"
-btnDeleteAll.innerHTML =  `${SVGDeleteAll_6} Clear all`;
+btnDeleteAll.innerHTML =  `${SVGDeleteAll_6} ${btnName}`;
 btnDeleteAll.addEventListener('click', function() {
   if (debug) console.log(`btnDeleteAll clicked. ${myuuid}`);
 

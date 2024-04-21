@@ -110,9 +110,10 @@ function init(){
   });
 
   // setting button
+  let btnName = chrome.i18n.getMessage("btn_name_setting");
   let btnSetting = document.getElementById('btnSetting');
   btnSetting.id = "SettingButton";
-  btnSetting.innerHTML =  `${SVGSetting_6} Setting`;
+  btnSetting.innerHTML =  `${SVGSetting_6} ${btnName}`;
 
   btnSetting.addEventListener('click', function() {
     if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
@@ -124,16 +125,17 @@ init();
 
 function showOnoff(bOnoff) {
   toggleSwitch.checked = bOnoff;
-  document.body.querySelector('#definition-onoff').innerText = bOnoff ? 'ON' : 'OFF';
+  document.body.querySelector('#definition-onoff').innerText = bOnoff ? chrome.i18n.getMessage("onoff_on") : chrome.i18n.getMessage("onoff_off");
 }
 
 function getBtnSetting(){
+  let btnName = chrome.i18n.getMessage("btn_name_setting");
   // only for error msg
   const btnSetting = document.createElement('a');
   // btnSetting.id = "btnSetting";
   btnSetting.className = "flex items-center justify-center gap-x-1.5 p-1 font-semibold text-red-600 hover:bg-blue-100 hover:underline "
   // btnSetting.innerHTML = SVGSetting;
-  btnSetting.innerHTML = `<span aria-hidden="true">→</span>${SVGSetting}Setting`;
+  btnSetting.innerHTML = `<span aria-hidden="true">→</span>${SVGSetting} ${btnName}`;
   btnSetting.addEventListener('click', function() {
     if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
   });

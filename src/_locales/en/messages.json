@@ -1,0 +1,64 @@
+{
+  "app_description": {
+    "message": "Master English, enhance efficiency! Integrated with advanced TTS and LLM technology, provides personalized learning solutions, suitable for helping users improve language skills."
+  },
+  "app_name": {
+    "message": "ELA-English Learner Assistant"
+  },
+  "onoff_on": {
+    "message": "ON"
+  },
+  "onoff_off": {
+    "message": "OFF"
+  },
+  "btn_name_setting": {
+    "message": "Setting"
+  },
+  "btn_clearall": {
+    "message": "Clear All"
+  },
+  "tts_model_container_name": {
+    "message": "tts model"
+  },
+  "tts_voice_container_name": {
+    "message": "voice"
+  },
+  "chat_model_container_name": {
+    "message": "chat model"
+  },
+  "container_action_items_name": {
+    "message": "custom buttons"
+  },
+  "btn_name_active": {
+    "message": "active"
+  },
+  "btn_name_reset": {
+    "message": "Reset"
+  },
+  "button": {
+    "message": "button"
+  },
+  "prompt": {
+    "message": "prompt"
+  },
+  "howtochoose": {
+    "message": "How to choose?"
+  },
+  "howtofill": {
+    "message": "How to fill?"
+  },
+  "learnmore": {
+    "message": " Learn more"
+  },
+  "howtofindmykey": {
+    "message": "Where do I find my OpenAI API Key?"
+  },
+  "err_key": {
+    "message": "Please verify that the [OpenAI-API-Key] is correctly configured."
+  },
+  "other": {
+    "message": "",
+    "description": ""
+  }
+}
+

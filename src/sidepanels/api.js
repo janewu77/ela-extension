@@ -20,7 +20,7 @@ function fetchAudio(msg, onSuccess, onError) {
     .then(response => {
       if (!response.ok) {
           msg = response.statusText;
-          if (response.status == 401 && msg.length < 1) msg = "请检查【OpenAI-API-Key】是否正确设置.";
+          if (response.status == 401 && msg.length < 1) msg = chrome.i18n.getMessage("err_key"); //请检查【OpenAI-API-Key】是否正确设置。
           throw new Error(`${msg}[${response.status}]`);
       }
       return response.arrayBuffer();
@@ -61,7 +61,7 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
     .then(response => {
       if (!response.ok) {
           msg = response.statusText;
-          if (response.status == 401 && msg.length < 1) msg = "请检查【OpenAI-API-Key】是否正确设置.";
+          if (response.status == 401 && msg.length < 1) msg = chrome.i18n.getMessage("err_key");
           throw new Error(`${msg}[${response.status}]`);
       }
       // return response; //.arrayBuffer();

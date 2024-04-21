@@ -75,6 +75,8 @@ function constructOptions() {
   // const arrTTSModel = ["tts-1", "tts-1-hd"];
   // const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
   //tts_model
+  document.getElementById("tts_model_container_name").innerHTML = chrome.i18n.getMessage("tts_model_container_name");
+
   chrome.storage.local.get("tts_model", (data) => {
     let tts_model_container = document.getElementById("tts_model_container");
     arrTTSModel.map(model => {
@@ -83,6 +85,7 @@ function constructOptions() {
   });
 
   //tts_voice
+  document.getElementById("tts_voice_container_name").innerHTML = chrome.i18n.getMessage("tts_voice_container_name");
   chrome.storage.local.get("tts_voice", (data) => {
     let tts_voice_container = document.getElementById("tts_voice_container");
     arrTTSVoice.map(voice => {
@@ -100,6 +103,7 @@ function constructOptions() {
   });
 
   //chat_model
+  document.getElementById("chat_model_container_name").innerHTML = chrome.i18n.getMessage("chat_model_container_name");
   chrome.storage.local.get("chat_model", (data) => {
     let chat_model_container = document.getElementById("chat_model_container");
     // if (debug) console.log('chat_model: ',  data.chat_model); 
@@ -110,6 +114,7 @@ function constructOptions() {
 
   
   //container_action_items
+  document.getElementById("container_action_items_name").innerHTML = chrome.i18n.getMessage("container_action_items_name");
   const containerActionItem = document.getElementById("container_action_items");
   while (containerActionItem.firstChild) containerActionItem.removeChild(containerActionItem.firstChild);
   chrome.storage.local.get("action_items", (data) => {
@@ -119,6 +124,7 @@ function constructOptions() {
 
   //btnReset
   const btnReset = document.getElementById("btnReset");
+  btnReset.innerHTML = chrome.i18n.getMessage("btn_name_reset");
   btnReset.addEventListener('click', function() {
 
     chrome.storage.local.set({ "tts_endpoint": default_tts_endpoint });
@@ -146,6 +152,14 @@ function constructOptions() {
     constructActionItemsHTML(action_items, containerActionItem, templateActionItem)
 
   });
+
+  //help
+  // howtochoose howtofill learnmore
+  setHelpInfo("TTSEndpoint_help", "https://platform.openai.com/docs/api-reference/audio", "howtofill", "learnmore");
+  setHelpInfo("TTSOpenAIAPIKey_help", "https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key", "howtofindmykey", "learnmore");
+  setHelpInfo("tts_model_container_help", "https://platform.openai.com/docs/guides/text-to-speech", "howtochoose", "learnmore");
+  setHelpInfo("tts_voice_container_help", "https://platform.openai.com/docs/guides/text-to-speech", "howtochoose", "learnmore");
+  setHelpInfo("ChatEndpoint_help", "https://platform.openai.com/docs/api-reference/chat", "howtofill", "learnmore");
 }
 
 constructOptions();
@@ -157,6 +171,9 @@ function constructActionItemsHTML(action_items, containerActionItem, templateAct
       
       let tmpHtml = templateActionItem.innerHTML;
       tmpHtml = tmpHtml.replace(/\{1\}/g, index+1);
+      tmpHtml = tmpHtml.replace(/\{button\}/g, chrome.i18n.getMessage("button"));
+      tmpHtml = tmpHtml.replace(/\{status_active\}/g, chrome.i18n.getMessage("btn_name_active"));
+      tmpHtml = tmpHtml.replace(/\{prompt\}/g, chrome.i18n.getMessage("prompt"));
 
       const divActionItem = document.createElement('div');
       divActionItem.innerHTML = tmpHtml;
@@ -252,4 +269,19 @@ function createDivWithRadioes(radioName, radioValue, currentValue) {
  
   // console.log(newElement.innerHTML);
   return newElement;
+}
+
+function setHelpInfo(contain_id, href, pre_title, title){
+  const openaitts_help = document.getElementById(contain_id);
+  openaitts_help.innerHTML = chrome.i18n.getMessage(pre_title);
+
+  let alink = document.createElement('a');
+  alink.href = href;
+  alink.target = "_blank";
+  alink.className = " text-xs font-semibold leading-6 text-gray-900 "
+  alink.innerHTML = chrome.i18n.getMessage(title) +" →";//"了解更多→";
+  openaitts_help.appendChild(alink);
+
+  console.log(title);
+  // return alink;
 }
