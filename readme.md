@@ -1,8 +1,6 @@
 # English learner Assistant ELA
 
-
-中文说明 [/doc/readme_zh.md]
-
+[中文说明](/doc/readme_zh.md)
 
 English learner Assistant ELA
 
@@ -12,9 +10,6 @@ https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A
 - base on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
 - base on OpenAI gpt-3.5-turbo, gpt-4-turbo model [https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo]
 
-
-
-
 ## Info
 
 This AI tool is designed to enhance your English skills, employing advanced AI technologies including Text to Speech (TTS) and Large Language Model (LLM) to facilitate your learning.
@@ -22,8 +17,6 @@ This AI tool is designed to enhance your English skills, employing advanced AI t
 Its user-friendly and highly customizable nature makes it ideal not only for English learners but also for professionals and scholars who need to read specialized English materials. Additionally, it can be used to learn other languages, significantly boosting your efficiency in both work and study.
 
 ![demo](/doc/images/0.3/en/demo.png)
-
-
 
 ## Key Features
 
@@ -41,8 +34,6 @@ Its user-friendly and highly customizable nature makes it ideal not only for Eng
 3. **Custom settings**:
    - Allows users to customize functions based on specific learning needs.
    - Adjust functions by defining prompts for personalized configuration.
-
-
 
 ## How to install
 
@@ -65,21 +56,19 @@ step3: Setting
 - Configure custom buttons
   ![how to setting - 1](/doc/images/0.3/en/setting2.png)
 
-
 ## How to Use
+
 1. Open the side panel, turn on the switch at the top right corner.
 2. Select the text paragraph you want to process. The text will appear in the side panel.
 3. Click the [Play] button below the text to start reading aloud.
-4. CUse the [Translate to Chinese] and [Look up words] buttons to access these specific functions.
+4. Use the [Translate to Chinese] and [Look up words] buttons to access these specific functions.
 
 - demo
   ![func](/doc/images/0.3/en/func1.png)
 
-
 #### Description of button functions
 
 ![button functions](/doc/images/0.3/en/sidepanel.png)
-
 
 - On/OFF: on, the content selected on the webpage will appear in the side panel.
 - Setting: Parameter settings. You can specify the AI model for sound and language in the settings.
@@ -104,7 +93,7 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 
 ## FAQ
 
-- **where do I find my openai api key?**  
+- **Where do I find my openai api key?**  
   https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key  
   https://platform.openai.com/api-keys
 
@@ -113,7 +102,6 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 
 - **In which regions is this available?**  
   If OpenAI does not offer services in your area, you will also be unable to use this extension there.
-
 
 ## update.log
 
