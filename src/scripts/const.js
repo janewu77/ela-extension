@@ -20,7 +20,7 @@ const default_chat_model = "gpt-3.5-turbo";
 
 //actions
 const _default_action_word = {
-    "name": '查单词📖', 
+    "name": 'word📖', 
     "prompt":  `
     - explain the word in detail in English
     - explain the word in detail in English
