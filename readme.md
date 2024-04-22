@@ -105,4 +105,4 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 
 ## update.log
 
-![update.log](/doc/update.log.md)
+[update.log](/doc/update.log.md)

@@ -104,7 +104,7 @@ step3: 设置
 
 ## update.log
 
-![update.log](/doc/update.log.md)
+[update.log](/doc/update.log.md)
 
 ## todo
 
