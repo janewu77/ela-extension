@@ -12,7 +12,7 @@ https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
 一款帮助您提升英语水平的 AI 工具，采用了最新的文字转语音（Text to Speech TTS）、大语言模型(Large Language Model LLM)等 AI 技术来支持您的学习。
 
-这款工具的易用性、高度定制性不仅使其适用于学习英语，还适合专业人士或学者深入阅读专业英文材料，以及用于学习其他语言，从而有效提高工作和学习效率。
+这款工具的易用性、高度定制性不仅适用于学习英语，还适合专业人士或学者深入阅读专业英文材料，以及用于学习其他语言，从而有效提高工作和学习效率。
 
 ![demo](/doc/images/0.3/zh/demo.png)
 

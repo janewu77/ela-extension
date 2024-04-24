@@ -12,9 +12,9 @@ https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
 ## Info
 
-This AI tool is designed to enhance your English skills, employing advanced AI technologies including Text to Speech (TTS) and Large Language Model (LLM) to facilitate your learning.
+ELA is designed to boost your English(or other languages) proficiency, utilizing cutting-edge AI technologies including Text to Speech (TTS) and Large Language Models (LLM) to support your learning journey.
 
-Its user-friendly and highly customizable nature makes it ideal not only for English learners but also for professionals and scholars who need to read specialized English materials. Additionally, it can be used to learn other languages, significantly boosting your efficiency in both work and study.
+With its user-friendly interface and high customizability, ELA is perfect not only for individuals learning English but also for professionals and scholars needing to access specialized English content. Moreover, it can facilitate learning other languages, thereby significantly enhancing efficiency in your professional and educational pursuits.
 
 ![demo](/doc/images/0.3/en/demo.png)
 
@@ -48,7 +48,6 @@ archive/ela\_{The latest released version}.zip
 
 step2: following the provided installation instructions
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=en#load-unpacked
-
 
 ## How to config
 
