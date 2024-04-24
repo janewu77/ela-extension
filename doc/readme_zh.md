@@ -2,7 +2,7 @@
 
 英文学习助手 English learner Assistant
 
-https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga
+https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
 - a chrome extentions
 - base on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
@@ -39,7 +39,7 @@ https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A
 
 [打开商店进行安装](https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga)
 
-### 2. 本地安装
+### 2. 用压缩包安装（开发者模式）
 
 step1: 下载 zip & 解压  
 archive/ela\_{最新的版本}.zip
@@ -47,7 +47,8 @@ archive/ela\_{最新的版本}.zip
 step2: 根据按装指令进行安装  
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=zh-cn#load-unpacked
 
-step3: 设置
+
+## 如何使用配置
 
 - 打开“设置”填入 openAI-API-key  
   ![how to setting - key](/doc/images/0.3/zh/setting1.png)

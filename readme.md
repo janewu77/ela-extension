@@ -4,7 +4,7 @@
 
 English learner Assistant ELA
 
-https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga
+https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
 - a chrome extentions
 - base on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
@@ -49,7 +49,8 @@ archive/ela\_{The latest released version}.zip
 step2: following the provided installation instructions
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=en#load-unpacked
 
-step3: Setting
+
+## How to config
 
 - Open the "Settings" and input your OpenAI-API-Key.
   ![how to setting - key](/doc/images/0.3/en/setting1.png)
@@ -106,3 +107,7 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 ## update.log
 
 [update.log](/doc/update.log.md)
+
+## How to Contribute
+
+Contributions are highly encouraged! Please fork and submit a PR.
