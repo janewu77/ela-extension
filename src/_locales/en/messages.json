@@ -39,7 +39,7 @@
     "message": "button"
   },
   "prompt": {
-    "message": "prompt"
+    "message": "System prompt"
   },
   "howtochoose": {
     "message": "How to choose?"
