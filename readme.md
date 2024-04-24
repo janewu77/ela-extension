@@ -103,6 +103,14 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 - **In which regions is this available?**  
   If OpenAI does not offer services in your area, you will also be unable to use this extension there.
 
+
+
+## Additional resources
+- [OpenAI prompt engineering guidelines](https://platform.openai.com/docs/guides/prompt-engineering/strategy-write-clear-instructions): for prompting OpenAI models like GPT-4.
+  - [OpenAI playground](https://platform.openai.com/playground): for testing OpenAI prompts in a chat interface.
+
+
+
 ## update.log
 
 [update.log](/doc/update.log.md)

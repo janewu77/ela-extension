@@ -47,7 +47,6 @@ archive/ela\_{最新的版本}.zip
 step2: 根据按装指令进行安装  
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=zh-cn#load-unpacked
 
-
 ## 如何使用配置
 
 - 打开“设置”填入 openAI-API-key  
@@ -102,6 +101,14 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 
 - **哪些地区可以使用？**  
   如果您所在的地区，openAI 并不提供服务，则同样的，你也无法在这里使用。
+
+- **提示词怎么写？**
+  https://platform.openai.com/docs/guides/prompt-engineering/strategy-write-clear-instructions
+
+## 其他有用的资源
+
+- [OpenAI 提示词工程指南](https://platform.openai.com/docs/guides/prompt-engineering/strategy-write-clear-instructions): 针对 openAI 模型的提示词写作指南.
+  - [OpenAI 试用入口](https://platform.openai.com/playground): 通过聊天界面调试 prompt.
 
 ## update.log
 
