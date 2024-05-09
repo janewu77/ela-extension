@@ -1,3 +1,9 @@
+#### 0.3.1
+
+- bugfix:
+  api.js:108 解析错误 TypeError: Cannot read properties of undefined (reading 'delta')
+  at api.js:102:45
+
 #### 0.3.0
 
 - add: i18

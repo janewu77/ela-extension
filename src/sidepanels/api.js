@@ -99,11 +99,14 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
         // 在这里处理每个元素
         try {
             let json = JSON.parse(element.substring(6)); // 假设每个项前有 'data: ' 需要去掉
-            let content = json['choices'][0]['delta']['content'];
-            if (content != null){
-              // console.log(`content:${content}`);
-              afterGetContent(content);
+            if (json['choices'].length > 0){
+              let content = json['choices'][0]['delta']['content'];
+              if (content != null){
+                // console.log(`content:${content}`);
+                afterGetContent(content);
+              }
             }
+              
         } catch (e) {
             console.error('解析错误', e);
         }
