@@ -14,7 +14,7 @@ const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
 
 //llm : chat
 const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
-const arrChatModel = ["gpt-3.5-turbo", "gpt-4-turbo"];
+const arrChatModel = ["gpt-3.5-turbo", "gpt-4-turbo", "gpt-4o"];
 const default_chat_model = "gpt-3.5-turbo";
 
 

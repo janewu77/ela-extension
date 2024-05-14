@@ -1,3 +1,7 @@
+#### 0.3.2
+
+- update: llm model gpt-4o
+
 #### 0.3.1
 
 - bugfix:

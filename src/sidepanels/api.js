@@ -93,7 +93,10 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
 
       for (const element of dataArray) {
         // console.log(`element:[${element}]`);
-        if (element.length <= 0 || element === "data: [DONE]"){
+        if ( element === "data: [DONE]"){
+          break;
+        }
+        if (element.length <= 0){
             continue;
         }
         // 在这里处理每个元素
