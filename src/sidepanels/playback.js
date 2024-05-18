@@ -179,7 +179,7 @@ function createPlayerPannel(uuid, container, divSysMsg){
     divSysMsg.appendChild(getBtnSetting());
   };
 
-  const onReqSuccess = function(data){
+  const onTTSReqSuccess = function(data){
     btnPlay.innerHTML = SVGPlay;
 
     // let audioContext = mapAudioContext.get(uuid);
@@ -222,23 +222,23 @@ function createPlayerPannel(uuid, container, divSysMsg){
         playAudioBuffer(uuid, onBeforePlay, onPlayEnded); // 使用缓存的音频数据播放
       } else {
         //fetch & play(when success)
-        fetchAudio(mapMsg.get(uuid), onReqSuccess, onErrorAudio); // 如果没有缓存，则获取音频数据
+        fetchAudio(mapMsg.get(uuid), onTTSReqSuccess, onErrorAudio); // 如果没有缓存，则获取音频数据
       }
   });
 
   //button: pause
   btnPause.addEventListener('click', function() {
-  if (debug) console.log(`buttonPause clicked. ${uuid}`);
+    if (debug) console.log(`buttonPause clicked. ${uuid}`);
 
-  let audioContext = mapAudioContext.get(uuid);
+    let audioContext = mapAudioContext.get(uuid);
 
-  if (audioContext && audioContext.state === 'running') {
-    btnPlay.disabled = false;
-    btnPause.disabled = true;
-    btnStop.disabled = false;
+    if (audioContext && audioContext.state === 'running') {
+      btnPlay.disabled = false;
+      btnPause.disabled = true;
+      btnStop.disabled = false;
 
-    audioContext.suspend().then(() => console.log(`Playback suspended.${uuid}`));
-  }
+      audioContext.suspend().then(() => console.log(`Playback suspended.${uuid}`));
+    }
   });
 
   //button: stop
