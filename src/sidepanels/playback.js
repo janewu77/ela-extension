@@ -1,4 +1,7 @@
 // 全局变量
+let myuuid = 0; //换成uuid
+let lastNode = null;
+
 const mapAudioContext = new Map();
 const mapAudioBufferCache = new Map();  // 用于缓存解码后的音频数据
 const mapSource = new Map();            // 当前的音频源
@@ -17,7 +20,32 @@ const ClassNameForPlayButton = `flex items-center justify-center gap-x-2.5 p-1 f
 const ClassNameForTxtAreaButton = `flex items-center justify-center gap-x-2.5 p-1 font-semibold text-gray-600 rounded rounded hover:bg-blue-100 disabled:bg-gray-50 disabled:cursor-not-allowed`;
 
 
-// button delete all 
+const divContentContainer = document.getElementById('container-content');
+
+//add one block
+function add_content_block(msg){
+  // console.log(`add_content_block:${msg}`);
+  myuuid = myuuid + 1;
+  
+  if (lastNode == null) {
+    divContentContainer.appendChild(_createMsgDiv(msg, myuuid));
+  }else{
+    divContentContainer.insertBefore(_createMsgDiv(msg, myuuid), lastNode);
+  }
+  lastNode = document.getElementById(myuuid);
+}
+
+function get_current_lastNode(){
+  let currLastNode = null;
+  for (let uuid = myuuid; uuid >= 0; uuid--) {
+    currLastNode = document.getElementById(uuid);
+    if (currLastNode != null) break;
+  }
+  lastNode = currLastNode;
+}
+
+
+// button delete all block one by one
 let btnName = chrome.i18n.getMessage("btn_clearall");// Clear all
 btnDeleteAll = document.getElementById('btnDeleteAll');
 btnDeleteAll.id = "DeleteAll"
@@ -33,11 +61,13 @@ btnDeleteAll.addEventListener('click', function() {
         document.getElementById(uuid).remove();
     }
   }
+  myuuid = 0;
+  lastNode = null
 });
 
 
 // 生成内容段
-function createMsgDiv(newContent, uuid) {
+function _createMsgDiv(newContent, uuid) {
   mapMsg.set(uuid, newContent)
 
   mapAudioContext.set(uuid, null);
@@ -52,7 +82,9 @@ function createMsgDiv(newContent, uuid) {
   const contentElement = document.createElement('div');
   contentElement.id =  `Content_${uuid}`;
   contentElement.className = " mb-2"
-  contentElement.innerHTML = `<p class="text-sm" >${newContent}</p>`;
+  contentElement.innerHTML = '';
+  if (debug) contentElement.innerHTML = `<p class="text-sm" >${uuid}</p>`;
+  contentElement.innerHTML += `<p class="text-sm" >${newContent}</p>`;
 
   // let textareaElement = document.createElement('textarea');
   // textareaElement.name = "message";
@@ -245,6 +277,8 @@ function createPlayerPannel(uuid, container, divSysMsg){
 
       mapMsg.delete(uuid);
       container.remove();
+
+      get_current_lastNode();
 
   });
 

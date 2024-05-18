@@ -31,12 +31,14 @@ if (debug){
   divDebuginfo.innerHTML = "debug";
 }
 
+
+// listener: setting
 chrome.storage.local.onChanged.addListener((changes) => {
 
   const changedOnoff = changes['onoff'];
   if (changedOnoff) {
     currentOnoff = changedOnoff.newValue;
-    showOnoff(currentOnoff);
+    _showOnoff(currentOnoff);
   }
 
   if (changes['tts_endpoint']) {
@@ -75,7 +77,7 @@ function init(){
 
   //onoff
   chrome.storage.local.set({ "onoff": currentOnoff });
-  showOnoff(currentOnoff);
+  _showOnoff(currentOnoff);
   toggleSwitch.addEventListener('change', function() {
     chrome.storage.local.set({ "onoff": this.checked });
   });
@@ -104,6 +106,8 @@ function init(){
   chrome.storage.local.get("chat_model", (data) => {
     current_chat_model = data.chat_model;
   });
+
+  //actions
   chrome.storage.local.get("action_items", (data) => {
     let action_items = data.action_items;
     current_action_items_active = action_items.filter(item => item.active );
@@ -118,12 +122,19 @@ function init(){
   btnSetting.addEventListener('click', function() {
     if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
   });
+
+
+  //add an empty one
+  const btnAddOne = document.getElementById('btnAddOne');
+  btnAddOne.addEventListener('click', function() {
+    add_content_block("");
+  });
   
 }
 
 init();
 
-function showOnoff(bOnoff) {
+function _showOnoff(bOnoff) {
   toggleSwitch.checked = bOnoff;
   document.body.querySelector('#definition-onoff').innerText = bOnoff ? chrome.i18n.getMessage("onoff_on") : chrome.i18n.getMessage("onoff_off");
 }
@@ -142,9 +153,6 @@ function getBtnSetting(){
   return btnSetting;
 }
 
-
-let myuuid = 0; //换成uuid
-const divContentContainer = document.getElementById('container-content');
 // onMessage
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -155,20 +163,11 @@ chrome.runtime.onMessage.addListener(
     if (request.type == 'selectedText') {
       if (debug) console.log(`[sidepanel]...selectedText:${request.msg}`);
 
-      let lastNode = document.getElementById(myuuid);
-      myuuid = myuuid + 1;
-      
-      if (myuuid == 1 ){
-        divContentContainer.appendChild(createMsgDiv(request.msg, myuuid));
-      }else{
-        divContentContainer.insertBefore(createMsgDiv(request.msg, myuuid), lastNode);
-      }
-      
+      add_content_block(request.msg)      
       sendResponse({data: "success"});
       // return true;  // Will respond asynchronously.
     }
     sendResponse({data: "done"});
   }
 );
-
 
