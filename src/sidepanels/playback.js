@@ -6,6 +6,7 @@ const mapAudioContext = new Map();
 const mapAudioBufferCache = new Map();  // 用于缓存解码后的音频数据
 const mapSource = new Map();            // 当前的音频源
 const mapMsg = new Map();
+const mapAudioLoop = new Map();
 
 //button-svg
 const SVGPlay = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 fill-gray-600"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>` ;
@@ -13,6 +14,7 @@ const SVGStop = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fil
 const SVGPause = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 fill-gray-600"><path fill-rule="evenodd" d="M6.75 5.25a.75.75 0 0 1 .75-.75H9a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H7.5a.75.75 0 0 1-.75-.75V5.25Zm7.5 0A.75.75 0 0 1 15 4.5h1.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H15a.75.75 0 0 1-.75-.75V5.25Z" clip-rule="evenodd" /></svg>` ;
 const SVGDelete = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 fill-gray-600"><path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" /></svg>` ;
 const SVGSetting = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 fill-red-600"><path d="M18.75 12.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM12 6a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 6ZM12 18a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 12 18ZM3.75 6.75h1.5a.75.75 0 1 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM5.25 18.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 0 1.5ZM3 12a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 3 12ZM9 3.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM12.75 12a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM9 15.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" /></svg>`
+const SVGLoop = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4" fill-red-600"><path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z" clip-rule="evenodd" /></svg>`
 
 
 //class name
@@ -58,6 +60,7 @@ btnDeleteAll.addEventListener('click', function() {
         btnStopClicked(uuid);
 
         mapMsg.delete(uuid);
+        mapAudioLoop.delete(uuid);
         document.getElementById(uuid).remove();
     }
   }
@@ -73,6 +76,7 @@ function _createMsgDiv(newContent, uuid) {
   mapAudioContext.set(uuid, null);
   mapAudioBufferCache.set(uuid, null)
   mapSource.set(uuid, null)
+  mapAudioLoop.set(uuid, true)
 
   const divContainer = document.createElement('div');
   divContainer.id = uuid;
@@ -102,6 +106,7 @@ function _createMsgDiv(newContent, uuid) {
     mapAudioContext.set(uuid, null);
     mapAudioBufferCache.set(uuid, null)
     mapSource.set(uuid, null)
+    // mapAudioLoop.set(uuid, true)
 
   });
 
@@ -134,12 +139,27 @@ function _createMsgDiv(newContent, uuid) {
   return divContainer;
 }
 
+function createLoopCheckbox(id){
+  let btnName = chrome.i18n.getMessage("btn_player_loop");
+  divLoopPlay = document.createElement('div');
+  divLoopPlay.className = " grid  gap-x-2 bg-white justify-items-center "
+  divLoopPlay.innerHTML = `<div class="relative flex gap-x-2  ml-2 ">
+    <div class="flex h-6 items-center">
+      <input id="${id}" name="${id}" type="checkbox" checked class="h-4 w-4 rounded border-gray-300 focus:ring-blue-500">
+    </div>
+    <div class="  leading-6">
+      <label for="${id}" class="  text-gray-900">${btnName}</label>
+    </div>
+    </div>`;
+  return divLoopPlay
+}
+
 //create pannel for player
 function createPlayerPannel(uuid, container, divSysMsg){
   //pannel && buttons
   const pannelElement = document.createElement('div');
   pannelElement.id = `PlayerPannel_${uuid}`;
-  pannelElement.className = " mt-2 grid grid-cols-3 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
+  pannelElement.className = " mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
   let btnPlay = createButton("playAudio", ClassNameForPlayButton, SVGPlay, false);
   pannelElement.appendChild(btnPlay);
@@ -271,10 +291,29 @@ function createPlayerPannel(uuid, container, divSysMsg){
       btnStopClicked(uuid);
 
       mapMsg.delete(uuid);
+      mapAudioLoop.delete(uuid);
       container.remove();
 
       get_current_lastNode();
 
+  });
+
+
+  let btnLoopPlay = createLoopCheckbox("loop");
+  pannelElement.appendChild(btnLoopPlay);
+  let inputStatus = divLoopPlay.querySelector("#loop");
+  // inputStatus.checked = true;
+  inputStatus.addEventListener("click", (event) => {
+    if (debug) {
+      console.log('inputStatusId: ', 'loop'); 
+      console.log('new checked: ', event.target.checked);  //true false
+    }
+    mapAudioLoop.set(uuid, event.target.checked);
+    // let checked = event.target.checked;
+    // let newValue = checked;
+    // actionItem.active = newValue;
+    // inputStatus.checked = newValue;
+    // chrome.storage.local.set({ "action_items": action_items });
   });
 
   return pannelElement;
@@ -332,11 +371,20 @@ function playAudioBuffer(uuid, onBefore, onEnded) {
   source.connect(audioContext.destination);
   source.start(0);
   source.onended = function() {
+    let loop = mapAudioLoop.get(uuid);
+    if (loop){
+      setTimeout(function() {
+        playAudioBuffer(uuid, onBefore, onEnded);
+      }, 200); // pause 200ms
+
+    }else{
       if (source) source.disconnect();
       source = null;
       mapSource.set(uuid, source)
       onEnded();
       if (debug) console.log(`Playback finished ${uuid}`);
+    }
+
   };
 }
 

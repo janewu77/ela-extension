@@ -39,6 +39,9 @@
     "btn_name_reset": {
       "message": "复 位"
     },
+    "btn_player_loop": {
+      "message": "循环"
+    },
     "button": {
       "message": "按钮"
     },

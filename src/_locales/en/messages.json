@@ -38,6 +38,9 @@
   "button": {
     "message": "button"
   },
+  "btn_player_loop": {
+    "message": "loop"
+  },
   "prompt": {
     "message": "System prompt"
   },
