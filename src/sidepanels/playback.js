@@ -141,27 +141,15 @@ function createPlayerPannel(uuid, container, divSysMsg){
   pannelElement.id = `PlayerPannel_${uuid}`;
   pannelElement.className = " mt-2 grid grid-cols-3 divide-x divide-gray-900/5 bg-gray-100 rounded" ;
 
-  let btnPlay = document.createElement('button');
-  btnPlay.id = "playAudio";
-  btnPlay.className = ClassNameForPlayButton;
-  btnPlay.innerHTML = SVGPlay;
+  let btnPlay = createButton("playAudio", ClassNameForPlayButton, SVGPlay, false);
   pannelElement.appendChild(btnPlay);
 
-  let btnPause = document.createElement('button');
-  btnPause.id = "pauseAudio";
-  btnPause.className = ClassNameForPlayButton;
-  btnPause.innerHTML = SVGPause;
+  let btnPause = createButton("pauseAudio", ClassNameForPlayButton, SVGPause, true);
   pannelElement.appendChild(btnPause);
 
-  let btnStop = document.createElement('button');
-  btnStop.id = "stopAudio";
-  btnStop.className = ClassNameForPlayButton;
-  btnStop.innerHTML = SVGStop;
+  let btnStop = createButton("stopAudio", ClassNameForPlayButton, SVGStop, true);
   pannelElement.appendChild(btnStop);
 
-  btnPlay.disabled = false;
-  btnPause.disabled = true;
-  btnStop.disabled = true;
 
   //events
   const onBeforePlay = function() {
@@ -271,13 +259,8 @@ function createPlayerPannel(uuid, container, divSysMsg){
   container.appendChild(divTxtAreaMenu);
 
   // button delete
-  let btnDelete = document.createElement('button');
-  btnDelete.id = "btnDelete";
-  btnDelete.className = ClassNameForTxtAreaButton;
-  btnDelete.innerHTML = SVGClose_light;
-  btnDelete.disabled = false;
+  let btnDelete = createButton("btnDelete", ClassNameForTxtAreaButton, SVGClose_light, false);
   divTxtAreaMenu.appendChild(btnDelete);
-  
   btnDelete.addEventListener('click', function() {
       if (debug) console.log(`btnDelete clicked. ${uuid}`);
 
@@ -295,7 +278,7 @@ function createPlayerPannel(uuid, container, divSysMsg){
   });
 
   return pannelElement;
-}
+} // End createPlayerPannel
 
 
 function btnStopClicked(uuid){

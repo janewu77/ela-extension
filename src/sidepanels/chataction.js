@@ -43,11 +43,7 @@ function createCustomPannel(uuid){
     let i = index + 1;
     // console.log(actionItem);
 
-    let btnAction = document.createElement('button');
-    btnAction.id = `btnAction${i}`;
-    btnAction.className = ClassNameForPlayButtonMulti;
-    btnAction.innerHTML = actionItem.name;
-    btnAction.disabled = false;
+    let btnAction = createButton( `btnAction${i}`, ClassNameForPlayButtonMulti, actionItem.name, false);    
     actionPannel.appendChild(btnAction);
 
     arrActionButton.push(btnAction);
@@ -122,17 +118,11 @@ function createCustomPannel(uuid){
   divTxtAreaMenu.className = " absolute top-0 right-0 ";
 
   // button clear
-  let btnClear = document.createElement('button');
-  btnClear.id = `btnClear_${uuid}`;
-  btnClear.className = ClassNameForTxtAreaButton + " visibility: hidden "
-  btnClear.innerHTML = SVGDelete_light;
+  let btnClear = createButton(`btnClear_${uuid}`, ClassNameForTxtAreaButton + " visibility: hidden ", SVGDelete_light, false);    
   divTxtAreaMenu.appendChild(btnClear);
 
   // button copy
-  let btnCopy = document.createElement('button');
-  btnCopy.id = `btnCopy_${uuid}`;
-  btnCopy.className = ClassNameForTxtAreaButton + " visibility: hidden "; //visibility: visible
-  btnCopy.innerHTML = SVGCopy_light;
+  let btnCopy = createButton(`btnCopy_${uuid}`, ClassNameForTxtAreaButton + " visibility: hidden ", SVGCopy_light, false);    
   divTxtAreaMenu.appendChild(btnCopy);
 
 

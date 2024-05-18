@@ -171,3 +171,11 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+function createButton(btnId, btnClassName, btnHtml, disabled=false){
+  let btnButton = document.createElement('button');
+  btnButton.id = btnId;
+  btnButton.className = btnClassName;
+  btnButton.innerHTML = btnHtml;
+  btnButton.disabled = disabled;
+  return btnButton;
+}
