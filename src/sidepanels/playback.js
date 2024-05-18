@@ -84,19 +84,31 @@ function _createMsgDiv(newContent, uuid) {
   contentElement.className = " mb-2"
   contentElement.innerHTML = '';
   if (debug) contentElement.innerHTML = `<p class="text-sm" >${uuid}</p>`;
-  contentElement.innerHTML += `<p class="text-sm" >${newContent}</p>`;
 
-  // let textareaElement = document.createElement('textarea');
-  // textareaElement.name = "message";
-  // let textareaClassName = "block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
-  // textareaElement.className = textareaClassName;
-  // textareaElement.readOnly = true;
-  // textareaElement.textContent = newContent;
+  // can edit the original content
+  // contentElement.innerHTML += `<p class="text-sm" >${newContent}</p>`;
+  let textareaElement = document.createElement('textarea');
+  textareaElement.name = "message";
+  let textareaClassName = "block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
+  textareaElement.className = textareaClassName;
+  textareaElement.readOnly = false;
+  textareaElement.textContent = newContent;
+  //input changed
+  textareaElement.addEventListener("change", (event) => {
+    let newValue = event.target.value
+    if (debug)  console.log('newValue: ', newValue); 
+    //after change, reset generated data
+    mapMsg.set(uuid, newValue)
+    mapAudioContext.set(uuid, null);
+    mapAudioBufferCache.set(uuid, null)
+    mapSource.set(uuid, null)
 
-  // const lineCount = calculateLines(textareaElement, textareaClassName);
-  // console.info(`linecount:${lineCount}`);
-  // textareaElement.rows = lineCount > 20 ? 20: lineCount;
-  // contentElement.appendChild(textareaElement);
+  });
+
+  const lineCount = calculateLines(textareaElement, textareaClassName) + 2;
+  console.info(`linecount:${lineCount}`);
+  textareaElement.rows = lineCount > 20 ? 20: lineCount;
+  contentElement.appendChild(textareaElement);
 
 
   //error msg
