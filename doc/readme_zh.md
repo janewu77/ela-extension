@@ -116,7 +116,6 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 
 ## todo
 
-- 选中后的文字可修改（side Page）
 - 设定可导入/导出
 - 支持其他 tts，llm
 - 将内容导出至 notion

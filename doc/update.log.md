@@ -1,3 +1,7 @@
+#### 0.4.0
+- add: Loop playback
+- add: edit the original content
+
 #### 0.3.2
 
 - update: llm model gpt-4o
