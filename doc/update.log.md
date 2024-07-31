@@ -1,4 +1,10 @@
+#### 0.4.1
+
+- add: llm model gpt-4o-mini
+- remove: llm model gpt-3.5-turbo
+
 #### 0.4.0
+
 - add: Loop playback
 - add: edit the original content
 

@@ -102,6 +102,8 @@ function fetchChat(msg, prompt, onSuccess, onError, stream=true) {
         // 在这里处理每个元素
         try {
             let json = JSON.parse(element.substring(6)); // 假设每个项前有 'data: ' 需要去掉
+            if (debug) console.log(`model:${json['model']}`);
+
             if (json['choices'].length > 0){
               let content = json['choices'][0]['delta']['content'];
               if (content != null){
