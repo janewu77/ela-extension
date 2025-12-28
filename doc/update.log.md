@@ -1,3 +1,7 @@
+#### 0.4.2
+
+- update: models
+
 #### 0.4.1
 
 - add: llm model gpt-4o-mini

@@ -6,16 +6,29 @@ const default_auth_token="Your-OpenAI-API-Key";
 
 //tts
 const default_tts_endpoint="https://api.openai.com/v1/audio/speech";
-const default_tts_model= "tts-1"; //tts-1 tts-1-hd
-const default_tts_voice = "onyx"; //alloy, echo, fable, onyx, nova, and shimmer
+const default_tts_model= "gpt-4o-mini-tts"; //tts-1 tts-1-hd
+const default_tts_voice = "marin"; //alloy, ash, coral, echo, fable, onyx, nova, sage, and shimmer 
 
-const arrTTSModel = ["tts-1", "tts-1-hd"];
-const arrTTSVoice = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
+const arrTTSModel = ["tts-1", "tts-1-hd", "gpt-4o-mini-tts", "gpt-4o-mini-tts-2025-12-15"];
+const arrTTSVoice = ["alloy", "ash", "ballad", "coral", "echo", "fable", "onyx", "nova", "sage", "shimmer", "verse", "marin", "cedar"];
+
+
 
 //llm : chat
 const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
-const arrChatModel = ["gpt-4-turbo", "gpt-4o", "gpt-4o-mini"]; // "gpt-3.5-turbo", 
-const default_chat_model = "gpt-4o-mini";
+// const arrChatModel = ["gpt-4-turbo", "gpt-4o", "gpt-4o-mini"]; // "gpt-3.5-turbo", 
+const arrChatModel = [
+  "gpt-4.1-nano",   // 翻译批量 / 超省钱
+  "gpt-4.1-mini",   // 翻译默认（主力）
+  "gpt-4.1",        // 翻译专业版（更稳/术语一致性更强）
+  "gpt-5-nano",     // 问答省钱 / 快速草稿
+  "gpt-5-mini",     // 问答默认 / 翻译+本地化改写（增强）
+  "gpt-5.2",        // 最强（仅少量使用）
+  "gpt-4o-mini",    // 仅为了以前的兼容
+]
+const default_chat_model = "gpt-4.1-mini";
+
+
 
 
 //actions
@@ -95,5 +108,11 @@ const _default_action_5 = {
     "active":false,
     "other":false
 };
+const _default_action_6 = {
+    "name": 'action 6', 
+    "prompt": ``,
+    "active":false,
+    "other":false
+};
 
-const default_action_items = [_default_action_translate, _default_action_word, _default_action_3, _default_action_4, _default_action_5];
+const default_action_items = [_default_action_translate, _default_action_word, _default_action_3, _default_action_4, _default_action_5,_default_action_6];
