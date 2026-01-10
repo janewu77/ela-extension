@@ -1,3 +1,12 @@
+#### 0.4.3
+- refactor: upgrade Parcel bundler from v1 to v2
+- refactor: move parcel-bundler to devDependencies
+- add: automatic version synchronization script (sync-version.sh)
+- fix: build script execution order (parcel build → copy assets)
+- fix: remove non-existent main field from package.json
+- update: improve project description in package.json
+- update: documentation for Parcel v2 installation
+
 #### 0.4.2
 
 - update: models
