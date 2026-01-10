@@ -16,7 +16,7 @@
     "build:css": "tailwindcss build -i cfg/tailwind.config.css -c cfg/tailwind.config.js -o src/css/main.css",
     "copy:assets": "./sh/copy-assets.sh",
     "watch": "npm run sync:version && NODE_ENV=development npm run build:css && npm run copy:assets && parcel watch src/{*.js,*.html}",
-    "build": "npm run sync:version && NODE_ENV=production npm run build:css && npm run copy:assets && parcel build src/{*.js,*.html}",
+    "build": "npm run sync:version && NODE_ENV=production npm run build:css && parcel build src/{*.js,*.html} && npm run copy:assets",
     "zip": "./sh/zip.sh",
     "pack": "NODE_ENV=production npm run clean && npm run build && npm run zip"
   },
