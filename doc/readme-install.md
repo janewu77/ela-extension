@@ -2,10 +2,10 @@
 
 ### install parcel
 
-https://www.parceljs.cn/getting_started.html
+https://parceljs.org/getting-started/webapp/
 
 ```bash
-npm install parcel-bundler --save-dev
+npm install parcel --save-dev
 npm init -y
 
 npx tailwindcss -i ./src/input.css -o ./src/output.css --watch

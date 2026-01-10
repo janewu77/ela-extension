@@ -4,14 +4,14 @@
     "marked": "^12.0.1"
   },
   "name": "ela-extension",
-  "description": "https://www.parceljs.cn/getting_started.html npm install parcel-bundler npm init -y",
+  "description": "English learner Assistant - Chrome Extension",
   "version": "0.4.3",
   "devDependencies": {
-    "parcel-bundler": "^1.12.5",
+    "parcel": "^2.12.0",
     "tailwindcss": "^3.4.3"
   },
   "scripts": {
-    "clean": "rm -rf dist .cache .parcel-cache",
+    "clean": "rm -rf dist .parcel-cache",
     "sync:version": "./sh/sync-version.sh",
     "build:css": "tailwindcss build -i cfg/tailwind.config.css -c cfg/tailwind.config.js -o src/css/main.css",
     "copy:assets": "./sh/copy-assets.sh",
