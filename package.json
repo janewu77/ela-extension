@@ -5,7 +5,7 @@
   },
   "name": "ela-extension",
   "description": "https://www.parceljs.cn/getting_started.html npm install parcel-bundler npm init -y",
-  "version": "1.0.0",
+  "version": "0.4.3",
   "main": "index.js",
   "devDependencies": {
     "parcel-bundler": "^1.12.5",
@@ -13,10 +13,11 @@
   },
   "scripts": {
     "clean": "rm -rf dist .cache .parcel-cache",
+    "sync:version": "./sh/sync-version.sh",
     "build:css": "tailwindcss build -i cfg/tailwind.config.css -c cfg/tailwind.config.js -o src/css/main.css",
     "copy:assets": "./sh/copy-assets.sh",
-    "watch": "NODE_ENV=development npm run build:css && npm run copy:assets && parcel watch src/{*.js,*.html}",
-    "build": "NODE_ENV=production npm run build:css && npm run copy:assets && parcel build src/{*.js,*.html}",
+    "watch": "npm run sync:version && NODE_ENV=development npm run build:css && npm run copy:assets && parcel watch src/{*.js,*.html}",
+    "build": "npm run sync:version && NODE_ENV=production npm run build:css && npm run copy:assets && parcel build src/{*.js,*.html}",
     "zip": "./sh/zip.sh",
     "pack": "NODE_ENV=production npm run clean && npm run build && npm run zip"
   },
