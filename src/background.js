@@ -1,124 +1,170 @@
 importScripts('scripts/const.js');
 importScripts('scripts/backendapi.js');
 
+// ============================================================================
+// 存储管理函数
+// ============================================================================
 
-// onInstalled
-chrome.runtime.onInstalled.addListener(() => {
-    if (debug) console.log(`chrome.runtime.onInstalled`);
+/**
+ * 初始化存储值，如果不存在则使用默认值
+ * @param {string} key - 存储键名
+ * @param {any} defaultValue - 默认值
+ * @returns {Promise<any>} - 返回设置后的值
+ */
+async function initStorageValue(key, defaultValue) {
+  if (debug) console.log(`[Storage] Initializing: ${key}`);
+  
+  try {
+    const data = await chrome.storage.local.get(key);
+    const value = data[key] == null ? defaultValue : data[key];
+    await chrome.storage.local.set({ [key]: value });
+    return value;
+  } catch (error) {
+    console.error(`[Storage] Error initializing ${key}:`, error);
+    // 如果出错，至少设置默认值
+    try {
+      await chrome.storage.local.set({ [key]: defaultValue });
+    } catch (setError) {
+      console.error(`[Storage] Error setting default value for ${key}:`, setError);
+    }
+    return defaultValue;
+  }
+}
 
-    chrome.storage.local.set({ "onoff": defaultOnoff });
+/**
+ * 批量初始化存储值
+ * @param {Object} config - 键值对配置对象 {key: defaultValue}
+ * @returns {Promise<void>}
+ */
+async function initStorageValues(config) {
+  if (debug) console.log('[Storage] Batch initializing storage values');
+  
+  const promises = Object.entries(config).map(([key, defaultValue]) =>
+    initStorageValue(key, defaultValue)
+  );
+  await Promise.all(promises);
+}
 
-    // chrome.storage.local.set({ "auth_token": default_auth_token });
-    chrome.storage.local.get("auth_token", (data) => {
-      auth_token = data.auth_token == null ? default_auth_token : data.auth_token;
-      chrome.storage.local.set({ "auth_token": auth_token });
-    });
+// ============================================================================
+// UI 更新函数
+// ============================================================================
 
-    //tts
-    // chrome.storage.local.set({ "tts_endpoint": default_tts_endpoint });
-    chrome.storage.local.get("tts_endpoint", (data) => {
-      tts_endpoint = data.tts_endpoint == null ? default_tts_endpoint : data.tts_endpoint;
-      chrome.storage.local.set({ "tts_endpoint": tts_endpoint });
-    });
-
-    // chrome.storage.local.set({ "tts_model": default_tts_model });
-    chrome.storage.local.get("tts_model", (data) => {
-      tts_model = data.tts_model == null ? default_tts_model : data.tts_model;
-      chrome.storage.local.set({ "tts_model": tts_model });
-    });
-
-    // chrome.storage.local.set({ "tts_voice": default_tts_voice });
-    chrome.storage.local.get("tts_voice", (data) => {
-      tts_voice = data.tts_voice == null ? default_tts_voice : data.tts_voice;
-      chrome.storage.local.set({ "tts_voice": tts_voice });
-    });
-    
-    //chat
-    chrome.storage.local.get("chat_endpoint", (data) => {
-      chat_endpoint = data.chat_endpoint == null ? default_chat_endpoint : data.chat_endpoint;
-      chrome.storage.local.set({ "chat_endpoint": chat_endpoint });
-    });
-    chrome.storage.local.get("chat_model", (data) => {
-      chat_model = data.chat_model == null ? default_chat_model : data.chat_model;
-      chrome.storage.local.set({ "chat_model": chat_model });
-    });
-
-    //actions: action_translate,action_word
-    chrome.storage.local.get("action_items", (data) => {
-      action_items = data.action_items == null ? default_action_items : data.action_items;
-      chrome.storage.local.set({ "action_items": action_items });
-    });
-
-    //set side pannel
-    chrome.sidePanel
-    .setPanelBehavior({ openPanelOnActionClick: true })
-    .catch((error) => console.error(error));
-
-    //init badege
-    chrome.action.setBadgeText({ text:  defaultOnoff ? 'ON' : 'OFF'});
-
+/**
+ * 更新扩展徽章文本
+ * @param {boolean} isOn - 是否开启功能
+ */
+function updateBadge(isOn) {
+  if (debug) console.log(`[UI] Updating badge: ${isOn ? 'ON' : 'OFF'}`);
+  
+  chrome.action.setBadgeText({ text: isOn ? 'ON' : 'OFF' }).catch((error) => {
+    console.error('[UI] Error updating badge:', error);
   });
+}
 
+// ============================================================================
+// 扩展安装和初始化
+// ============================================================================
 
-// action.onClicked
+/**
+ * 初始化扩展的默认配置
+ */
+async function initializeExtension() {
+  if (debug) console.log('[Init] Initializing extension...');
+  
+  try {
+    // 初始化所有存储值
+    await initStorageValues({
+      "onoff": defaultOnoff,
+      "auth_token": default_auth_token,
+      "tts_endpoint": default_tts_endpoint,
+      "tts_model": default_tts_model,
+      "tts_voice": default_tts_voice,
+      "chat_endpoint": default_chat_endpoint,
+      "chat_model": default_chat_model,
+      "action_items": default_action_items
+    });
+
+    // 设置侧边栏行为
+    await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+
+    // 初始化徽章
+    updateBadge(defaultOnoff);
+    
+    if (debug) console.log('[Init] Extension initialized successfully');
+  } catch (error) {
+    console.error('[Init] Error during extension installation:', error);
+  }
+}
+
+// ============================================================================
+// Chrome Extension 事件监听器
+// ============================================================================
+
+/**
+ * 扩展安装/更新时触发
+ */
+chrome.runtime.onInstalled.addListener(async () => {
+  if (debug) console.log('[Event] Extension installed/updated');
+  await initializeExtension();
+});
+
+/**
+ * 扩展图标点击事件
+ */
 chrome.action.onClicked.addListener(async (tab) => {
-  if (debug) console.log(`chrome.action.onClicked`);
+  if (debug) console.log(`[Event] Action clicked on tab: ${tab.id}`);
+  // 可以在这里添加点击图标的处理逻辑
 });
 
-
-// // contextMenus.onClicked
-// chrome.contextMenus.onClicked.addListener((info, tab) => {
-//   if (debug) console.log(`chrome.contextMenus.onClicked`);
-
-//     // if (info.menuItemId === 'openSidePanel') {
-//     //   // This will open the panel in all the pages on the current window.
-//     //   chrome.sidePanel.open({ windowId: tab.windowId });
-//     // }
-//   });
-
-// onCommand
+/**
+ * 键盘快捷键命令
+ */
 chrome.commands.onCommand.addListener((command) => {
-  if (debug) console.log(`Command: ${command}`);
-
-  // if (command === 'openSidePanel') {
-  //   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-  //     // chrome.tabs.sendMessage(tabs[0].id, {action: "toggleSidebar"});
-  //     chrome.sidePanel.open({ windowId:  tabs[0].windowId});
-  //   });
-  // }
+  if (debug) console.log(`[Event] Command executed: ${command}`);
+  // 可以在这里添加命令处理逻辑
 });
 
-// local.onChanged
+/**
+ * 存储变化监听
+ */
 chrome.storage.local.onChanged.addListener((changes) => {
-  const currentOnoff = changes['onoff'];
-
-  if (currentOnoff) {
-    chrome.action.setBadgeText({text: currentOnoff.newValue ? 'ON' : 'OFF'});
-    // chrome.sidePanel.setOptions({ path: onoff ? mainPage : welcomePage });
-    // if (currentOnoff.newValue){
+  if (debug) console.log('[Event] Storage changed:', Object.keys(changes));
+  
+  const onoffChange = changes['onoff'];
+  if (onoffChange) {
+    updateBadge(onoffChange.newValue);
+    
+    // 如果需要，可以在这里添加其他逻辑
+    // if (onoffChange.newValue) {
     //   getApiVersion();
     // }
-    
   }
 });
 
-
-//onMessage
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (debug) console.log(`chrome.runtime.onMessage`);
-    if (debug) {
-      console.log(`request:${request}`);
-      console.log(`sender:${sender}`);
-      console.log(`sendResponse:${sendResponse}`);
-    }
-
-    // if (request.type == 'selectedText') {
-    //   if (debug) console.log(`[bg]...selectedText:${request.msg}`);
-    //   return true;  
-    // }
-    sendResponse({data: "done"});
-    // return true;
+/**
+ * 消息处理
+ * 注意：主要消息处理逻辑在 sidepanel.js 中
+ */
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (debug) {
+    console.log('[Event] Message received:', request.type);
+    console.log('[Event] Request:', request);
+    console.log('[Event] Sender:', sender);
   }
-);
 
+  // 处理同步消息
+  // 如果需要异步处理，应该返回 true 并在异步操作完成后调用 sendResponse
+  
+  // 示例：处理特定类型的消息
+  // if (request.type === 'selectedText') {
+  //   if (debug) console.log(`[Message] Selected text: ${request.msg}`);
+  //   sendResponse({ data: "processed" });
+  //   return true; // 异步响应
+  // }
+  
+  // 默认响应
+  sendResponse({ data: "done" });
+  
+  // 同步响应时不需要返回 true
+  // 异步响应时必须返回 true
+});
