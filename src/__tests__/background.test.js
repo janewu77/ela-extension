@@ -1,12 +1,12 @@
 /**
  * Background.js 测试文件
  * 
- * 测试重构后的 background.js 中的所有函数和事件监听器
- * 由于 background.js 使用了 importScripts，我们需要模拟相关依赖
+ * 直接引用 background.js 文件进行测试，确保测试的是实际代码
+ * 当原文件修改时，测试会自动反映这些变化
  */
 
 // ============================================================================
-// Mock 常量和依赖
+// Mock 全局变量和依赖（模拟 importScripts 加载的内容）
 // ============================================================================
 
 const mockConstants = {
@@ -25,7 +25,7 @@ const mockConstants = {
   ]
 };
 
-// 模拟 importScripts 加载的常量
+// 模拟 importScripts 加载的常量（必须在 require 之前设置）
 global.debug = mockConstants.debug;
 global.defaultOnoff = mockConstants.defaultOnoff;
 global.default_auth_token = mockConstants.default_auth_token;
@@ -37,68 +37,14 @@ global.default_chat_model = mockConstants.default_chat_model;
 global.default_action_items = mockConstants.default_action_items;
 
 // ============================================================================
-// 测试函数（从 background.js 中复制，用于测试）
+// 导入实际的 background.js 文件
 // ============================================================================
 
-async function initStorageValue(key, defaultValue) {
-  if (debug) console.log(`[Storage] Initializing: ${key}`);
-  
-  try {
-    const data = await chrome.storage.local.get(key);
-    const value = data[key] == null ? defaultValue : data[key];
-    await chrome.storage.local.set({ [key]: value });
-    return value;
-  } catch (error) {
-    console.error(`[Storage] Error initializing ${key}:`, error);
-    try {
-      await chrome.storage.local.set({ [key]: defaultValue });
-    } catch (setError) {
-      console.error(`[Storage] Error setting default value for ${key}:`, setError);
-    }
-    return defaultValue;
-  }
-}
+// 清除缓存以确保每次测试都使用最新代码
+delete require.cache[require.resolve('../background.js')];
 
-async function initStorageValues(config) {
-  if (debug) console.log('[Storage] Batch initializing storage values');
-  
-  const promises = Object.entries(config).map(([key, defaultValue]) =>
-    initStorageValue(key, defaultValue)
-  );
-  await Promise.all(promises);
-}
-
-function updateBadge(isOn) {
-  if (debug) console.log(`[UI] Updating badge: ${isOn ? 'ON' : 'OFF'}`);
-  
-  chrome.action.setBadgeText({ text: isOn ? 'ON' : 'OFF' }).catch((error) => {
-    console.error('[UI] Error updating badge:', error);
-  });
-}
-
-async function initializeExtension() {
-  if (debug) console.log('[Init] Initializing extension...');
-  
-  try {
-    await initStorageValues({
-      "onoff": defaultOnoff,
-      "auth_token": default_auth_token,
-      "tts_endpoint": default_tts_endpoint,
-      "tts_model": default_tts_model,
-      "tts_voice": default_tts_voice,
-      "chat_endpoint": default_chat_endpoint,
-      "chat_model": default_chat_model,
-      "action_items": default_action_items
-    });
-
-    await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
-    updateBadge(defaultOnoff);
-    
-    if (debug) console.log('[Init] Extension initialized successfully');
-  } catch (error) {
-    console.error('[Init] Error during extension installation:', error);
-  }
-}
+// 直接 require background.js（它会自动导出函数）
+const background = require('../background.js');
 
 // ============================================================================
 // 测试套件
@@ -136,7 +82,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(chrome.storage.local.get).toHaveBeenCalledWith(key);
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: defaultValue });
@@ -151,7 +97,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockResolvedValue({ [key]: existingValue });
         chrome.storage.local.set.mockResolvedValue({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(chrome.storage.local.get).toHaveBeenCalledWith(key);
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: existingValue });
@@ -165,7 +111,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockResolvedValue({ [key]: null });
         chrome.storage.local.set.mockResolvedValue({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(result).toBe(defaultValue);
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: defaultValue });
@@ -178,7 +124,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(result).toBe(defaultValue);
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: defaultValue });
@@ -191,7 +137,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockRejectedValue(new Error('Storage error'));
         chrome.storage.local.set.mockResolvedValue({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(console.error).toHaveBeenCalled();
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: defaultValue });
@@ -207,7 +153,7 @@ describe('Background.js 测试', () => {
           .mockRejectedValueOnce(new Error('Set error'))
           .mockResolvedValueOnce({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(console.error).toHaveBeenCalledTimes(2);
         expect(result).toBe(defaultValue);
@@ -221,7 +167,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockResolvedValue({ [key]: complexValue });
         chrome.storage.local.set.mockResolvedValue({});
 
-        const result = await initStorageValue(key, defaultValue);
+        const result = await background.initStorageValue(key, defaultValue);
 
         expect(result).toEqual(complexValue);
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: complexValue });
@@ -239,7 +185,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
 
-        await initStorageValues(config);
+        await background.initStorageValues(config);
 
         expect(chrome.storage.local.get).toHaveBeenCalledTimes(3);
         expect(chrome.storage.local.set).toHaveBeenCalledTimes(3);
@@ -260,7 +206,7 @@ describe('Background.js 测试', () => {
           return Promise.resolve({});
         });
 
-        await initStorageValues({
+        await background.initStorageValues({
           key1: 'value1',
           key2: 'value2'
         });
@@ -271,7 +217,7 @@ describe('Background.js 测试', () => {
       });
 
       it('应该处理空配置对象', async () => {
-        await initStorageValues({});
+        await background.initStorageValues({});
 
         expect(chrome.storage.local.get).not.toHaveBeenCalled();
         expect(chrome.storage.local.set).not.toHaveBeenCalled();
@@ -283,7 +229,7 @@ describe('Background.js 测试', () => {
           .mockResolvedValueOnce({ key2: 'existing_value' }); // key2 已存在
         chrome.storage.local.set.mockResolvedValue({});
 
-        await initStorageValues({
+        await background.initStorageValues({
           key1: 'default1',
           key2: 'default2'
         });
@@ -303,7 +249,7 @@ describe('Background.js 测试', () => {
       it('应该设置徽章为 ON 当 isOn 为 true', () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
-        updateBadge(true);
+        background.updateBadge(true);
 
         expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: 'ON' });
       });
@@ -311,7 +257,7 @@ describe('Background.js 测试', () => {
       it('应该设置徽章为 OFF 当 isOn 为 false', () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
-        updateBadge(false);
+        background.updateBadge(false);
 
         expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: 'OFF' });
       });
@@ -320,7 +266,7 @@ describe('Background.js 测试', () => {
         const error = new Error('Badge error');
         chrome.action.setBadgeText.mockRejectedValue(error);
 
-        updateBadge(true);
+        background.updateBadge(true);
 
         await new Promise(resolve => setTimeout(resolve, 10));
 
@@ -330,9 +276,9 @@ describe('Background.js 测试', () => {
       it('应该正确处理多次调用', () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
-        updateBadge(true);
-        updateBadge(false);
-        updateBadge(true);
+        background.updateBadge(true);
+        background.updateBadge(false);
+        background.updateBadge(true);
 
         expect(chrome.action.setBadgeText).toHaveBeenCalledTimes(3);
         expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(1, { text: 'ON' });
@@ -354,7 +300,7 @@ describe('Background.js 测试', () => {
         chrome.sidePanel.setPanelBehavior.mockResolvedValue({});
         chrome.action.setBadgeText.mockResolvedValue({});
 
-        await initializeExtension();
+        await background.initializeExtension();
 
         expect(chrome.storage.local.get).toHaveBeenCalled();
         expect(chrome.storage.local.set).toHaveBeenCalled();
@@ -370,7 +316,7 @@ describe('Background.js 测试', () => {
         chrome.storage.local.set.mockResolvedValue({});
         chrome.sidePanel.setPanelBehavior.mockRejectedValue(error);
 
-        await initializeExtension();
+        await background.initializeExtension();
 
         expect(console.error).toHaveBeenCalledWith(
           '[Init] Error during extension installation:',
@@ -384,7 +330,7 @@ describe('Background.js 测试', () => {
         chrome.sidePanel.setPanelBehavior.mockResolvedValue({});
         chrome.action.setBadgeText.mockResolvedValue({});
 
-        await initializeExtension();
+        await background.initializeExtension();
 
         const setCalls = chrome.storage.local.set.mock.calls;
         const configKeys = setCalls.map(call => Object.keys(call[0])[0]);
@@ -418,7 +364,7 @@ describe('Background.js 测试', () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
         // 直接测试 initializeExtension 函数（因为监听器注册在 background.js 中）
-        await initializeExtension();
+        await background.initializeExtension();
 
         expect(chrome.storage.local.get).toHaveBeenCalled();
         expect(chrome.sidePanel.setPanelBehavior).toHaveBeenCalledWith({
@@ -452,7 +398,7 @@ describe('Background.js 测试', () => {
         };
 
         // 直接测试 updateBadge 函数（因为监听器逻辑简单）
-        updateBadge(changes.onoff.newValue);
+        background.updateBadge(changes.onoff.newValue);
 
         expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: 'ON' });
       });

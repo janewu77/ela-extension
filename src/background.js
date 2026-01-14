@@ -168,3 +168,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // 同步响应时不需要返回 true
   // 异步响应时必须返回 true
 });
+
+// 导出函数供测试使用（在 Node.js 环境中）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    initStorageValue,
+    initStorageValues,
+    updateBadge,
+    initializeExtension
+  };
+}
