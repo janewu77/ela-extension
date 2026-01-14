@@ -32,46 +32,101 @@ if (debug){
 }
 
 
-// listener: setting
-chrome.storage.local.onChanged.addListener((changes) => {
+// listener: setting（使用 storageUtils.createStorageListener）
+(function setupStorageListeners() {
+  if (typeof window !== 'undefined' && window.storageUtils && window.storageUtils.createStorageListener) {
+    // 监听所有相关的存储键
+    const keysToWatch = [
+      'onoff',
+      'tts_endpoint',
+      'tts_model',
+      'tts_voice',
+      'auth_token',
+      'chat_endpoint',
+      'chat_model',
+      'action_items'
+    ];
 
-  const changedOnoff = changes['onoff'];
-  if (changedOnoff) {
-    currentOnoff = changedOnoff.newValue;
-    _showOnoff(currentOnoff);
-  }
+    window.storageUtils.createStorageListener(keysToWatch, (changes) => {
+      if (debug) console.log('[Sidepanel] Storage changed:', Object.keys(changes));
 
-  if (changes['tts_endpoint']) {
-    current_tts_endpoint = changes['tts_endpoint'].newValue;
-  }
+      const changedOnoff = changes['onoff'];
+      if (changedOnoff) {
+        currentOnoff = changedOnoff.newValue;
+        _showOnoff(currentOnoff);
+      }
 
-  if (changes['tts_model']) {
-    current_tts_model = changes['tts_model'].newValue;
-  }
+      if (changes['tts_endpoint']) {
+        current_tts_endpoint = changes['tts_endpoint'].newValue;
+      }
 
-  if (changes['tts_voice']) {
-    current_tts_voice = changes['tts_voice'].newValue;
-  }
+      if (changes['tts_model']) {
+        current_tts_model = changes['tts_model'].newValue;
+      }
 
-  if (changes['auth_token']) {
-    current_auth_token = changes['auth_token'].newValue;
-  }
+      if (changes['tts_voice']) {
+        current_tts_voice = changes['tts_voice'].newValue;
+      }
 
-  //chat
-  if (changes['chat_endpoint']) {
-    current_chat_endpoint = changes['chat_endpoint'].newValue;
-  }
-  if (changes['chat_model']) {
-    current_chat_model = changes['chat_model'].newValue;
-  }
+      if (changes['auth_token']) {
+        current_auth_token = changes['auth_token'].newValue;
+      }
 
-  //chat - actions
-  if (changes['action_items']) {
-    let action_items = changes['action_items'].newValue;
-    current_action_items_active = action_items.filter(item => item.active );
+      //chat
+      if (changes['chat_endpoint']) {
+        current_chat_endpoint = changes['chat_endpoint'].newValue;
+      }
+      if (changes['chat_model']) {
+        current_chat_model = changes['chat_model'].newValue;
+      }
+
+      //chat - actions
+      if (changes['action_items']) {
+        let action_items = changes['action_items'].newValue;
+        current_action_items_active = action_items.filter(item => item.active);
+      }
+    });
+  } else {
+    // 降级方案：直接使用 Chrome API
+    chrome.storage.local.onChanged.addListener((changes) => {
+      const changedOnoff = changes['onoff'];
+      if (changedOnoff) {
+        currentOnoff = changedOnoff.newValue;
+        _showOnoff(currentOnoff);
+      }
+
+      if (changes['tts_endpoint']) {
+        current_tts_endpoint = changes['tts_endpoint'].newValue;
+      }
+
+      if (changes['tts_model']) {
+        current_tts_model = changes['tts_model'].newValue;
+      }
+
+      if (changes['tts_voice']) {
+        current_tts_voice = changes['tts_voice'].newValue;
+      }
+
+      if (changes['auth_token']) {
+        current_auth_token = changes['auth_token'].newValue;
+      }
+
+      //chat
+      if (changes['chat_endpoint']) {
+        current_chat_endpoint = changes['chat_endpoint'].newValue;
+      }
+      if (changes['chat_model']) {
+        current_chat_model = changes['chat_model'].newValue;
+      }
+
+      //chat - actions
+      if (changes['action_items']) {
+        let action_items = changes['action_items'].newValue;
+        current_action_items_active = action_items.filter(item => item.active);
+      }
+    });
   }
-  
-});
+})();
 
 function init(){
 

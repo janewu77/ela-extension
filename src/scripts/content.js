@@ -126,15 +126,32 @@ async function initialize() {
   // 初始化状态
   await initializeState();
 
-  // 监听存储变化
-  chrome.storage.local.onChanged.addListener((changes) => {
-    if (debug) console.log('[Content] Storage changed:', Object.keys(changes));
+  // 监听存储变化（使用 storageUtils.createStorageListener）
+  if (typeof window !== 'undefined' && window.storageUtils) {
+    const removeListener = window.storageUtils.createStorageListener('onoff', (changes) => {
+      if (debug) console.log('[Content] Storage changed: onoff');
+      
+      const onoffChange = changes['onoff'];
+      if (onoffChange) {
+        updateState(onoffChange.newValue);
+      }
+    });
     
-    const onoffChange = changes['onoff'];
-    if (onoffChange) {
-      updateState(onoffChange.newValue);
+    // 保存移除函数以便后续清理（如果需要）
+    if (typeof window !== 'undefined') {
+      window._contentStorageListenerCleanup = removeListener;
     }
-  });
+  } else {
+    // 降级方案：直接使用 Chrome API
+    chrome.storage.local.onChanged.addListener((changes) => {
+      if (debug) console.log('[Content] Storage changed:', Object.keys(changes));
+      
+      const onoffChange = changes['onoff'];
+      if (onoffChange) {
+        updateState(onoffChange.newValue);
+      }
+    });
+  }
 
   // 监听鼠标释放事件（文本选择）
   document.addEventListener('mouseup', handleMouseUp);

@@ -1,49 +1,14 @@
 importScripts('scripts/const.js');
 importScripts('scripts/backendapi.js');
+importScripts('scripts/storage.js');
 
 // ============================================================================
-// 存储管理函数
+// 存储管理函数（使用共用模块）
 // ============================================================================
 
-/**
- * 初始化存储值，如果不存在则使用默认值
- * @param {string} key - 存储键名
- * @param {any} defaultValue - 默认值
- * @returns {Promise<any>} - 返回设置后的值
- */
-async function initStorageValue(key, defaultValue) {
-  if (debug) console.log(`[Storage] Initializing: ${key}`);
-  
-  try {
-    const data = await chrome.storage.local.get(key);
-    const value = data[key] == null ? defaultValue : data[key];
-    await chrome.storage.local.set({ [key]: value });
-    return value;
-  } catch (error) {
-    console.error(`[Storage] Error initializing ${key}:`, error);
-    // 如果出错，至少设置默认值
-    try {
-      await chrome.storage.local.set({ [key]: defaultValue });
-    } catch (setError) {
-      console.error(`[Storage] Error setting default value for ${key}:`, setError);
-    }
-    return defaultValue;
-  }
-}
-
-/**
- * 批量初始化存储值
- * @param {Object} config - 键值对配置对象 {key: defaultValue}
- * @returns {Promise<void>}
- */
-async function initStorageValues(config) {
-  if (debug) console.log('[Storage] Batch initializing storage values');
-  
-  const promises = Object.entries(config).map(([key, defaultValue]) =>
-    initStorageValue(key, defaultValue)
-  );
-  await Promise.all(promises);
-}
+// 从 storage.js 导入的函数已经在全局作用域中可用（通过 window.storageUtils）
+// 为了保持向后兼容，我们使用这些函数
+// 注意：在 Service Worker 环境中，window 可能不可用，所以直接使用全局函数
 
 // ============================================================================
 // UI 更新函数
@@ -72,8 +37,12 @@ async function initializeExtension() {
   if (debug) console.log('[Init] Initializing extension...');
   
   try {
-    // 初始化所有存储值
-    await initStorageValues({
+    // 初始化所有存储值（使用 storage.js 中的函数）
+    const storageUtils = (typeof window !== 'undefined' ? window.storageUtils : null) ||
+                        (typeof self !== 'undefined' ? self.storageUtils : null);
+    const initStorageValuesFunc = storageUtils ? storageUtils.initStorageValues : initStorageValues;
+    
+    await initStorageValuesFunc({
       "onoff": defaultOnoff,
       "auth_token": default_auth_token,
       "tts_endpoint": default_tts_endpoint,
@@ -125,21 +94,39 @@ chrome.commands.onCommand.addListener((command) => {
 });
 
 /**
- * 存储变化监听
+ * 存储变化监听（使用 storageUtils.createStorageListener）
  */
-chrome.storage.local.onChanged.addListener((changes) => {
-  if (debug) console.log('[Event] Storage changed:', Object.keys(changes));
+(function setupStorageListener() {
+  const storageUtils = (typeof window !== 'undefined' ? window.storageUtils : null) ||
+                      (typeof self !== 'undefined' ? self.storageUtils : null);
   
-  const onoffChange = changes['onoff'];
-  if (onoffChange) {
-    updateBadge(onoffChange.newValue);
-    
-    // 如果需要，可以在这里添加其他逻辑
-    // if (onoffChange.newValue) {
-    //   getApiVersion();
-    // }
+  if (storageUtils && storageUtils.createStorageListener) {
+    // 使用 createStorageListener 只监听 onoff 变化
+    storageUtils.createStorageListener('onoff', (changes) => {
+      if (debug) console.log('[Event] Storage changed: onoff');
+      
+      const onoffChange = changes['onoff'];
+      if (onoffChange) {
+        updateBadge(onoffChange.newValue);
+        
+        // 如果需要，可以在这里添加其他逻辑
+        // if (onoffChange.newValue) {
+        //   getApiVersion();
+        // }
+      }
+    });
+  } else {
+    // 降级方案：直接使用 Chrome API
+    chrome.storage.local.onChanged.addListener((changes) => {
+      if (debug) console.log('[Event] Storage changed:', Object.keys(changes));
+      
+      const onoffChange = changes['onoff'];
+      if (onoffChange) {
+        updateBadge(onoffChange.newValue);
+      }
+    });
   }
-});
+})();
 
 /**
  * 消息处理
@@ -171,9 +158,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // 导出函数供测试使用（在 Node.js 环境中）
 if (typeof module !== 'undefined' && module.exports) {
+  // 在测试环境中，从 storage.js 模块导入
+  const storageUtils = require('./scripts/storage.js');
+  
   module.exports = {
-    initStorageValue,
-    initStorageValues,
+    initStorageValue: storageUtils.initStorageValue,
+    initStorageValues: storageUtils.initStorageValues,
     updateBadge,
     initializeExtension
   };
