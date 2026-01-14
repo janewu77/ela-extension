@@ -64,12 +64,28 @@ global.importScripts = jest.fn((...scripts) => {
 global.window = {
   getSelection: jest.fn(),
   self: {},
-  top: {}
+  top: {},
+  getComputedStyle: jest.fn()
 };
 
 global.document = {
   addEventListener: jest.fn(),
-  removeEventListener: jest.fn()
+  removeEventListener: jest.fn(),
+  createElement: jest.fn(),
+  body: {
+    appendChild: jest.fn(),
+    removeChild: jest.fn()
+  },
+  querySelector: jest.fn()
+};
+
+// Mock HTMLTextAreaElement for util.js testing
+global.HTMLTextAreaElement = class HTMLTextAreaElement {
+  constructor() {
+    this.value = '';
+    this.offsetWidth = 0;
+    this.clientHeight = 0;
+  }
 };
 
 // 保留原始 console 方法，但允许在测试中 mock
