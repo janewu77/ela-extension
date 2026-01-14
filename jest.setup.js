@@ -60,6 +60,18 @@ global.importScripts = jest.fn((...scripts) => {
   });
 });
 
+// Mock DOM APIs for content script testing
+global.window = {
+  getSelection: jest.fn(),
+  self: {},
+  top: {}
+};
+
+global.document = {
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn()
+};
+
 // 保留原始 console 方法，但允许在测试中 mock
 // 这样测试可以选择性地 mock console 方法
 if (!global.console._original) {

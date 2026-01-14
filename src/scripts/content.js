@@ -1,38 +1,165 @@
+// ============================================================================
+// Content Script - 页面内容脚本
+// 功能：监听页面文本选择，并将选中的文本发送给扩展
+// ============================================================================
 
-// content.js
-if (debug) console.log(`This is in content! debug:${debug}!`);
+if (debug) console.log('[Content] Content script loaded, debug mode:', debug);
 
-var currentOnoff = false;
-chrome.storage.local.get("onoff", (data) => {
-  currentOnoff = data.onoff;
-});
+// ============================================================================
+// 状态管理
+// ============================================================================
 
-chrome.storage.local.onChanged.addListener((changes) => {
-  const changedOnoff = changes['onoff'];
-  if (changedOnoff) {
-    currentOnoff = changedOnoff.newValue;
+let currentOnoff = false;
+
+/**
+ * 初始化扩展状态
+ */
+async function initializeState() {
+  try {
+    const data = await chrome.storage.local.get('onoff');
+    currentOnoff = data.onoff ?? false;
+    if (debug) console.log('[Content] Initial state loaded:', currentOnoff);
+  } catch (error) {
+    console.error('[Content] Error loading initial state:', error);
+    currentOnoff = false;
+  }
+}
+
+/**
+ * 更新扩展状态
+ * @param {boolean} newValue - 新的开关状态
+ */
+function updateState(newValue) {
+  currentOnoff = newValue;
+  if (debug) console.log('[Content] State updated:', currentOnoff);
+}
+
+// ============================================================================
+// 文本选择处理
+// ============================================================================
+
+/**
+ * 获取当前选中的文本
+ * @returns {string} 选中的文本（已修剪）
+ */
+function getSelectedText() {
+  try {
+    const selection = window.getSelection();
+    if (!selection) return '';
+    
+    const text = selection.toString().trim();
+    return text;
+  } catch (error) {
+    console.error('[Content] Error getting selected text:', error);
+    return '';
+  }
+}
+
+/**
+ * 发送选中的文本到扩展
+ * @param {string} selectedText - 选中的文本
+ */
+async function sendSelectedText(selectedText) {
+  if (!selectedText || selectedText.length === 0) {
+    return;
   }
 
-});
+  try {
+    const message = {
+      type: 'selectedText',
+      msg: selectedText,
+      isTopFrame: window.self === window.top
+    };
 
-// 监听选择事件 
-// mouseup selectionchange
-document.addEventListener('mouseup', function(event) {
-    // todo: 检查 event.origin 以增加安全性
-    if (debug) console.log(`mouseup onoff:${currentOnoff}`);
-    if (debug) {
-      console.log(`event:${event}`);
-    }
+    if (debug) console.log('[Content] Sending selected text:', selectedText);
+    
+    await chrome.runtime.sendMessage(message);
+  } catch (error) {
+    console.error('[Content] Error sending message:', error);
+  }
+}
 
-    if (currentOnoff) {
-      //取得选中的文字
-      var selectedText = window.getSelection().toString();
-      if ( selectedText.length > 0 ) {
-          selectedText = selectedText.trim();
-          // 向background script发送消息
-          if (debug) console.log(`[content.js][mouseup]selectedText:${selectedText}`);
-          chrome.runtime.sendMessage({type: 'selectedText', msg: selectedText, isTopFrame: window.self === window.top});
-      }
+/**
+ * 处理文本选择事件
+ */
+function handleTextSelection() {
+  if (!currentOnoff) {
+    if (debug) console.log('[Content] Extension is disabled, ignoring selection');
+    return;
+  }
+
+  const selectedText = getSelectedText();
+  if (selectedText.length > 0) {
+    sendSelectedText(selectedText);
+  }
+}
+
+// ============================================================================
+// 事件监听器
+// ============================================================================
+
+/**
+ * 处理鼠标释放事件
+ * @param {MouseEvent} event - 鼠标事件对象
+ */
+function handleMouseUp(event) {
+  if (debug) {
+    console.log('[Content] Mouse up event, onoff:', currentOnoff);
+    console.log('[Content] Event details:', {
+      target: event.target,
+      timestamp: event.timeStamp
+    });
+  }
+
+  // TODO: 检查 event.origin 以增加安全性
+  handleTextSelection();
+}
+
+// ============================================================================
+// 初始化
+// ============================================================================
+
+/**
+ * 初始化内容脚本
+ */
+async function initialize() {
+  // 初始化状态
+  await initializeState();
+
+  // 监听存储变化
+  chrome.storage.local.onChanged.addListener((changes) => {
+    if (debug) console.log('[Content] Storage changed:', Object.keys(changes));
+    
+    const onoffChange = changes['onoff'];
+    if (onoffChange) {
+      updateState(onoffChange.newValue);
     }
-  
-});
+  });
+
+  // 监听鼠标释放事件（文本选择）
+  document.addEventListener('mouseup', handleMouseUp);
+
+  if (debug) console.log('[Content] Content script initialized');
+}
+
+// 启动初始化（仅在浏览器环境中自动执行，不在 Node.js 测试环境中执行）
+if (typeof window !== 'undefined' && typeof module === 'undefined') {
+  initialize().catch((error) => {
+    console.error('[Content] Error during initialization:', error);
+  });
+}
+
+// 导出函数供测试使用（在 Node.js 环境中）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    initializeState,
+    updateState,
+    getSelectedText,
+    sendSelectedText,
+    handleTextSelection,
+    handleMouseUp,
+    initialize,
+    getCurrentOnoff: () => currentOnoff,
+    setCurrentOnoff: (value) => { currentOnoff = value; }
+  };
+}
