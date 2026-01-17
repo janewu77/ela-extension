@@ -9,32 +9,11 @@
 // Mock 全局变量和依赖（模拟 importScripts 加载的内容）
 // ============================================================================
 
-const mockConstants = {
-  debug: false,
-  defaultOnoff: false,
-  default_auth_token: "Your-OpenAI-API-Key",
-  default_tts_endpoint: "https://api.openai.com/v1/audio/speech",
-  default_tts_model: "gpt-4o-mini-tts",
-  default_tts_voice: "marin",
-  default_chat_endpoint: "https://api.openai.com/v1/chat/completions",
-  default_chat_model: "gpt-4.1-mini",
-  default_action_items: [
-    { name: '翻译🇺🇸🇨🇳', active: true },
-    { name: 'word📖', active: true },
-    { name: '总结', active: false }
-  ]
-};
+// 引入 mock 常量
+const { mockConstants, setupMockConstants } = require('./mockConst.mock.js');
 
-// 模拟 importScripts 加载的常量（必须在 require 之前设置）
-global.debug = mockConstants.debug;
-global.defaultOnoff = mockConstants.defaultOnoff;
-global.default_auth_token = mockConstants.default_auth_token;
-global.default_tts_endpoint = mockConstants.default_tts_endpoint;
-global.default_tts_model = mockConstants.default_tts_model;
-global.default_tts_voice = mockConstants.default_tts_voice;
-global.default_chat_endpoint = mockConstants.default_chat_endpoint;
-global.default_chat_model = mockConstants.default_chat_model;
-global.default_action_items = mockConstants.default_action_items;
+// 设置全局 mock 常量（必须在 require 之前设置）
+setupMockConstants();
 
 // ============================================================================
 // 导入实际的 background.js 文件

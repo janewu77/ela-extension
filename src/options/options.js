@@ -31,8 +31,8 @@ const templateActionItem = document.getElementById("template_action_setting");
 // 存储操作辅助函数（使用共用模块）
 // ============================================================================
 
-// 从 storage.js 导入的函数已经在全局作用域中可用（通过 window.storageUtils）
-const { getStorageValue, setStorageValue } = window.storageUtils || {};
+// 直接使用 window.storageUtils（已在 options.html 中加载 storage.js）
+// 不声明局部变量，直接使用 window.storageUtils 避免重复声明
 
 // ============================================================================
 // TTS 配置管理
@@ -44,14 +44,14 @@ const { getStorageValue, setStorageValue } = window.storageUtils || {};
  */
 async function initTTSEndpoint(form) {
   try {
-    const value = await getStorageValue("tts_endpoint");
+    const value = await window.storageUtils.getStorageValue("tts_endpoint");
     if (value) {
       form.TTSEndpoint.value = value;
     }
 
     form.TTSEndpoint.addEventListener("change", async (event) => {
       if (debug) console.log('[Options] TTS endpoint changed:', event.target.value);
-      await setStorageValue("tts_endpoint", event.target.value);
+      await window.storageUtils.setStorageValue("tts_endpoint", event.target.value);
     });
   } catch (error) {
     console.error('[Options] Error initializing TTS endpoint:', error);
@@ -68,7 +68,7 @@ async function initAPIKey(form) {
     form.TTSOpenAIAPIKey.disabled = true;
     form.onoffTTSOpenAIAPIKey.innerHTML = SVGEdit;
 
-    const authToken = await getStorageValue("auth_token");
+    const authToken = await window.storageUtils.getStorageValue("auth_token");
 
     if (authToken === default_auth_token || !authToken) {
       // 默认值或未设置：允许编辑
@@ -94,7 +94,7 @@ async function initAPIKey(form) {
         // 保存新 key
         const newKey = form.TTSOpenAIAPIKey.value.trim();
         if (newKey.length > 0) {
-          await setStorageValue("auth_token", newKey);
+          await window.storageUtils.setStorageValue("auth_token", newKey);
           maskedKey = maskMsg(newKey);
         }
         form.TTSOpenAIAPIKey.value = maskedKey;
@@ -130,7 +130,7 @@ async function initTTSModel() {
     const containerName = document.getElementById("tts_model_container_name");
     containerName.innerHTML = chrome.i18n.getMessage("tts_model_container_name");
 
-    const currentModel = await getStorageValue("tts_model");
+    const currentModel = await window.storageUtils.getStorageValue("tts_model");
     const container = document.getElementById("tts_model_container");
 
     arrTTSModel.forEach(model => {
@@ -149,7 +149,7 @@ async function initTTSVoice() {
     const containerName = document.getElementById("tts_voice_container_name");
     containerName.innerHTML = chrome.i18n.getMessage("tts_voice_container_name");
 
-    const currentVoice = await getStorageValue("tts_voice");
+    const currentVoice = await window.storageUtils.getStorageValue("tts_voice");
     const container = document.getElementById("tts_voice_container");
 
     arrTTSVoice.forEach(voice => {
@@ -170,14 +170,14 @@ async function initTTSVoice() {
  */
 async function initChatEndpoint(form) {
   try {
-    const value = await getStorageValue("chat_endpoint");
+    const value = await window.storageUtils.getStorageValue("chat_endpoint");
     if (value) {
       form.ChatEndpoint.value = value;
     }
 
     form.ChatEndpoint.addEventListener("change", async (event) => {
       if (debug) console.log('[Options] Chat endpoint changed:', event.target.value);
-      await setStorageValue("chat_endpoint", event.target.value);
+      await window.storageUtils.setStorageValue("chat_endpoint", event.target.value);
     });
   } catch (error) {
     console.error('[Options] Error initializing chat endpoint:', error);
@@ -192,7 +192,7 @@ async function initChatModel() {
     const containerName = document.getElementById("chat_model_container_name");
     containerName.innerHTML = chrome.i18n.getMessage("chat_model_container_name");
 
-    const currentModel = await getStorageValue("chat_model");
+    const currentModel = await window.storageUtils.getStorageValue("chat_model");
     const container = document.getElementById("chat_model_container");
 
     arrChatModel.forEach(model => {
@@ -255,7 +255,7 @@ function constructActionItemsHTML(actionItems, container, template) {
       
       actionItem.name = newValue;
       inputName.value = newValue;
-      await setStorageValue("action_items", actionItems);
+      await window.storageUtils.setStorageValue("action_items", actionItems);
     });
 
     // Prompt 输入事件
@@ -265,7 +265,7 @@ function constructActionItemsHTML(actionItems, container, template) {
       }
 
       actionItem.prompt = event.target.value;
-      await setStorageValue("action_items", actionItems);
+      await window.storageUtils.setStorageValue("action_items", actionItems);
     });
 
     // 状态切换事件
@@ -275,7 +275,7 @@ function constructActionItemsHTML(actionItems, container, template) {
       }
 
       actionItem.active = event.target.checked;
-      await setStorageValue("action_items", actionItems);
+      await window.storageUtils.setStorageValue("action_items", actionItems);
     });
   });
 }
@@ -289,7 +289,7 @@ async function initActionItems() {
     containerName.innerHTML = chrome.i18n.getMessage("container_action_items_name");
 
     const container = document.getElementById("container_action_items");
-    const actionItems = await getStorageValue("action_items") || default_action_items;
+    const actionItems = await window.storageUtils.getStorageValue("action_items") || default_action_items;
 
     constructActionItemsHTML(actionItems, container, templateActionItem);
   } catch (error) {
@@ -338,7 +338,7 @@ function createRadioOption(radioName, radioValue, currentValue) {
   radioInput.addEventListener("change", async (event) => {
     if (event.target.checked) {
       if (debug) console.log(`[Options] ${radioName} changed:`, event.target.value);
-      await setStorageValue(radioName, event.target.value);
+      await window.storageUtils.setStorageValue(radioName, event.target.value);
     }
   });
 
@@ -387,10 +387,10 @@ async function resetToDefaults(form) {
     if (debug) console.log('[Options] Resetting to defaults');
 
     // 重置 TTS 配置
-    await setStorageValue("tts_endpoint", default_tts_endpoint);
-    await setStorageValue("tts_model", default_tts_model);
-    await setStorageValue("tts_voice", default_tts_voice);
-    await setStorageValue("auth_token", default_auth_token);
+    await window.storageUtils.setStorageValue("tts_endpoint", default_tts_endpoint);
+    await window.storageUtils.setStorageValue("tts_model", default_tts_model);
+    await window.storageUtils.setStorageValue("tts_voice", default_tts_voice);
+    await window.storageUtils.setStorageValue("auth_token", default_auth_token);
 
     form.TTSEndpoint.value = default_tts_endpoint;
     form.TTSOpenAIAPIKey.value = default_auth_token;
@@ -403,8 +403,8 @@ async function resetToDefaults(form) {
     if (ttsVoiceRadio) ttsVoiceRadio.checked = true;
 
     // 重置 Chat 配置
-    await setStorageValue("chat_endpoint", default_chat_endpoint);
-    await setStorageValue("chat_model", default_chat_model);
+    await window.storageUtils.setStorageValue("chat_endpoint", default_chat_endpoint);
+    await window.storageUtils.setStorageValue("chat_model", default_chat_model);
 
     form.ChatEndpoint.value = default_chat_endpoint;
     
@@ -413,7 +413,7 @@ async function resetToDefaults(form) {
     if (chatModelRadio) chatModelRadio.checked = true;
 
     // 重置 Action Items
-    await setStorageValue("action_items", default_action_items);
+    await window.storageUtils.setStorageValue("action_items", default_action_items);
     const actionItems = JSON.parse(JSON.stringify(default_action_items));
     const container = document.getElementById("container_action_items");
     constructActionItemsHTML(actionItems, container, templateActionItem);
@@ -496,9 +496,11 @@ initializeOptions();
 
 // 导出函数供测试使用（在 Node.js 环境中）
 if (typeof module !== 'undefined' && module.exports) {
+  // 在测试环境中，从 storage.js 模块导入
+  const storageUtils = require('../scripts/storage.js');
+  
   module.exports = {
-    getStorageValue,
-    setStorageValue,
+    storageUtils,
     initTTSEndpoint,
     initAPIKey,
     initTTSModel,
