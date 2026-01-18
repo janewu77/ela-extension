@@ -71,11 +71,19 @@ async function sendSelectedText(selectedText) {
       isTopFrame: window.self === window.top
     };
 
-    if (debug) console.log('[Content] Sending selected text:', selectedText);
+    if (debug) {
+      const preview = message.msg.length > 50 ? message.msg.substring(0, 50) + '...' : message.msg;
+      console.log('[Content] Sending selected text:', preview);
+    }
     
     await chrome.runtime.sendMessage(message);
   } catch (error) {
-    console.error('[Content] Error sending message:', error);
+    // 处理扩展未连接的情况（用户可能关闭了扩展）
+    if (error.message && error.message.includes('Extension context invalidated')) {
+      if (debug) console.log('[Content] Extension context invalidated, message not sent');
+    } else {
+      console.error('[Content] Error sending message:', error);
+    }
   }
 }
 
@@ -103,6 +111,12 @@ function handleTextSelection() {
  * @param {MouseEvent} event - 鼠标事件对象
  */
 function handleMouseUp(event) {
+  // 参数验证
+  if (!event) {
+    if (debug) console.warn('[Content] Invalid mouse event received');
+    return;
+  }
+
   if (debug) {
     console.log('[Content] Mouse up event, onoff:', currentOnoff);
     console.log('[Content] Event details:', {
@@ -126,32 +140,14 @@ async function initialize() {
   // 初始化状态
   await initializeState();
 
-  // 监听存储变化（使用 storageUtils.createStorageListener）
-  if (typeof window !== 'undefined' && window.storageUtils) {
-    const removeListener = window.storageUtils.createStorageListener('onoff', (changes) => {
-      if (debug) console.log('[Content] Storage changed: onoff');
-      
-      const onoffChange = changes['onoff'];
-      if (onoffChange) {
-        updateState(onoffChange.newValue);
-      }
-    });
+  chrome.storage.local.onChanged.addListener((changes) => {
+    if (debug) console.log('[Content] Storage changed:', Object.keys(changes));
     
-    // 保存移除函数以便后续清理（如果需要）
-    if (typeof window !== 'undefined') {
-      window._contentStorageListenerCleanup = removeListener;
+    const onoffChange = changes['onoff'];
+    if (onoffChange) {
+      updateState(onoffChange.newValue ?? false);
     }
-  } else {
-    // 降级方案：直接使用 Chrome API
-    chrome.storage.local.onChanged.addListener((changes) => {
-      if (debug) console.log('[Content] Storage changed:', Object.keys(changes));
-      
-      const onoffChange = changes['onoff'];
-      if (onoffChange) {
-        updateState(onoffChange.newValue);
-      }
-    });
-  }
+  });
 
   // 监听鼠标释放事件（文本选择）
   document.addEventListener('mouseup', handleMouseUp);
