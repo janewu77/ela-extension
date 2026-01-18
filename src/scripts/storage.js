@@ -248,8 +248,9 @@ async function initStorageValue(key, defaultValue) {
   
   try {
     // 获取当前值
-    const data = await chrome.storage.local.get(key);
-    const existingValue = data[key];
+    // const data = await chrome.storage.local.get(key);
+    // const existingValue = data[key];
+    const existingValue = await getStorageValue(key)
     
     // 如果值为 null 或 undefined，使用默认值
     const value = existingValue == null ? defaultValue : existingValue;
@@ -317,6 +318,7 @@ async function initStorageValues(config) {
  * @returns {Function} 移除监听器的函数
  */
 function createStorageListener(keys, callback) {
+  if (debug) console.log('[createStorageListener] - begin');
   if (!callback || typeof callback !== 'function') {
     console.error('[Storage] Invalid callback provided to createStorageListener');
     return () => {};
@@ -330,8 +332,8 @@ function createStorageListener(keys, callback) {
     return () => {};
   }
 
-  const listener = (changes, areaName) => {
-    if (areaName !== 'local') return;
+  const listener = (changes) => {
+    if (debug) console.log('[Storage] Storage changed, checking keys:', validKeys);
 
     // 检查是否有监听的键发生变化
     const relevantChanges = {};
@@ -345,11 +347,14 @@ function createStorageListener(keys, callback) {
     }
 
     if (hasChanges) {
+      if (debug) console.log('[Storage] Relevant changes detected:', Object.keys(relevantChanges));
       callback(relevantChanges, changes);
     }
   };
 
   chrome.storage.local.onChanged.addListener(listener);
+
+  if (debug) console.log('[createStorageListener]End');
 
   // 返回移除监听器的函数
   return () => {

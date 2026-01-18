@@ -108,11 +108,6 @@ chrome.commands.onCommand.addListener((command) => {
       const onoffChange = changes['onoff'];
       if (onoffChange) {
         updateBadge(onoffChange.newValue);
-        
-        // 如果需要，可以在这里添加其他逻辑
-        // if (onoffChange.newValue) {
-        //   getApiVersion();
-        // }
       }
     });
   } else {
