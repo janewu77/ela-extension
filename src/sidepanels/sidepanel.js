@@ -49,43 +49,70 @@ const SVGClose_light = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 
  * 处理存储变化
  * @param {Object} changes - 存储变化对象
  */
-function handleStorageChanges(changes) {
-  if (debug) console.log('[Sidepanel] Storage changed:', Object.keys(changes));
+function handleStorageChanges(changes, allChanges) {
+  // createStorageListener 会传递两个参数：
+  // - changes: 过滤后的相关变化（第一个参数）
+  // - allChanges: 完整的变化对象（第二个参数，可选）
+  // 为了兼容，我们使用第一个参数
+  if (debug) {
+    console.log('[Sidepanel] Storage changed:', Object.keys(changes));
+    console.log('[Sidepanel] Changes details:', changes);
+  }
 
   if (changes['onoff']) {
     currentOnoff = changes['onoff'].newValue;
     _showOnoff(currentOnoff);
   }
 
+  // 使用 ?? 运算符，如果新值为 null 或 undefined，则使用默认值
   if (changes['tts_endpoint']) {
-    current_tts_endpoint = changes['tts_endpoint'].newValue;
+    current_tts_endpoint = changes['tts_endpoint'].newValue ?? default_tts_endpoint;
   }
 
   if (changes['tts_model']) {
-    current_tts_model = changes['tts_model'].newValue;
+    current_tts_model = changes['tts_model'].newValue ?? default_tts_model;
   }
 
   if (changes['tts_voice']) {
-    current_tts_voice = changes['tts_voice'].newValue;
+    current_tts_voice = changes['tts_voice'].newValue ?? default_tts_voice;
   }
 
   if (changes['auth_token']) {
-    current_auth_token = changes['auth_token'].newValue;
+    current_auth_token = changes['auth_token'].newValue ?? default_auth_token;
   }
 
   if (changes['chat_endpoint']) {
-    current_chat_endpoint = changes['chat_endpoint'].newValue;
+    current_chat_endpoint = changes['chat_endpoint'].newValue ?? default_chat_endpoint;
   }
 
   if (changes['chat_model']) {
-    current_chat_model = changes['chat_model'].newValue;
+    current_chat_model = changes['chat_model'].newValue ?? default_chat_model;
   }
 
   if (changes['action_items']) {
     const action_items = changes['action_items'].newValue;
-    current_action_items_active = action_items.filter(item => item.active);
+    if (action_items && Array.isArray(action_items)) {
+      current_action_items_active = action_items.filter(item => item.active);
+    } else {
+      current_action_items_active = default_action_items.filter(item => item.active);
+    }
+  }
+  
+  if (debug) {
+    console.log('[Sidepanel] Config updated:', {
+      tts_endpoint: current_tts_endpoint,
+      tts_model: current_tts_model,
+      tts_voice: current_tts_voice,
+      chat_endpoint: current_chat_endpoint,
+      chat_model: current_chat_model
+    });
   }
 }
+
+/**
+ * 存储监听器移除函数（用于清理）
+ */
+let removeStorageListener = null;
 
 /**
  * 设置存储变化监听器
@@ -94,6 +121,12 @@ function setupStorageListeners() {
   if (debug) console.log('[Sidepanel] Setting up storage listeners...');
 
   try {
+    // 如果已经有监听器，先移除旧的
+    if (removeStorageListener) {
+      removeStorageListener();
+      removeStorageListener = null;
+    }
+
     const storageUtils = window.storageUtils;
     const keysToWatch = [
       'onoff',
@@ -106,13 +139,19 @@ function setupStorageListeners() {
       'action_items'
     ];
 
-    if (storageUtils && storageUtils.createStorageListener) {
+    // if (storageUtils && storageUtils.createStorageListener) {
       // 使用 storageUtils 创建监听器
-      storageUtils.createStorageListener(keysToWatch, handleStorageChanges);
-    } else {
-      // 降级方案：直接使用 Chrome API
-      chrome.storage.local.onChanged.addListener(handleStorageChanges);
-    }
+      removeStorageListener = storageUtils.createStorageListener(keysToWatch, handleStorageChanges);
+      if (debug) {
+        console.log('[Sidepanel] Storage listeners set up using createStorageListener for keys:', keysToWatch);
+      }
+    // } else {
+    //   // 降级方案：直接使用 Chrome API
+    //   chrome.storage.local.onChanged.addListener(handleStorageChanges);
+    //   if (debug) {
+    //     console.log('[Sidepanel] Storage listeners set up using Chrome API directly');
+    //   }
+    // }
 
     if (debug) console.log('[Sidepanel] Storage listeners set up successfully');
   } catch (error) {
@@ -174,11 +213,11 @@ async function initOnoffState() {
     const storageUtils = window.storageUtils;
     
     // 打开sidepanel时，即将Onoff开关设为true。 并更新缓存内的参数
-    if (storageUtils && storageUtils.setStorageValue) {
+    // if (storageUtils && storageUtils.setStorageValue) {
       await storageUtils.setStorageValue("onoff", currentOnoff);
-    } else {
-      await chrome.storage.local.set({ "onoff": currentOnoff });
-    }
+    // } else {
+    //   await chrome.storage.local.set({ "onoff": currentOnoff });
+    // }
 
     // 显示开关状态
     _showOnoff(currentOnoff);
@@ -186,11 +225,11 @@ async function initOnoffState() {
     // 对开关加事件监听，当开关状态改变时，更新缓存内的参数
     toggleSwitch.addEventListener('change', async function() {
       const newValue = this.checked;
-      if (storageUtils && storageUtils.setStorageValue) {
+      // if (storageUtils && storageUtils.setStorageValue) {
         await storageUtils.setStorageValue("onoff", newValue);
-      } else {
-        await chrome.storage.local.set({ "onoff": newValue });
-      }
+      // } else {
+      //   await chrome.storage.local.set({ "onoff": newValue });
+      // }
     });
   } catch (error) {
     console.error('[Sidepanel] Error initializing onoff state:', error);
@@ -202,14 +241,31 @@ async function initOnoffState() {
  * @param {Object} data - 配置数据对象
  */
 function applyConfigData(data) {
-  if (data.tts_endpoint) current_tts_endpoint = data.tts_endpoint;
-  if (data.tts_model) current_tts_model = data.tts_model;
-  if (data.tts_voice) current_tts_voice = data.tts_voice;
-  if (data.auth_token) current_auth_token = data.auth_token;
-  if (data.chat_endpoint) current_chat_endpoint = data.chat_endpoint;
-  if (data.chat_model) current_chat_model = data.chat_model;
-  if (data.action_items) {
+  // 使用 ?? 运算符，如果值为 null 或 undefined，则使用默认值
+  // 但要注意，如果存储中明确设置了空字符串，也应该使用空字符串
+  current_tts_endpoint = data.tts_endpoint ?? default_tts_endpoint;
+  current_tts_model = data.tts_model ?? default_tts_model;
+  current_tts_voice = data.tts_voice ?? default_tts_voice;
+  current_auth_token = data.auth_token ?? default_auth_token;
+  current_chat_endpoint = data.chat_endpoint ?? default_chat_endpoint;
+  current_chat_model = data.chat_model ?? default_chat_model;
+  
+  if (data.action_items && Array.isArray(data.action_items)) {
     current_action_items_active = data.action_items.filter(item => item.active);
+  } else {
+    // 如果没有 action_items 或不是数组，使用默认值
+    current_action_items_active = default_action_items.filter(item => item.active);
+  }
+  
+  if (debug) {
+    console.log('[Sidepanel] Config applied:', {
+      tts_endpoint: current_tts_endpoint,
+      tts_model: current_tts_model,
+      tts_voice: current_tts_voice,
+      chat_endpoint: current_chat_endpoint,
+      chat_model: current_chat_model,
+      action_items_count: current_action_items_active.length
+    });
   }
 }
 
@@ -230,12 +286,12 @@ async function initConfig() {
     ];
 
     let data;
-    if (storageUtils && storageUtils.getStorageValues) {
+    // if (storageUtils && storageUtils.getStorageValues) {
       data = await storageUtils.getStorageValues(keys);
-    } else {
-      // 降级方案：直接使用 Chrome API
-      data = await chrome.storage.local.get(keys);
-    }
+    // } else {
+    //   // 降级方案：直接使用 Chrome API
+    //   data = await chrome.storage.local.get(keys);
+    // }
 
     // 应用配置数据
     applyConfigData(data);
