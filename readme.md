@@ -8,7 +8,7 @@ https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
 - a chrome extentions
 - base on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
-- base on OpenAI gpt-3.5-turbo, gpt-4-turbo model [https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo]
+- base on OpenAI gpt-4o, gpt-4o-mini model [https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo]
 
 ## Info
 

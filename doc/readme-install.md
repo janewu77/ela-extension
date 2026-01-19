@@ -1,14 +1,16 @@
 # Dev Env Setting
 
-### install parcel
+### install parcel (v2)
 
 https://parceljs.org/getting-started/webapp/
 
 ```bash
-npm install parcel --save-dev
+npm install parcel@^2.12.0 --save-dev
 npm init -y
 
-npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
+# Note: Parcel v2 is used in this project
+# For CSS building, use the build:css script instead
+npm run build:css
 ```
 
 config file(s)：
@@ -54,8 +56,24 @@ chmod +x zip.sh
 ## deploy
 
 ```bash
-npm run clean
-npm run build
+# 完整打包流程（推荐）
 npm run pack
 
+# 或者分步执行
+npm run clean
+npm run build
+npm run zip
+```
+
+## 测试
+
+```bash
+# 运行所有测试
+npm test
+
+# 监听模式
+npm run test:watch
+
+# 生成覆盖率报告
+npm run test:coverage
 ```
