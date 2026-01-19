@@ -1,5 +1,4 @@
-
-const debug = false;
+const debug = true;
 const defaultOnoff = false; //是否打开功能
 
 const default_auth_token="Your-OpenAI-API-Key";

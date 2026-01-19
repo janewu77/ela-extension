@@ -305,7 +305,7 @@ async function initConfig() {
  */
 function initButtons() {
   try {
-    // “设置”按钮（左上角的设置按钮）
+    // “设置”按钮（左上角的设置按钮） -- 点击后打开option页面
     const btnSetting = document.getElementById('btnSetting');
     if (btnSetting) {
       btnSetting.id = "SettingButton";
@@ -318,7 +318,7 @@ function initButtons() {
       });
     }
 
-    // “添加内容块”按钮（右下角的加号）
+    // “添加内容块”按钮（右下角的加号） -- 点击后增加一块空白块，可输入任何内容
     const btnAddOne = document.getElementById('btnAddOne');
     if (btnAddOne) {
       btnAddOne.addEventListener('click', function() {
@@ -335,7 +335,7 @@ function initButtons() {
 // ============================================================================
 
 /**
- * 显示 onoff 状态
+ * 显示 onoff 状态(仅在当前页面上显示)
  * @param {boolean} bOnoff - onoff 状态
  */
 function _showOnoff(bOnoff) {
@@ -457,6 +457,12 @@ if (typeof module !== 'undefined' && module.exports) {
     _showOnoff,
     getBtnSetting,
     createButton,
-    setupMessageListeners
+    setupMessageListeners,
+    // 导出 SVG 常量供其他模块使用
+    SVGLoadingSpin,
+    SVGDelete_light,
+    SVGCopy_light,
+    SVGClose_light,
+    SVGDeleteAll_6
   };
 }

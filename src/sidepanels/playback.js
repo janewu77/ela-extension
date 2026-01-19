@@ -51,6 +51,7 @@ const divContentContainer = document.getElementById('container-content');
 /**
  * 添加内容块
  * @param {string} msg - 消息内容
+ * 每次都插到最前面（从上往下为倒序，即最新的在最上面）
  */
 function add_content_block(msg) {
   if (debug) console.log('[Playback] Adding content block:', msg?.substring(0, 50));
@@ -95,6 +96,7 @@ function get_current_lastNode() {
 
 /**
  * 删除所有内容块
+ * -- 右上角删除按钮的功能，清除所有内容块，并清除map里的缓存数据
  */
 function deleteAllBlocks() {
   if (debug) console.log('[Playback] Deleting all blocks, count:', myuuid);
@@ -102,8 +104,8 @@ function deleteAllBlocks() {
   try {
     for (let uuid = 1; uuid <= myuuid; uuid++) {
       if (mapMsg.has(uuid)) {
-        btnStopClicked(uuid);
-        mapMsg.delete(uuid);
+        btnStopClicked(uuid); //先停止音频播放
+        mapMsg.delete(uuid);  //清除map里的缓存数据
         mapAudioLoop.delete(uuid);
 
         const element = document.getElementById(uuid);
@@ -125,7 +127,7 @@ function deleteAllBlocks() {
 // ============================================================================
 
 /**
- * 初始化删除所有按钮
+ * 初始化 “删除所有” 按钮
  */
 function initDeleteAllButton() {
   try {
@@ -609,9 +611,31 @@ function playAudioBuffer(uuid, onBefore, onEnded) {
 // ============================================================================
 
 // 等待 DOM 加载完成后再初始化
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPlayback);
-} else {
-  // DOM 已经加载完成
-  initPlayback();
+if (typeof window !== 'undefined' && typeof module === 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPlayback);
+  } else {
+    // DOM 已经加载完成
+    initPlayback();
+  }
+}
+
+// 导出函数供测试使用（在 Node.js 环境中）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    add_content_block,
+    get_current_lastNode,
+    deleteAllBlocks,
+    initDeleteAllButton,
+    initPlayback,
+    _createMsgDiv,
+    _createContentElement,
+    _createSysMsgElement,
+    createLoopCheckbox,
+    createPlayerPannel,
+    btnStopClicked,
+    playAudioBuffer,
+    // 导出常量供其他模块使用
+    ClassNameForTxtAreaButton
+  };
 }

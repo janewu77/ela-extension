@@ -1,6 +1,7 @@
 // ============================================================================
 // Chat Action Module - 聊天操作模块
-// 功能：管理自定义操作按钮和响应显示
+// 功能：管理自定义操作按钮和响应显示（AI功能按钮、复制、清除、出错时的提示与按钮）
+// 说明：点击AI功能按钮发起API请求
 // ============================================================================
 
 if (debug) console.log('[ChatAction] Chat action module loaded, debug mode:', debug);
@@ -15,7 +16,7 @@ const ClassNameForPlayButtonMulti = `flex items-center justify-center p-1 font-s
 // UI 辅助函数
 // ============================================================================
 
-/**
+/** 
  * 显示/隐藏按钮
  * @param {HTMLElement} btnCopy - 按钮元素
  * @param {string} visibility - 可见性 ('visible' 或 'hidden')
@@ -84,8 +85,8 @@ function createCustomPannel(uuid) {
     // 创建操作按钮面板
     const actionPannel = _createActionPannel(uuid, arrActionButton, divMsg);
 
-    // 创建菜单按钮（清除和复制）
-    const divTxtAreaMenu = _createMenuButtons(uuid, divMsg, arrActionButton);
+    // 创建菜单按钮（清除和复制） -- 在创建操作按钮面板中一起创建
+    // const divTxtAreaMenu = _createMenuButtons(uuid, divMsg, arrActionButton);
 
     container.appendChild(divMsg);
     container.appendChild(actionPannel);
@@ -145,7 +146,7 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
 
   const textareaClassName = textareaElement.className;
 
-  // 创建菜单按钮（需要在创建操作按钮之前创建，以便在回调中使用）
+  // 创建菜单按钮（需要在创建操作按钮之前创建，以便在回调中使用） -- 清除与复制小按钮
   const divTxtAreaMenu = _createMenuButtons(uuid, divMsg, arrActionButton);
 
   // 为每个激活的操作项创建按钮
@@ -307,4 +308,16 @@ function _createMenuButtons(uuid, divMsg, arrActionButton) {
   });
 
   return divTxtAreaMenu;
+}
+
+// 导出函数供测试使用（在 Node.js 环境中）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    showBtn,
+    disableAllBtn,
+    createCustomPannel,
+    _createResponseElement,
+    _createActionPannel,
+    _createMenuButtons
+  };
 }
