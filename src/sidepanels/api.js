@@ -226,3 +226,15 @@ function streamResponseRead(reader, afterGetContent, onDone) {
 
   readChunk();
 }
+
+// ============================================================================
+// 导出函数供测试使用（在 Node.js 环境中）
+// ============================================================================
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    fetchAudio,
+    fetchChat,
+    streamResponseRead
+  };
+}
