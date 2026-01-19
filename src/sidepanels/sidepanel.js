@@ -435,9 +435,28 @@ function setupMessageListeners(){
 // ============================================================================
 
 // 等待 DOM 加载完成后再初始化
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  // DOM 已经加载完成
-  init();
+if (typeof window !== 'undefined' && typeof module === 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    // DOM 已经加载完成
+    init();
+  }
+}
+
+// 导出函数供测试使用（在 Node.js 环境中）
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    init,
+    initOnoffState,
+    initConfig,
+    initButtons,
+    setupStorageListeners,
+    handleStorageChanges,
+    applyConfigData,
+    _showOnoff,
+    getBtnSetting,
+    createButton,
+    setupMessageListeners
+  };
 }
