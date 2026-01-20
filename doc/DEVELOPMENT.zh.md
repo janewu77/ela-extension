@@ -478,6 +478,10 @@ ela-extension/
 │   ├── background.js      # Background Script
 │   ├── manifest.json      # 扩展清单文件
 │   ├── scripts/           # 脚本文件
+│   │   ├── icons.js       # SVG 图标模块（统一管理图标）
+│   │   ├── const.js       # 常量定义
+│   │   ├── util.js         # 工具函数
+│   │   └── ...
 │   ├── sidepanels/        # 侧边栏文件
 │   ├── options/           # 选项页面
 │   └── css/               # 样式文件

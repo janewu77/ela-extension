@@ -12,7 +12,7 @@
 // 因此使用构建脚本（copy-assets.sh）在构建后替换 process.env.NODE_ENV 为字面量字符串
 // 开发模式（watch）：NODE_ENV=development → process.env.NODE_ENV 被替换为 'development' → debug = true
 // 生产模式（build）：NODE_ENV=production → process.env.NODE_ENV 被替换为 'production' → debug = false
-const debug = process.env.NODE_ENV !== 'production';
+const debug = process.env.NODE_ENV !== "production";
 const defaultOnoff = false; // 是否打开功能
 
 // ============================================================================

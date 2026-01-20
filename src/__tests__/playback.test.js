@@ -134,11 +134,6 @@ const api = require("../sidepanels/api.js");
 const util = require("../scripts/util.js");
 
 // 使用实际导出的常量和函数
-global.SVGLoadingSpin = sidepanel.SVGLoadingSpin;
-global.SVGClose_light = sidepanel.SVGClose_light;
-global.SVGDeleteAll_6 = sidepanel.SVGDeleteAll_6;
-global.SVGDelete_light = sidepanel.SVGDelete_light;
-global.SVGCopy_light = sidepanel.SVGCopy_light;
 global.ClassNameForTxtAreaButton = playback.ClassNameForTxtAreaButton;
 
 // 使用 jest.spyOn 包装实际函数，以便跟踪调用情况

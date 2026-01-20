@@ -8,6 +8,9 @@ archive/
 # 第三方库
 *.min.js
 
+# 生成的 CSS 文件（由 Tailwind CSS 生成，不应被格式化）
+src/css/main.css
+
 # 配置文件
 package-lock.json
 

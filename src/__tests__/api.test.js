@@ -106,13 +106,16 @@ describe("API.js 测试", () => {
         global.current_tts_endpoint,
         expect.objectContaining({
           method: "POST",
-          headers: expect.objectContaining({
-            "Content-Type": "application/json",
-            authorization: `Bearer ${global.current_auth_token}`,
-          }),
+          headers: expect.any(Headers),
           body: expect.stringContaining('"input":"test message"'),
         })
       );
+
+      // 验证 Headers 对象的内容
+      const fetchCall = global.fetch.mock.calls[0];
+      const headers = fetchCall[1].headers;
+      expect(headers.get("Content-Type")).toBe("application/json");
+      expect(headers.get("authorization")).toBe(`Bearer ${global.current_auth_token}`);
 
       expect(onSuccess).toHaveBeenCalledWith(mockArrayBuffer);
       expect(onError).not.toHaveBeenCalled();
@@ -251,13 +254,16 @@ describe("API.js 测试", () => {
         global.current_chat_endpoint,
         expect.objectContaining({
           method: "POST",
-          headers: expect.objectContaining({
-            "Content-Type": "application/json",
-            authorization: `Bearer ${global.current_auth_token}`,
-          }),
+          headers: expect.any(Headers),
           body: expect.stringContaining('"stream":true'),
         })
       );
+
+      // 验证 Headers 对象的内容
+      const fetchCall = global.fetch.mock.calls[0];
+      const headers = fetchCall[1].headers;
+      expect(headers.get("Content-Type")).toBe("application/json");
+      expect(headers.get("authorization")).toBe(`Bearer ${global.current_auth_token}`);
 
       expect(onSuccess).toHaveBeenCalledWith(mockResponse, true);
       expect(onError).not.toHaveBeenCalled();

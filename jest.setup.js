@@ -102,6 +102,26 @@ global.HTMLTextAreaElement = class HTMLTextAreaElement {
 // 在测试环境中，debug 始终为 true
 global.debug = true;
 
+// ============================================================================
+// SVG 图标常量（从 icons.js 导入，模拟浏览器环境）
+// ============================================================================
+// 在浏览器环境中，icons.js 通过 script 标签加载，SVG 常量作为全局变量可用
+// 在测试环境中，我们从 icons.js 导入并设置为全局变量
+const icons = require('./src/scripts/icons.js');
+global.SVGSetting_6 = icons.SVGSetting_6;
+global.SVGSetting = icons.SVGSetting;
+global.SVGDeleteAll_6 = icons.SVGDeleteAll_6;
+global.SVGDelete_light = icons.SVGDelete_light;
+global.SVGCopy_light = icons.SVGCopy_light;
+global.SVGClose_light = icons.SVGClose_light;
+global.SVGLoadingSpin = icons.SVGLoadingSpin;
+global.SVGPlay = icons.SVGPlay;
+global.SVGPause = icons.SVGPause;
+global.SVGStop = icons.SVGStop;
+global.SVGEdit = icons.SVGEdit;
+global.SVGCheck = icons.SVGCheck;
+global.SVGCheckDisabled = icons.SVGCheckDisabled;
+
 // 保留原始 console 方法，但允许在测试中 mock
 // 这样测试可以选择性地 mock console 方法
 if (!global.console._original) {

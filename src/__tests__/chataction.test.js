@@ -81,9 +81,6 @@ const util = require("../scripts/util.js");
 
 // 使用实际导出的常量和函数
 global.ClassNameForTxtAreaButton = playback.ClassNameForTxtAreaButton;
-global.SVGLoadingSpin = sidepanel.SVGLoadingSpin;
-global.SVGDelete_light = sidepanel.SVGDelete_light;
-global.SVGCopy_light = sidepanel.SVGCopy_light;
 
 // 使用 jest.spyOn 包装实际函数，以便跟踪调用情况
 global.createButton = jest.spyOn(sidepanel, "createButton");

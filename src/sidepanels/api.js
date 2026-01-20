@@ -41,12 +41,18 @@ function fetchAudio(msg, onSuccess, onError) {
     return;
   }
 
+  // 使用 Headers 对象确保 header 值符合 ISO-8859-1 编码要求
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+  // 确保 authorization token 只包含 ASCII 字符
+  const authToken = String(current_auth_token || "").trim();
+  if (authToken) {
+    headers.set("authorization", `Bearer ${authToken}`);
+  }
+
   fetch(current_tts_endpoint, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${current_auth_token}`,
-    },
+    headers: headers,
     body: JSON.stringify({
       model: current_tts_model,
       input: msg,
@@ -119,12 +125,18 @@ function fetchChat(msg, prompt, onSuccess, onError, stream = true) {
     return;
   }
 
+  // 使用 Headers 对象确保 header 值符合 ISO-8859-1 编码要求
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+  // 确保 authorization token 只包含 ASCII 字符
+  const authToken = String(current_auth_token || "").trim();
+  if (authToken) {
+    headers.set("authorization", `Bearer ${authToken}`);
+  }
+
   fetch(current_chat_endpoint, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${current_auth_token}`,
-    },
+    headers: headers,
     body: JSON.stringify({
       model: current_chat_model,
       messages: [

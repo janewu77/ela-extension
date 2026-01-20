@@ -478,6 +478,10 @@ ela-extension/
 │   ├── background.js      # Background Script
 │   ├── manifest.json      # Extension manifest
 │   ├── scripts/           # Script files
+│   │   ├── icons.js       # SVG icons module (centralized icon management)
+│   │   ├── const.js       # Constants
+│   │   ├── util.js         # Utility functions
+│   │   └── ...
 │   ├── sidepanels/        # Side panel files
 │   ├── options/           # Options page
 │   └── css/               # Style files

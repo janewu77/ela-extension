@@ -23,6 +23,7 @@ export default [
         console: 'readonly',
         navigator: 'readonly',
         fetch: 'readonly',
+        Headers: 'readonly', // Fetch API Headers
         TextEncoder: 'readonly',
         TextDecoder: 'readonly',
         HTMLTextAreaElement: 'readonly',
@@ -84,10 +85,19 @@ export default [
         current_chat_endpoint: 'readonly',
         current_chat_model: 'readonly',
         current_action_items_active: 'readonly',
+        // SVG 图标（从 icons.js 加载）
+        SVGSetting_6: 'readonly',
+        SVGSetting: 'readonly',
         SVGDeleteAll_6: 'readonly',
         SVGDelete_light: 'readonly',
         SVGCopy_light: 'readonly',
         SVGClose_light: 'readonly',
+        SVGPlay: 'readonly',
+        SVGPause: 'readonly',
+        SVGStop: 'readonly',
+        SVGEdit: 'readonly',
+        SVGCheck: 'readonly',
+        SVGCheckDisabled: 'readonly',
       },
     },
     
