@@ -3,7 +3,9 @@
 // 功能：监听页面文本选择，并将选中的文本发送给扩展
 // ============================================================================
 
-if (debug) console.log('[Content] Content script loaded, debug mode:', debug);
+if (debug) {
+  console.log("[Content] Content script loaded, debug mode:", debug);
+}
 
 // ============================================================================
 // 状态管理
@@ -16,11 +18,13 @@ let currentOnoff = false;
  */
 async function initializeState() {
   try {
-    const data = await chrome.storage.local.get('onoff');
+    const data = await chrome.storage.local.get("onoff");
     currentOnoff = data.onoff ?? false;
-    if (debug) console.log('[Content] Initial state loaded:', currentOnoff);
+    if (debug) {
+      console.log("[Content] Initial state loaded:", currentOnoff);
+    }
   } catch (error) {
-    console.error('[Content] Error loading initial state:', error);
+    console.error("[Content] Error loading initial state:", error);
     currentOnoff = false;
   }
 }
@@ -31,7 +35,9 @@ async function initializeState() {
  */
 function updateState(newValue) {
   currentOnoff = newValue;
-  if (debug) console.log('[Content] State updated:', currentOnoff);
+  if (debug) {
+    console.log("[Content] State updated:", currentOnoff);
+  }
 }
 
 // ============================================================================
@@ -45,13 +51,15 @@ function updateState(newValue) {
 function getSelectedText() {
   try {
     const selection = window.getSelection();
-    if (!selection) return '';
-    
+    if (!selection) {
+      return "";
+    }
+
     const text = selection.toString().trim();
     return text;
   } catch (error) {
-    console.error('[Content] Error getting selected text:', error);
-    return '';
+    console.error("[Content] Error getting selected text:", error);
+    return "";
   }
 }
 
@@ -66,23 +74,25 @@ async function sendSelectedText(selectedText) {
 
   try {
     const message = {
-      type: 'selectedText',
+      type: "selectedText",
       msg: selectedText,
-      isTopFrame: window.self === window.top
+      isTopFrame: window.self === window.top,
     };
 
     if (debug) {
-      const preview = message.msg.length > 50 ? message.msg.substring(0, 50) + '...' : message.msg;
-      console.log('[Content] Sending selected text:', preview);
+      const preview = message.msg.length > 50 ? message.msg.substring(0, 50) + "..." : message.msg;
+      console.log("[Content] Sending selected text:", preview);
     }
-    
+
     await chrome.runtime.sendMessage(message);
   } catch (error) {
     // 处理扩展未连接的情况（用户可能关闭了扩展）
-    if (error.message && error.message.includes('Extension context invalidated')) {
-      if (debug) console.log('[Content] Extension context invalidated, message not sent');
+    if (error.message && error.message.includes("Extension context invalidated")) {
+      if (debug) {
+        console.log("[Content] Extension context invalidated, message not sent");
+      }
     } else {
-      console.error('[Content] Error sending message:', error);
+      console.error("[Content] Error sending message:", error);
     }
   }
 }
@@ -92,7 +102,9 @@ async function sendSelectedText(selectedText) {
  */
 function handleTextSelection() {
   if (!currentOnoff) {
-    if (debug) console.log('[Content] Extension is disabled, ignoring selection');
+    if (debug) {
+      console.log("[Content] Extension is disabled, ignoring selection");
+    }
     return;
   }
 
@@ -113,23 +125,27 @@ function handleTextSelection() {
 function handleMouseUp(event) {
   // 参数验证
   if (!event) {
-    if (debug) console.warn('[Content] Invalid mouse event received');
+    if (debug) {
+      console.warn("[Content] Invalid mouse event received");
+    }
     return;
   }
 
   if (debug) {
-    console.log('[Content] Mouse up event, onoff:', currentOnoff);
-    console.log('[Content] Event details:', {
+    console.log("[Content] Mouse up event, onoff:", currentOnoff);
+    console.log("[Content] Event details:", {
       target: event.target,
       timestamp: event.timeStamp,
-      isTrusted: event.isTrusted
+      isTrusted: event.isTrusted,
     });
   }
 
   // 安全检查：确保事件是由用户操作触发的，而不是脚本生成的
   // 这可以防止恶意页面通过程序化方式触发事件
   if (!event.isTrusted) {
-    if (debug) console.warn('[Content] Ignoring untrusted mouse event (potential security risk)');
+    if (debug) {
+      console.warn("[Content] Ignoring untrusted mouse event (potential security risk)");
+    }
     return;
   }
 
@@ -148,29 +164,33 @@ async function initialize() {
   await initializeState();
 
   chrome.storage.local.onChanged.addListener((changes) => {
-    if (debug) console.log('[Content] Storage changed:', Object.keys(changes));
-    
-    const onoffChange = changes['onoff'];
+    if (debug) {
+      console.log("[Content] Storage changed:", Object.keys(changes));
+    }
+
+    const onoffChange = changes["onoff"];
     if (onoffChange) {
       updateState(onoffChange.newValue ?? false);
     }
   });
 
   // 监听鼠标释放事件（文本选择）
-  document.addEventListener('mouseup', handleMouseUp);
+  document.addEventListener("mouseup", handleMouseUp);
 
-  if (debug) console.log('[Content] Content script initialized');
+  if (debug) {
+    console.log("[Content] Content script initialized");
+  }
 }
 
 // 启动初始化（仅在浏览器环境中自动执行，不在 Node.js 测试环境中执行）
-if (typeof window !== 'undefined' && typeof module === 'undefined') {
+if (typeof window !== "undefined" && typeof module === "undefined") {
   initialize().catch((error) => {
-    console.error('[Content] Error during initialization:', error);
+    console.error("[Content] Error during initialization:", error);
   });
 }
 
 // 导出函数供测试使用（在 Node.js 环境中）
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     initializeState,
     updateState,
@@ -180,6 +200,8 @@ if (typeof module !== 'undefined' && module.exports) {
     handleMouseUp,
     initialize,
     getCurrentOnoff: () => currentOnoff,
-    setCurrentOnoff: (value) => { currentOnoff = value; }
+    setCurrentOnoff: (value) => {
+      currentOnoff = value;
+    },
   };
 }

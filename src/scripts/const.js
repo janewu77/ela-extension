@@ -26,12 +26,7 @@ const default_tts_model = "gpt-4o-mini-tts"; // tts-1 tts-1-hd
 const default_tts_voice = "marin"; // alloy, ash, coral, echo, fable, onyx, nova, sage, shimmer
 
 // TTS 模型选项列表
-const arrTTSModel = [
-  "tts-1",
-  "tts-1-hd",
-  "gpt-4o-mini-tts",
-  "gpt-4o-mini-tts-2025-12-15"
-];
+const arrTTSModel = ["tts-1", "tts-1-hd", "gpt-4o-mini-tts", "gpt-4o-mini-tts-2025-12-15"];
 
 // TTS 声音选项列表
 const arrTTSVoice = [
@@ -47,7 +42,7 @@ const arrTTSVoice = [
   "shimmer",
   "verse",
   "marin",
-  "cedar"
+  "cedar",
 ];
 
 // ============================================================================
@@ -60,13 +55,13 @@ const default_chat_model = "gpt-4.1-mini";
 
 // Chat 模型选项列表
 const arrChatModel = [
-  "gpt-4.1-nano",   // 翻译批量 / 超省钱
-  "gpt-4.1-mini",   // 翻译默认（主力）
-  "gpt-4.1",        // 翻译专业版（更稳/术语一致性更强）
-  "gpt-5-nano",     // 问答省钱 / 快速草稿
-  "gpt-5-mini",     // 问答默认 / 翻译+本地化改写（增强）
-  "gpt-5.2",        // 最强（仅少量使用）
-  "gpt-4o-mini",    // 仅为了以前的兼容
+  "gpt-4.1-nano", // 翻译批量 / 超省钱
+  "gpt-4.1-mini", // 翻译默认（主力）
+  "gpt-4.1", // 翻译专业版（更稳/术语一致性更强）
+  "gpt-5-nano", // 问答省钱 / 快速草稿
+  "gpt-5-mini", // 问答默认 / 翻译+本地化改写（增强）
+  "gpt-5.2", // 最强（仅少量使用）
+  "gpt-4o-mini", // 仅为了以前的兼容
 ];
 
 // ============================================================================
@@ -75,8 +70,8 @@ const arrChatModel = [
 
 // 默认操作按钮定义
 const _default_action_word = {
-  "name": 'word📖',
-  "prompt": `
+  name: "word📖",
+  prompt: `
     - explain the word in detail in English
     - explain the word in detail in English
     - phonetic notation
@@ -84,13 +79,13 @@ const _default_action_word = {
     - examples in English
     - explain the word in detail in Chinese
   `,
-  "active": true,
-  "other": false
+  active: true,
+  other: false,
 };
 
 const _default_action_translate = {
-  "name": '翻译🇺🇸🇨🇳',
-  "prompt": `你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
+  name: "翻译🇺🇸🇨🇳",
+  prompt: `你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
     规则：
     - 翻译时要准确传达原文的事实和背景。
     - 即使意译也要保留原始段落格式，以及保留术语，例如 FLAC，JPEG 等。保留公司缩写，例如 Microsoft, Amazon, OpenAI 等。
@@ -128,36 +123,36 @@ const _default_action_translate = {
     ### 意译
     {意译结果}
   `,
-  "active": true,
-  "other": false
+  active: true,
+  other: false,
 };
 
 const _default_action_3 = {
-  "name": '总结',
-  "prompt": `summary`,
-  "active": false,
-  "other": false
+  name: "总结",
+  prompt: `summary`,
+  active: false,
+  other: false,
 };
 
 const _default_action_4 = {
-  "name": 'action 4',
-  "prompt": ``,
-  "active": false,
-  "other": false
+  name: "action 4",
+  prompt: ``,
+  active: false,
+  other: false,
 };
 
 const _default_action_5 = {
-  "name": 'action 5',
-  "prompt": ``,
-  "active": false,
-  "other": false
+  name: "action 5",
+  prompt: ``,
+  active: false,
+  other: false,
 };
 
 const _default_action_6 = {
-  "name": 'action 6',
-  "prompt": ``,
-  "active": false,
-  "other": false
+  name: "action 6",
+  prompt: ``,
+  active: false,
+  other: false,
 };
 
 // 默认操作按钮列表
@@ -167,5 +162,5 @@ const default_action_items = [
   _default_action_3,
   _default_action_4,
   _default_action_5,
-  _default_action_6
+  _default_action_6,
 ];

@@ -1,6 +1,6 @@
 /**
  * Background.js 测试文件
- * 
+ *
  * 直接引用 background.js 文件进行测试，确保测试的是实际代码
  * 当原文件修改时，测试会自动反映这些变化
  */
@@ -10,7 +10,7 @@
 // ============================================================================
 
 // 引入 mock 常量
-const { mockConstants, setupMockConstants } = require('./mockConst.mock.js');
+const { mockConstants, setupMockConstants } = require("./mockConst.mock.js");
 
 // 设置全局 mock 常量（必须在 require 之前设置）
 setupMockConstants();
@@ -20,16 +20,16 @@ setupMockConstants();
 // ============================================================================
 
 // 清除缓存以确保每次测试都使用最新代码
-delete require.cache[require.resolve('../background.js')];
+delete require.cache[require.resolve("../background.js")];
 
 // 直接 require background.js（它会自动导出函数）
-const background = require('../background.js');
+const background = require("../background.js");
 
 // ============================================================================
 // 测试套件
 // ============================================================================
 
-describe('Background.js 测试', () => {
+describe("Background.js 测试", () => {
   beforeEach(() => {
     // 重置所有 mock
     jest.clearAllMocks();
@@ -42,7 +42,7 @@ describe('Background.js 测试', () => {
     chrome.commands.onCommand.addListener.mockClear();
     chrome.storage.local.onChanged.addListener.mockClear();
     chrome.runtime.onMessage.addListener.mockClear();
-    
+
     // Mock console methods
     global.console.error = jest.fn();
     global.console.log = jest.fn();
@@ -52,11 +52,11 @@ describe('Background.js 测试', () => {
   // 存储管理函数测试
   // ========================================================================
 
-  describe('存储管理函数', () => {
-    describe('initStorageValue', () => {
-      it('应该使用默认值当存储中不存在该键时', async () => {
-        const key = 'test_key';
-        const defaultValue = 'default_value';
+  describe("存储管理函数", () => {
+    describe("initStorageValue", () => {
+      it("应该使用默认值当存储中不存在该键时", async () => {
+        const key = "test_key";
+        const defaultValue = "default_value";
 
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
@@ -68,10 +68,10 @@ describe('Background.js 测试', () => {
         expect(result).toBe(defaultValue);
       });
 
-      it('应该使用存储中的值当该键已存在时', async () => {
-        const key = 'test_key';
-        const defaultValue = 'default_value';
-        const existingValue = 'existing_value';
+      it("应该使用存储中的值当该键已存在时", async () => {
+        const key = "test_key";
+        const defaultValue = "default_value";
+        const existingValue = "existing_value";
 
         chrome.storage.local.get.mockResolvedValue({ [key]: existingValue });
         chrome.storage.local.set.mockResolvedValue({});
@@ -83,9 +83,9 @@ describe('Background.js 测试', () => {
         expect(result).toBe(existingValue);
       });
 
-      it('应该处理 null 值并使用默认值', async () => {
-        const key = 'test_key';
-        const defaultValue = 'default_value';
+      it("应该处理 null 值并使用默认值", async () => {
+        const key = "test_key";
+        const defaultValue = "default_value";
 
         chrome.storage.local.get.mockResolvedValue({ [key]: null });
         chrome.storage.local.set.mockResolvedValue({});
@@ -96,9 +96,9 @@ describe('Background.js 测试', () => {
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: defaultValue });
       });
 
-      it('应该处理 undefined 值并使用默认值', async () => {
-        const key = 'test_key';
-        const defaultValue = 'default_value';
+      it("应该处理 undefined 值并使用默认值", async () => {
+        const key = "test_key";
+        const defaultValue = "default_value";
 
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
@@ -109,11 +109,11 @@ describe('Background.js 测试', () => {
         expect(chrome.storage.local.set).toHaveBeenCalledWith({ [key]: defaultValue });
       });
 
-      it('应该处理存储读取错误', async () => {
-        const key = 'test_key';
-        const defaultValue = 'default_value';
+      it("应该处理存储读取错误", async () => {
+        const key = "test_key";
+        const defaultValue = "default_value";
 
-        chrome.storage.local.get.mockRejectedValue(new Error('Storage error'));
+        chrome.storage.local.get.mockRejectedValue(new Error("Storage error"));
         chrome.storage.local.set.mockResolvedValue({});
 
         const result = await background.initStorageValue(key, defaultValue);
@@ -123,13 +123,13 @@ describe('Background.js 测试', () => {
         expect(result).toBe(defaultValue);
       });
 
-      it('应该处理存储设置错误', async () => {
-        const key = 'test_key';
-        const defaultValue = 'default_value';
+      it("应该处理存储设置错误", async () => {
+        const key = "test_key";
+        const defaultValue = "default_value";
 
-        chrome.storage.local.get.mockRejectedValue(new Error('Get error'));
+        chrome.storage.local.get.mockRejectedValue(new Error("Get error"));
         chrome.storage.local.set
-          .mockRejectedValueOnce(new Error('Set error'))
+          .mockRejectedValueOnce(new Error("Set error"))
           .mockResolvedValueOnce({});
 
         const result = await background.initStorageValue(key, defaultValue);
@@ -138,9 +138,9 @@ describe('Background.js 测试', () => {
         expect(result).toBe(defaultValue);
       });
 
-      it('应该处理复杂对象值', async () => {
-        const key = 'test_key';
-        const complexValue = { nested: { data: 'test' }, array: [1, 2, 3] };
+      it("应该处理复杂对象值", async () => {
+        const key = "test_key";
+        const complexValue = { nested: { data: "test" }, array: [1, 2, 3] };
         const defaultValue = {};
 
         chrome.storage.local.get.mockResolvedValue({ [key]: complexValue });
@@ -153,12 +153,12 @@ describe('Background.js 测试', () => {
       });
     });
 
-    describe('initStorageValues', () => {
-      it('应该批量初始化多个存储值', async () => {
+    describe("initStorageValues", () => {
+      it("应该批量初始化多个存储值", async () => {
         const config = {
-          'key1': 'value1',
-          'key2': 'value2',
-          'key3': 'value3'
+          key1: "value1",
+          key2: "value2",
+          key3: "value3",
         };
 
         chrome.storage.local.get.mockResolvedValue({});
@@ -168,12 +168,12 @@ describe('Background.js 测试', () => {
 
         expect(chrome.storage.local.get).toHaveBeenCalledTimes(3);
         expect(chrome.storage.local.set).toHaveBeenCalledTimes(3);
-        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key1: 'value1' });
-        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key2: 'value2' });
-        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key3: 'value3' });
+        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key1: "value1" });
+        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key2: "value2" });
+        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key3: "value3" });
       });
 
-      it('应该并行处理所有存储值', async () => {
+      it("应该并行处理所有存储值", async () => {
         const callOrder = [];
         chrome.storage.local.get.mockImplementation((key) => {
           callOrder.push(`get-${key}`);
@@ -186,35 +186,35 @@ describe('Background.js 测试', () => {
         });
 
         await background.initStorageValues({
-          key1: 'value1',
-          key2: 'value2'
+          key1: "value1",
+          key2: "value2",
         });
 
         expect(callOrder.length).toBe(4);
-        expect(callOrder.filter(c => c.startsWith('get-')).length).toBe(2);
-        expect(callOrder.filter(c => c.startsWith('set-')).length).toBe(2);
+        expect(callOrder.filter((c) => c.startsWith("get-")).length).toBe(2);
+        expect(callOrder.filter((c) => c.startsWith("set-")).length).toBe(2);
       });
 
-      it('应该处理空配置对象', async () => {
+      it("应该处理空配置对象", async () => {
         await background.initStorageValues({});
 
         expect(chrome.storage.local.get).not.toHaveBeenCalled();
         expect(chrome.storage.local.set).not.toHaveBeenCalled();
       });
 
-      it('应该处理部分键已存在的情况', async () => {
+      it("应该处理部分键已存在的情况", async () => {
         chrome.storage.local.get
           .mockResolvedValueOnce({}) // key1 不存在
-          .mockResolvedValueOnce({ key2: 'existing_value' }); // key2 已存在
+          .mockResolvedValueOnce({ key2: "existing_value" }); // key2 已存在
         chrome.storage.local.set.mockResolvedValue({});
 
         await background.initStorageValues({
-          key1: 'default1',
-          key2: 'default2'
+          key1: "default1",
+          key2: "default2",
         });
 
-        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key1: 'default1' });
-        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key2: 'existing_value' });
+        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key1: "default1" });
+        expect(chrome.storage.local.set).toHaveBeenCalledWith({ key2: "existing_value" });
       });
     });
   });
@@ -223,36 +223,36 @@ describe('Background.js 测试', () => {
   // UI 更新函数测试
   // ========================================================================
 
-  describe('UI 更新函数', () => {
-    describe('updateBadge', () => {
-      it('应该设置徽章为 ON 当 isOn 为 true', () => {
+  describe("UI 更新函数", () => {
+    describe("updateBadge", () => {
+      it("应该设置徽章为 ON 当 isOn 为 true", () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
         background.updateBadge(true);
 
-        expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: 'ON' });
+        expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: "ON" });
       });
 
-      it('应该设置徽章为 OFF 当 isOn 为 false', () => {
+      it("应该设置徽章为 OFF 当 isOn 为 false", () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
         background.updateBadge(false);
 
-        expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: 'OFF' });
+        expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: "OFF" });
       });
 
-      it('应该处理设置徽章时的错误', async () => {
-        const error = new Error('Badge error');
+      it("应该处理设置徽章时的错误", async () => {
+        const error = new Error("Badge error");
         chrome.action.setBadgeText.mockRejectedValue(error);
 
         background.updateBadge(true);
 
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
 
-        expect(console.error).toHaveBeenCalledWith('[UI] Error updating badge:', error);
+        expect(console.error).toHaveBeenCalledWith("[UI] Error updating badge:", error);
       });
 
-      it('应该正确处理多次调用', () => {
+      it("应该正确处理多次调用", () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
         background.updateBadge(true);
@@ -260,9 +260,9 @@ describe('Background.js 测试', () => {
         background.updateBadge(true);
 
         expect(chrome.action.setBadgeText).toHaveBeenCalledTimes(3);
-        expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(1, { text: 'ON' });
-        expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(2, { text: 'OFF' });
-        expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(3, { text: 'ON' });
+        expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(1, { text: "ON" });
+        expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(2, { text: "OFF" });
+        expect(chrome.action.setBadgeText).toHaveBeenNthCalledWith(3, { text: "ON" });
       });
     });
   });
@@ -271,9 +271,9 @@ describe('Background.js 测试', () => {
   // 扩展初始化测试
   // ========================================================================
 
-  describe('扩展初始化', () => {
-    describe('initializeExtension', () => {
-      it('应该初始化所有存储值', async () => {
+  describe("扩展初始化", () => {
+    describe("initializeExtension", () => {
+      it("应该初始化所有存储值", async () => {
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
         chrome.sidePanel.setPanelBehavior.mockResolvedValue({});
@@ -284,13 +284,13 @@ describe('Background.js 测试', () => {
         expect(chrome.storage.local.get).toHaveBeenCalled();
         expect(chrome.storage.local.set).toHaveBeenCalled();
         expect(chrome.sidePanel.setPanelBehavior).toHaveBeenCalledWith({
-          openPanelOnActionClick: true
+          openPanelOnActionClick: true,
         });
         expect(chrome.action.setBadgeText).toHaveBeenCalled();
       });
 
-      it('应该处理初始化错误', async () => {
-        const error = new Error('Initialization error');
+      it("应该处理初始化错误", async () => {
+        const error = new Error("Initialization error");
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
         chrome.sidePanel.setPanelBehavior.mockRejectedValue(error);
@@ -298,12 +298,12 @@ describe('Background.js 测试', () => {
         await background.initializeExtension();
 
         expect(console.error).toHaveBeenCalledWith(
-          '[Init] Error during extension installation:',
+          "[Init] Error during extension installation:",
           error
         );
       });
 
-      it('应该初始化所有必需的配置项', async () => {
+      it("应该初始化所有必需的配置项", async () => {
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
         chrome.sidePanel.setPanelBehavior.mockResolvedValue({});
@@ -312,16 +312,16 @@ describe('Background.js 测试', () => {
         await background.initializeExtension();
 
         const setCalls = chrome.storage.local.set.mock.calls;
-        const configKeys = setCalls.map(call => Object.keys(call[0])[0]);
+        const configKeys = setCalls.map((call) => Object.keys(call[0])[0]);
 
-        expect(configKeys).toContain('onoff');
-        expect(configKeys).toContain('auth_token');
-        expect(configKeys).toContain('tts_endpoint');
-        expect(configKeys).toContain('tts_model');
-        expect(configKeys).toContain('tts_voice');
-        expect(configKeys).toContain('chat_endpoint');
-        expect(configKeys).toContain('chat_model');
-        expect(configKeys).toContain('action_items');
+        expect(configKeys).toContain("onoff");
+        expect(configKeys).toContain("auth_token");
+        expect(configKeys).toContain("tts_endpoint");
+        expect(configKeys).toContain("tts_model");
+        expect(configKeys).toContain("tts_voice");
+        expect(configKeys).toContain("chat_endpoint");
+        expect(configKeys).toContain("chat_model");
+        expect(configKeys).toContain("action_items");
       });
     });
   });
@@ -330,13 +330,13 @@ describe('Background.js 测试', () => {
   // 事件监听器测试
   // ========================================================================
 
-  describe('事件监听器', () => {
-    describe('chrome.runtime.onInstalled', () => {
-      it('应该注册 onInstalled 监听器', () => {
+  describe("事件监听器", () => {
+    describe("chrome.runtime.onInstalled", () => {
+      it("应该注册 onInstalled 监听器", () => {
         expect(chrome.runtime.onInstalled.addListener).toBeDefined();
       });
 
-      it('应该在安装时调用 initializeExtension', async () => {
+      it("应该在安装时调用 initializeExtension", async () => {
         chrome.storage.local.get.mockResolvedValue({});
         chrome.storage.local.set.mockResolvedValue({});
         chrome.sidePanel.setPanelBehavior.mockResolvedValue({});
@@ -347,49 +347,49 @@ describe('Background.js 测试', () => {
 
         expect(chrome.storage.local.get).toHaveBeenCalled();
         expect(chrome.sidePanel.setPanelBehavior).toHaveBeenCalledWith({
-          openPanelOnActionClick: true
+          openPanelOnActionClick: true,
         });
         expect(chrome.action.setBadgeText).toHaveBeenCalled();
       });
     });
 
-    describe('chrome.action.onClicked', () => {
-      it('应该注册 action.onClicked 监听器', () => {
+    describe("chrome.action.onClicked", () => {
+      it("应该注册 action.onClicked 监听器", () => {
         expect(chrome.action.onClicked.addListener).toBeDefined();
       });
     });
 
-    describe('chrome.commands.onCommand', () => {
-      it('应该注册 commands.onCommand 监听器', () => {
+    describe("chrome.commands.onCommand", () => {
+      it("应该注册 commands.onCommand 监听器", () => {
         expect(chrome.commands.onCommand.addListener).toBeDefined();
       });
     });
 
-    describe('chrome.storage.local.onChanged', () => {
-      it('应该更新徽章当 onoff 改变', () => {
+    describe("chrome.storage.local.onChanged", () => {
+      it("应该更新徽章当 onoff 改变", () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
         const changes = {
-          'onoff': {
+          onoff: {
             oldValue: false,
-            newValue: true
-          }
+            newValue: true,
+          },
         };
 
         // 直接测试 updateBadge 函数（因为监听器逻辑简单）
         background.updateBadge(changes.onoff.newValue);
 
-        expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: 'ON' });
+        expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: "ON" });
       });
 
-      it('应该忽略非 onoff 的变化', () => {
+      it("应该忽略非 onoff 的变化", () => {
         chrome.action.setBadgeText.mockResolvedValue({});
 
         const changes = {
-          'other_key': {
-            oldValue: 'old',
-            newValue: 'new'
-          }
+          other_key: {
+            oldValue: "old",
+            newValue: "new",
+          },
         };
 
         // 如果 onoff 没有改变，updateBadge 不应该被调用
@@ -398,41 +398,41 @@ describe('Background.js 测试', () => {
       });
     });
 
-    describe('chrome.runtime.onMessage', () => {
-      it('应该注册 onMessage 监听器', () => {
+    describe("chrome.runtime.onMessage", () => {
+      it("应该注册 onMessage 监听器", () => {
         expect(chrome.runtime.onMessage.addListener).toBeDefined();
       });
 
-      it('应该响应消息', () => {
-        const request = { type: 'test', data: 'test data' };
+      it("应该响应消息", () => {
+        const request = { type: "test", data: "test data" };
         const sender = { tab: { id: 1 } };
         const sendResponse = jest.fn();
 
         // 模拟消息处理逻辑
         try {
-          sendResponse({ data: 'done' });
+          sendResponse({ data: "done" });
         } catch (error) {
-          console.error('Error handling message:', error);
+          console.error("Error handling message:", error);
           sendResponse({ error: error.message });
         }
 
-        expect(sendResponse).toHaveBeenCalledWith({ data: 'done' });
+        expect(sendResponse).toHaveBeenCalledWith({ data: "done" });
       });
 
-      it('应该处理消息错误', () => {
-        const request = { type: 'test' };
+      it("应该处理消息错误", () => {
+        const request = { type: "test" };
         const sender = { tab: { id: 1 } };
         const sendResponse = jest.fn();
 
         try {
-          throw new Error('Response error');
+          throw new Error("Response error");
         } catch (error) {
-          console.error('Error handling message:', error);
+          console.error("Error handling message:", error);
           sendResponse({ error: error.message });
         }
 
         expect(console.error).toHaveBeenCalled();
-        expect(sendResponse).toHaveBeenCalledWith({ error: 'Response error' });
+        expect(sendResponse).toHaveBeenCalledWith({ error: "Response error" });
       });
     });
   });

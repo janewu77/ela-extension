@@ -4,7 +4,9 @@
 // 说明：点击AI功能按钮发起API请求
 // ============================================================================
 
-if (debug) console.log('[ChatAction] Chat action module loaded, debug mode:', debug);
+if (debug) {
+  console.log("[ChatAction] Chat action module loaded, debug mode:", debug);
+}
 
 // ============================================================================
 // CSS 类名常量
@@ -16,7 +18,7 @@ const ClassNameForPlayButtonMulti = `flex items-center justify-center p-1 font-s
 // UI 辅助函数
 // ============================================================================
 
-/** 
+/**
  * 显示/隐藏按钮
  * @param {HTMLElement} btnCopy - 按钮元素
  * @param {string} visibility - 可见性 ('visible' 或 'hidden')
@@ -24,14 +26,14 @@ const ClassNameForPlayButtonMulti = `flex items-center justify-center p-1 font-s
 function showBtn(btnCopy, visibility) {
   try {
     if (!btnCopy) {
-      console.warn('[ChatAction] Invalid button element provided to showBtn');
+      console.warn("[ChatAction] Invalid button element provided to showBtn");
       return;
     }
 
-    const visibilityClass = visibility === 'visible' ? 'visible' : 'hidden';
+    const visibilityClass = visibility === "visible" ? "visible" : "hidden";
     btnCopy.className = ClassNameForTxtAreaButton + ` ${visibilityClass}`;
   } catch (error) {
-    console.error('[ChatAction] Error showing/hiding button:', error);
+    console.error("[ChatAction] Error showing/hiding button:", error);
   }
 }
 
@@ -43,17 +45,17 @@ function showBtn(btnCopy, visibility) {
 function disableAllBtn(arrBtn, disabled) {
   try {
     if (!Array.isArray(arrBtn)) {
-      console.warn('[ChatAction] Invalid button array provided to disableAllBtn');
+      console.warn("[ChatAction] Invalid button array provided to disableAllBtn");
       return;
     }
 
-    arrBtn.forEach(btnAction => {
-      if (btnAction && typeof btnAction.disabled !== 'undefined') {
+    arrBtn.forEach((btnAction) => {
+      if (btnAction && typeof btnAction.disabled !== "undefined") {
         btnAction.disabled = disabled;
       }
     });
   } catch (error) {
-    console.error('[ChatAction] Error disabling/enabling buttons:', error);
+    console.error("[ChatAction] Error disabling/enabling buttons:", error);
   }
 }
 
@@ -67,16 +69,20 @@ function disableAllBtn(arrBtn, disabled) {
  * @returns {HTMLElement} 自定义面板容器元素
  */
 function createCustomPannel(uuid) {
-  if (debug) console.log('[ChatAction] Creating custom panel, uuid:', uuid);
+  if (debug) {
+    console.log("[ChatAction] Creating custom panel, uuid:", uuid);
+  }
 
   try {
     if (!current_action_items_active || current_action_items_active.length === 0) {
-      if (debug) console.log('[ChatAction] No active action items, skipping custom panel');
-      return document.createElement('div');
+      if (debug) {
+        console.log("[ChatAction] No active action items, skipping custom panel");
+      }
+      return document.createElement("div");
     }
 
     const arrActionButton = [];
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     container.id = `CustomPannel_${uuid}`;
 
     // 创建消息显示区域
@@ -93,8 +99,8 @@ function createCustomPannel(uuid) {
 
     return container;
   } catch (error) {
-    console.error('[ChatAction] Error creating custom panel:', error);
-    return document.createElement('div');
+    console.error("[ChatAction] Error creating custom panel:", error);
+    return document.createElement("div");
   }
 }
 
@@ -104,14 +110,15 @@ function createCustomPannel(uuid) {
  * @returns {HTMLElement} 响应元素
  */
 function _createResponseElement(uuid) {
-  const divMsg = document.createElement('div');
+  const divMsg = document.createElement("div");
   divMsg.id = `CustomPannel_SysMsg_${uuid}`;
   divMsg.className = "mt-2 rounded relative";
 
-  const textareaElement = document.createElement('textarea');
+  const textareaElement = document.createElement("textarea");
   const textareaElementID = `CustomPannel_Response_${uuid}`;
   textareaElement.id = textareaElementID;
-  const textareaClassName = "block w-full rounded-md border-0 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
+  const textareaClassName =
+    "block w-full rounded-md border-0 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
   textareaElement.className = textareaClassName;
   textareaElement.readOnly = true;
 
@@ -126,7 +133,7 @@ function _createResponseElement(uuid) {
  * @returns {HTMLElement} 操作面板元素
  */
 function _createActionPannel(uuid, arrActionButton, divMsg) {
-  const actionPannel = document.createElement('div');
+  const actionPannel = document.createElement("div");
   actionPannel.id = `CustomPannel_ActionPannel_${uuid}`;
 
   // 确保列数在有效范围内（1-3）
@@ -135,11 +142,13 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
 
   // 获取响应 textarea 元素
   const textareaElementID = `CustomPannel_Response_${uuid}`;
-  const textareaElement = divMsg.querySelector(`#${textareaElementID}`) || 
+  const textareaElement =
+    divMsg.querySelector(`#${textareaElementID}`) ||
     (() => {
-      const el = document.createElement('textarea');
+      const el = document.createElement("textarea");
       el.id = textareaElementID;
-      el.className = "block w-full rounded-md border-0 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
+      el.className =
+        "block w-full rounded-md border-0 border-gray-300 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
       el.readOnly = true;
       return el;
     })();
@@ -153,13 +162,20 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
   current_action_items_active.forEach((actionItem, index) => {
     const i = index + 1;
 
-    const btnAction = createButton(`btnAction${i}`, ClassNameForPlayButtonMulti, actionItem.name, false);
+    const btnAction = createButton(
+      `btnAction${i}`,
+      ClassNameForPlayButtonMulti,
+      actionItem.name,
+      false
+    );
     actionPannel.appendChild(btnAction);
     arrActionButton.push(btnAction);
 
     // 按钮点击事件
-    btnAction.addEventListener('click', function() {
-      if (debug) console.log(`[ChatAction] Action button clicked: ${actionItem.name}, uuid: ${uuid}`);
+    btnAction.addEventListener("click", function () {
+      if (debug) {
+        console.log(`[ChatAction] Action button clicked: ${actionItem.name}, uuid: ${uuid}`);
+      }
 
       try {
         // 更新按钮状态
@@ -171,85 +187,99 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
         // 获取消息内容
         const msg = mapMsg.get(uuid);
         if (!msg || msg.trim().length === 0) {
-          const errorMsg = chrome.i18n?.getMessage('err_empty_message') || 'Empty message';
+          const errorMsg = chrome.i18n?.getMessage("err_empty_message") || "Empty message";
           throw new Error(errorMsg);
         }
 
         // 调用 Chat API
-        fetchChat(msg, actionItem.prompt, function(response, stream) {
-          btnAction.innerHTML = actionItem.name;
+        fetchChat(
+          msg,
+          actionItem.prompt,
+          function (response, stream) {
+            btnAction.innerHTML = actionItem.name;
 
-          if (debug) console.log('[ChatAction] Chat response received, stream:', stream);
+            if (debug) {
+              console.log("[ChatAction] Chat response received, stream:", stream);
+            }
 
-          // 获取或创建 textarea
-          let txtArea = divMsg.querySelector(`#${textareaElementID}`);
-          if (txtArea == null) {
-            // 清空并添加新元素
+            // 获取或创建 textarea
+            let txtArea = divMsg.querySelector(`#${textareaElementID}`);
+            if (txtArea == null) {
+              // 清空并添加新元素
+              while (divMsg.firstChild) {
+                divMsg.removeChild(divMsg.firstChild);
+              }
+              divMsg.appendChild(textareaElement);
+              divMsg.appendChild(divTxtAreaMenu);
+              txtArea = textareaElement;
+            }
+
+            // 清空之前的内容
+            txtArea.textContent = "";
+
+            if (stream) {
+              // 流式响应
+              txtArea.rows = 12;
+              streamResponseRead(
+                response.body.getReader(),
+                (content) => {
+                  txtArea.textContent += content;
+                },
+                () => {
+                  showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "visible");
+                  showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "visible");
+                }
+              );
+            } else {
+              // 非流式响应
+              try {
+                const msg = response["choices"]?.[0]?.["message"]?.["content"];
+                if (msg) {
+                  txtArea.textContent = msg;
+                  const lineCount = calculateLines(txtArea, textareaClassName);
+                  txtArea.rows = lineCount > 12 ? 12 : lineCount;
+                } else {
+                  const errorMsg =
+                    chrome.i18n?.getMessage("err_invalid_response") || "Invalid response format";
+                  throw new Error(errorMsg);
+                }
+              } catch (parseError) {
+                console.error("[ChatAction] Error parsing response:", parseError);
+                const errorMsg =
+                  chrome.i18n?.getMessage("err_parse_failed") || "Failed to parse response";
+                throw new Error(errorMsg);
+              }
+
+              showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "visible");
+              showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "visible");
+            }
+
+            disableAllBtn(arrActionButton, false);
+          },
+          function (error) {
+            // 错误处理
+            btnAction.innerHTML = actionItem.name;
+            showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "hidden");
+            showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "hidden");
+
+            // 显示错误消息
             while (divMsg.firstChild) {
               divMsg.removeChild(divMsg.firstChild);
             }
-            divMsg.appendChild(textareaElement);
-            divMsg.appendChild(divTxtAreaMenu);
-            txtArea = textareaElement;
-          }
 
-          // 清空之前的内容
-          txtArea.textContent = '';
+            const divErrMsg = document.createElement("div");
+            // 使用 textContent 防止 XSS 攻击，安全地显示错误消息
+            const errorText = error instanceof Error ? error.message : String(error);
+            divErrMsg.textContent = `!! ${errorText}`;
+            divErrMsg.appendChild(getBtnSetting());
+            divMsg.appendChild(divErrMsg);
 
-          if (stream) {
-            // 流式响应
-            txtArea.rows = 12;
-            streamResponseRead(response.body.getReader(), (content) => {
-              txtArea.textContent += content;
-            }, () => {
-              showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "visible");
-              showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "visible");
-            });
-          } else {
-            // 非流式响应
-            try {
-              const msg = response["choices"]?.[0]?.["message"]?.["content"];
-              if (msg) {
-                txtArea.textContent = msg;
-                const lineCount = calculateLines(txtArea, textareaClassName);
-                txtArea.rows = lineCount > 12 ? 12 : lineCount;
-              } else {
-                const errorMsg = chrome.i18n?.getMessage('err_invalid_response') || 'Invalid response format';
-                throw new Error(errorMsg);
-              }
-            } catch (parseError) {
-              console.error('[ChatAction] Error parsing response:', parseError);
-              const errorMsg = chrome.i18n?.getMessage('err_parse_failed') || 'Failed to parse response';
-              throw new Error(errorMsg);
-            }
-
-            showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "visible");
-            showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "visible");
-          }
-
-          disableAllBtn(arrActionButton, false);
-        }, function(error) {
-          // 错误处理
-          btnAction.innerHTML = actionItem.name;
-          showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "hidden");
-          showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "hidden");
-
-          // 显示错误消息
-          while (divMsg.firstChild) {
-            divMsg.removeChild(divMsg.firstChild);
-          }
-
-          const divErrMsg = document.createElement('div');
-          // 使用 textContent 防止 XSS 攻击，安全地显示错误消息
-          const errorText = error instanceof Error ? error.message : String(error);
-          divErrMsg.textContent = `!! ${errorText}`;
-          divErrMsg.appendChild(getBtnSetting());
-          divMsg.appendChild(divErrMsg);
-
-          disableAllBtn(arrActionButton, false);
-        }, true);
+            disableAllBtn(arrActionButton, false);
+          },
+          true
+        );
       } catch (error) {
-        console.error('[ChatAction] Error in action button click:', error);
+        console.error("[ChatAction] Error in action button click:", error);
         btnAction.innerHTML = actionItem.name;
         disableAllBtn(arrActionButton, false);
       }
@@ -267,17 +297,24 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
  * @returns {HTMLElement} 菜单按钮容器
  */
 function _createMenuButtons(uuid, divMsg, arrActionButton) {
-  const divTxtAreaMenu = document.createElement('div');
+  const divTxtAreaMenu = document.createElement("div");
   divTxtAreaMenu.className = "absolute top-0 right-0";
 
   const textareaElementID = `CustomPannel_Response_${uuid}`;
 
   // 清除按钮
-  const btnClear = createButton(`btnClear_${uuid}`, ClassNameForTxtAreaButton + " visibility: hidden", SVGDelete_light, false);
+  const btnClear = createButton(
+    `btnClear_${uuid}`,
+    ClassNameForTxtAreaButton + " visibility: hidden",
+    SVGDelete_light,
+    false
+  );
   divTxtAreaMenu.appendChild(btnClear);
 
-  btnClear.addEventListener('click', function() {
-    if (debug) console.log('[ChatAction] Clear button clicked, uuid:', uuid);
+  btnClear.addEventListener("click", function () {
+    if (debug) {
+      console.log("[ChatAction] Clear button clicked, uuid:", uuid);
+    }
 
     try {
       showBtn(btnClear, "hidden");
@@ -285,30 +322,39 @@ function _createMenuButtons(uuid, divMsg, arrActionButton) {
 
       const txtArea = divMsg.querySelector(`#${textareaElementID}`);
       if (txtArea) {
-        txtArea.textContent = '';
+        txtArea.textContent = "";
       }
 
       disableAllBtn(arrActionButton, false);
     } catch (error) {
-      console.error('[ChatAction] Error clearing text:', error);
+      console.error("[ChatAction] Error clearing text:", error);
     }
   });
 
   // 复制按钮
-  const btnCopy = createButton(`btnCopy_${uuid}`, ClassNameForTxtAreaButton + " visibility: hidden", SVGCopy_light, false);
+  const btnCopy = createButton(
+    `btnCopy_${uuid}`,
+    ClassNameForTxtAreaButton + " visibility: hidden",
+    SVGCopy_light,
+    false
+  );
   divTxtAreaMenu.appendChild(btnCopy);
 
-  btnCopy.addEventListener('click', async function() {
-    if (debug) console.log('[ChatAction] Copy button clicked, uuid:', uuid);
+  btnCopy.addEventListener("click", async function () {
+    if (debug) {
+      console.log("[ChatAction] Copy button clicked, uuid:", uuid);
+    }
 
     try {
       const txtArea = divMsg.querySelector(`#${textareaElementID}`);
       if (txtArea && txtArea.textContent) {
         await navigator.clipboard.writeText(txtArea.textContent);
-        if (debug) console.log('[ChatAction] Text copied to clipboard');
+        if (debug) {
+          console.log("[ChatAction] Text copied to clipboard");
+        }
       }
     } catch (error) {
-      console.error('[ChatAction] Error copying text:', error);
+      console.error("[ChatAction] Error copying text:", error);
     }
   });
 
@@ -316,13 +362,13 @@ function _createMenuButtons(uuid, divMsg, arrActionButton) {
 }
 
 // 导出函数供测试使用（在 Node.js 环境中）
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     showBtn,
     disableAllBtn,
     createCustomPannel,
     _createResponseElement,
     _createActionPannel,
-    _createMenuButtons
+    _createMenuButtons,
   };
 }

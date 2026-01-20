@@ -3,7 +3,9 @@
 // 功能：管理音频播放、内容块创建和删除
 // ============================================================================
 
-if (debug) console.log('[Playback] Playback module loaded, debug mode:', debug);
+if (debug) {
+  console.log("[Playback] Playback module loaded, debug mode:", debug);
+}
 
 // ============================================================================
 // 状态管理
@@ -13,11 +15,11 @@ let myuuid = 0;
 let lastNode = null;
 
 // 使用 Map 管理每个内容块的资源
-const mapAudioContext = new Map();      // AudioContext 实例
-const mapAudioBufferCache = new Map();  // 缓存的音频数据
-const mapSource = new Map();            // 当前的音频源
-const mapMsg = new Map();               // 消息内容
-const mapAudioLoop = new Map();         // 循环播放设置
+const mapAudioContext = new Map(); // AudioContext 实例
+const mapAudioBufferCache = new Map(); // 缓存的音频数据
+const mapSource = new Map(); // 当前的音频源
+const mapMsg = new Map(); // 消息内容
+const mapAudioLoop = new Map(); // 循环播放设置
 
 // ============================================================================
 // SVG 图标常量
@@ -42,7 +44,7 @@ const ClassNameForTxtAreaButton = `flex items-center justify-center gap-x-2.5 p-
 // DOM 元素引用
 // ============================================================================
 
-const divContentContainer = document.getElementById('container-content');
+const divContentContainer = document.getElementById("container-content");
 
 // ============================================================================
 // 内容块管理
@@ -54,17 +56,19 @@ const divContentContainer = document.getElementById('container-content');
  * 每次都插到最前面（从上往下为倒序，即最新的在最上面）
  */
 function add_content_block(msg) {
-  if (debug) console.log('[Playback] Adding content block:', msg?.substring(0, 50));
+  if (debug) {
+    console.log("[Playback] Adding content block:", msg?.substring(0, 50));
+  }
 
   try {
     if (!divContentContainer) {
-      console.error('[Playback] Content container not found');
+      console.error("[Playback] Content container not found");
       return;
     }
 
     myuuid = myuuid + 1;
 
-    const msgDiv = _createMsgDiv(msg || '', myuuid);
+    const msgDiv = _createMsgDiv(msg || "", myuuid);
 
     if (lastNode == null) {
       divContentContainer.appendChild(msgDiv);
@@ -74,7 +78,7 @@ function add_content_block(msg) {
 
     lastNode = document.getElementById(myuuid);
   } catch (error) {
-    console.error('[Playback] Error adding content block:', error);
+    console.error("[Playback] Error adding content block:", error);
   }
 }
 
@@ -86,11 +90,13 @@ function get_current_lastNode() {
     let currLastNode = null;
     for (let uuid = myuuid; uuid >= 0; uuid--) {
       currLastNode = document.getElementById(uuid);
-      if (currLastNode != null) break;
+      if (currLastNode != null) {
+        break;
+      }
     }
     lastNode = currLastNode;
   } catch (error) {
-    console.error('[Playback] Error getting current last node:', error);
+    console.error("[Playback] Error getting current last node:", error);
   }
 }
 
@@ -99,13 +105,15 @@ function get_current_lastNode() {
  * -- 右上角删除按钮的功能，清除所有内容块，并清除map里的缓存数据
  */
 function deleteAllBlocks() {
-  if (debug) console.log('[Playback] Deleting all blocks, count:', myuuid);
+  if (debug) {
+    console.log("[Playback] Deleting all blocks, count:", myuuid);
+  }
 
   try {
     for (let uuid = 1; uuid <= myuuid; uuid++) {
       if (mapMsg.has(uuid)) {
         btnStopClicked(uuid); //先停止音频播放
-        mapMsg.delete(uuid);  //清除map里的缓存数据
+        mapMsg.delete(uuid); //清除map里的缓存数据
         mapAudioLoop.delete(uuid);
 
         const element = document.getElementById(uuid);
@@ -118,7 +126,7 @@ function deleteAllBlocks() {
     myuuid = 0;
     lastNode = null;
   } catch (error) {
-    console.error('[Playback] Error deleting all blocks:', error);
+    console.error("[Playback] Error deleting all blocks:", error);
   }
 }
 
@@ -131,18 +139,18 @@ function deleteAllBlocks() {
  */
 function initDeleteAllButton() {
   try {
-    const btnDeleteAll = document.getElementById('btnDeleteAll');
+    const btnDeleteAll = document.getElementById("btnDeleteAll");
     if (!btnDeleteAll) {
-      console.warn('[Playback] Delete all button not found');
+      console.warn("[Playback] Delete all button not found");
       return;
     }
 
     btnDeleteAll.id = "DeleteAll";
     const btnName = chrome.i18n.getMessage("btn_clearall");
     btnDeleteAll.innerHTML = `${SVGDeleteAll_6} ${btnName}`;
-    btnDeleteAll.addEventListener('click', deleteAllBlocks);
+    btnDeleteAll.addEventListener("click", deleteAllBlocks);
   } catch (error) {
-    console.error('[Playback] Error initializing delete all button:', error);
+    console.error("[Playback] Error initializing delete all button:", error);
   }
 }
 
@@ -150,15 +158,19 @@ function initDeleteAllButton() {
  * 初始化 playback 模块
  */
 function initPlayback() {
-  if (debug) console.log('[Playback] Initializing playback module...');
+  if (debug) {
+    console.log("[Playback] Initializing playback module...");
+  }
 
   try {
     // 初始化删除所有按钮
     initDeleteAllButton();
 
-    if (debug) console.log('[Playback] Playback module initialized successfully');
+    if (debug) {
+      console.log("[Playback] Playback module initialized successfully");
+    }
   } catch (error) {
-    console.error('[Playback] Error during initialization:', error);
+    console.error("[Playback] Error during initialization:", error);
   }
 }
 
@@ -173,20 +185,23 @@ function initPlayback() {
  * @returns {HTMLElement} 创建的内容块元素
  */
 function _createMsgDiv(newContent, uuid) {
-  if (debug) console.log('[Playback] Creating message div, uuid:', uuid);
+  if (debug) {
+    console.log("[Playback] Creating message div, uuid:", uuid);
+  }
 
   try {
     // 初始化资源映射
-    mapMsg.set(uuid, newContent || '');
+    mapMsg.set(uuid, newContent || "");
     mapAudioContext.set(uuid, null);
     mapAudioBufferCache.set(uuid, null);
     mapSource.set(uuid, null);
     mapAudioLoop.set(uuid, true);
 
     // 创建容器
-    const divContainer = document.createElement('div');
+    const divContainer = document.createElement("div");
     divContainer.id = uuid;
-    divContainer.className = "relative pl-2 pr-2 pt-6 pb-2 flex-auto overflow-hidden bg-white ring-1 ring-gray-900/5";
+    divContainer.className =
+      "relative pl-2 pr-2 pt-6 pb-2 flex-auto overflow-hidden bg-white ring-1 ring-gray-900/5";
 
     // 创建内容区域
     const contentElement = _createContentElement(uuid, newContent);
@@ -208,8 +223,8 @@ function _createMsgDiv(newContent, uuid) {
 
     return divContainer;
   } catch (error) {
-    console.error('[Playback] Error creating message div:', error);
-    return document.createElement('div'); // 返回空元素作为降级
+    console.error("[Playback] Error creating message div:", error);
+    return document.createElement("div"); // 返回空元素作为降级
   }
 }
 
@@ -220,27 +235,30 @@ function _createMsgDiv(newContent, uuid) {
  * @returns {HTMLElement} 内容元素
  */
 function _createContentElement(uuid, content) {
-  const contentElement = document.createElement('div');
+  const contentElement = document.createElement("div");
   contentElement.id = `Content_${uuid}`;
   contentElement.className = "mb-2";
-  contentElement.innerHTML = '';
+  contentElement.innerHTML = "";
 
   if (debug) {
     contentElement.innerHTML = `<p class="text-sm">${uuid}</p>`;
   }
 
   // 创建可编辑的 textarea
-  const textareaElement = document.createElement('textarea');
+  const textareaElement = document.createElement("textarea");
   textareaElement.name = "message";
-  const textareaClassName = "block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
+  const textareaClassName =
+    "block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 text-sm leading-6";
   textareaElement.className = textareaClassName;
   textareaElement.readOnly = false;
-  textareaElement.textContent = content || '';
+  textareaElement.textContent = content || "";
 
   // 监听内容变化
   textareaElement.addEventListener("change", (event) => {
     const newValue = event.target.value;
-    if (debug) console.log('[Playback] Content changed, uuid:', uuid);
+    if (debug) {
+      console.log("[Playback] Content changed, uuid:", uuid);
+    }
 
     // 更新消息内容
     mapMsg.set(uuid, newValue);
@@ -254,10 +272,12 @@ function _createContentElement(uuid, content) {
   // 计算并设置 textarea 行数
   try {
     const lineCount = calculateLines(textareaElement, textareaClassName) + 2;
-    if (debug) console.log('[Playback] Line count:', lineCount, 'uuid:', uuid);
+    if (debug) {
+      console.log("[Playback] Line count:", lineCount, "uuid:", uuid);
+    }
     textareaElement.rows = lineCount > 20 ? 20 : lineCount;
   } catch (error) {
-    console.error('[Playback] Error calculating lines:', error);
+    console.error("[Playback] Error calculating lines:", error);
     textareaElement.rows = 5; // 默认行数
   }
 
@@ -271,7 +291,7 @@ function _createContentElement(uuid, content) {
  * @returns {HTMLElement} 系统消息元素
  */
 function _createSysMsgElement(uuid) {
-  const divSysMsg = document.createElement('div');
+  const divSysMsg = document.createElement("div");
   divSysMsg.id = `SysMsg_${uuid}`;
   divSysMsg.className = "p-1 text-red-600";
   divSysMsg.hidden = true;
@@ -291,7 +311,7 @@ function _createSysMsgElement(uuid) {
 function createLoopCheckbox(id) {
   try {
     const btnName = chrome.i18n.getMessage("btn_player_loop");
-    const divLoopPlay = document.createElement('div');
+    const divLoopPlay = document.createElement("div");
     divLoopPlay.className = "grid gap-x-2 bg-white justify-items-center";
     divLoopPlay.innerHTML = `
       <div class="relative flex gap-x-2 ml-2">
@@ -305,8 +325,8 @@ function createLoopCheckbox(id) {
     `;
     return divLoopPlay;
   } catch (error) {
-    console.error('[Playback] Error creating loop checkbox:', error);
-    return document.createElement('div');
+    console.error("[Playback] Error creating loop checkbox:", error);
+    return document.createElement("div");
   }
 }
 
@@ -322,12 +342,15 @@ function createLoopCheckbox(id) {
  * @returns {HTMLElement} 播放器面板元素
  */
 function createPlayerPannel(uuid, container, divSysMsg) {
-  if (debug) console.log('[Playback] Creating player panel, uuid:', uuid);
+  if (debug) {
+    console.log("[Playback] Creating player panel, uuid:", uuid);
+  }
 
   try {
-    const pannelElement = document.createElement('div');
+    const pannelElement = document.createElement("div");
     pannelElement.id = `PlayerPannel_${uuid}`;
-    pannelElement.className = "mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded";
+    pannelElement.className =
+      "mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded";
 
     // 创建按钮
     const btnPlay = createButton("playAudio", ClassNameForPlayButton, SVGPlay, false);
@@ -339,19 +362,19 @@ function createPlayerPannel(uuid, container, divSysMsg) {
     pannelElement.appendChild(btnStop);
 
     // 定义回调函数
-    const onBeforePlay = function() {
+    const onBeforePlay = function () {
       btnPlay.innerHTML = SVGPlay;
       btnPause.disabled = false;
       btnStop.disabled = false;
     };
 
-    const onPlayEnded = function() {
+    const onPlayEnded = function () {
       btnPlay.innerHTML = SVGPlay;
       btnPlay.disabled = false;
       btnPause.disabled = true;
     };
 
-    const onErrorAudio = function(error) {
+    const onErrorAudio = function (error) {
       btnPlay.innerHTML = SVGPlay;
       btnPlay.disabled = false;
       btnPause.disabled = true;
@@ -365,7 +388,7 @@ function createPlayerPannel(uuid, container, divSysMsg) {
       divSysMsg.appendChild(getBtnSetting());
     };
 
-    const onTTSReqSuccess = function(data) {
+    const onTTSReqSuccess = function (data) {
       btnPlay.innerHTML = SVGPlay;
 
       try {
@@ -374,22 +397,28 @@ function createPlayerPannel(uuid, container, divSysMsg) {
         mapAudioBufferCache.set(uuid, null);
         mapSource.set(uuid, null);
 
-        audioContext.decodeAudioData(data, buffer => {
-          mapAudioBufferCache.set(uuid, buffer);
-          playAudioBuffer(uuid, onBeforePlay, onPlayEnded);
-        }, error => {
-          console.error('[Playback] Audio decoding failed:', error);
-          onErrorAudio('Audio decoding failed');
-        });
+        audioContext.decodeAudioData(
+          data,
+          (buffer) => {
+            mapAudioBufferCache.set(uuid, buffer);
+            playAudioBuffer(uuid, onBeforePlay, onPlayEnded);
+          },
+          (error) => {
+            console.error("[Playback] Audio decoding failed:", error);
+            onErrorAudio("Audio decoding failed");
+          }
+        );
       } catch (error) {
-        console.error('[Playback] Error creating audio context:', error);
-        onErrorAudio('Failed to create audio context');
+        console.error("[Playback] Error creating audio context:", error);
+        onErrorAudio("Failed to create audio context");
       }
     };
 
     // 播放按钮事件
-    btnPlay.addEventListener('click', function() {
-      if (debug) console.log('[Playback] Play button clicked, uuid:', uuid);
+    btnPlay.addEventListener("click", function () {
+      if (debug) {
+        console.log("[Playback] Play button clicked, uuid:", uuid);
+      }
 
       btnPlay.innerHTML = SVGLoadingSpin;
 
@@ -409,33 +438,42 @@ function createPlayerPannel(uuid, container, divSysMsg) {
         if (msg) {
           fetchAudio(msg, onTTSReqSuccess, onErrorAudio);
         } else {
-          onErrorAudio('Empty message');
+          onErrorAudio("Empty message");
         }
       }
     });
 
     // 暂停按钮事件
-    btnPause.addEventListener('click', function() {
-      if (debug) console.log('[Playback] Pause button clicked, uuid:', uuid);
+    btnPause.addEventListener("click", function () {
+      if (debug) {
+        console.log("[Playback] Pause button clicked, uuid:", uuid);
+      }
 
       const audioContext = mapAudioContext.get(uuid);
 
-      if (audioContext && audioContext.state === 'running') {
+      if (audioContext && audioContext.state === "running") {
         btnPlay.disabled = false;
         btnPause.disabled = true;
         btnStop.disabled = false;
 
-        audioContext.suspend().then(() => {
-          if (debug) console.log('[Playback] Playback suspended, uuid:', uuid);
-        }).catch(error => {
-          console.error('[Playback] Error suspending playback:', error);
-        });
+        audioContext
+          .suspend()
+          .then(() => {
+            if (debug) {
+              console.log("[Playback] Playback suspended, uuid:", uuid);
+            }
+          })
+          .catch((error) => {
+            console.error("[Playback] Error suspending playback:", error);
+          });
       }
     });
 
     // 停止按钮事件
-    btnStop.addEventListener('click', function() {
-      if (debug) console.log('[Playback] Stop button clicked, uuid:', uuid);
+    btnStop.addEventListener("click", function () {
+      if (debug) {
+        console.log("[Playback] Stop button clicked, uuid:", uuid);
+      }
 
       btnPlay.disabled = false;
       btnPause.disabled = true;
@@ -445,15 +483,17 @@ function createPlayerPannel(uuid, container, divSysMsg) {
     });
 
     // 创建删除按钮容器
-    const divTxtAreaMenu = document.createElement('div');
+    const divTxtAreaMenu = document.createElement("div");
     divTxtAreaMenu.className = "absolute top-1 right-1";
     container.appendChild(divTxtAreaMenu);
 
     // 删除按钮
     const btnDelete = createButton("btnDelete", ClassNameForTxtAreaButton, SVGClose_light, false);
     divTxtAreaMenu.appendChild(btnDelete);
-    btnDelete.addEventListener('click', function() {
-      if (debug) console.log('[Playback] Delete button clicked, uuid:', uuid);
+    btnDelete.addEventListener("click", function () {
+      if (debug) {
+        console.log("[Playback] Delete button clicked, uuid:", uuid);
+      }
 
       btnPlay.disabled = true;
       btnPause.disabled = true;
@@ -475,7 +515,12 @@ function createPlayerPannel(uuid, container, divSysMsg) {
     if (inputStatus) {
       inputStatus.addEventListener("change", (event) => {
         if (debug) {
-          console.log('[Playback] Loop checkbox changed, uuid:', uuid, 'checked:', event.target.checked);
+          console.log(
+            "[Playback] Loop checkbox changed, uuid:",
+            uuid,
+            "checked:",
+            event.target.checked
+          );
         }
         mapAudioLoop.set(uuid, event.target.checked);
       });
@@ -483,8 +528,8 @@ function createPlayerPannel(uuid, container, divSysMsg) {
 
     return pannelElement;
   } catch (error) {
-    console.error('[Playback] Error creating player panel:', error);
-    return document.createElement('div');
+    console.error("[Playback] Error creating player panel:", error);
+    return document.createElement("div");
   }
 }
 
@@ -497,7 +542,9 @@ function createPlayerPannel(uuid, container, divSysMsg) {
  * @param {number} uuid - 唯一标识符
  */
 function btnStopClicked(uuid) {
-  if (debug) console.log('[Playback] Stopping audio, uuid:', uuid);
+  if (debug) {
+    console.log("[Playback] Stopping audio, uuid:", uuid);
+  }
 
   try {
     const audioContext = mapAudioContext.get(uuid);
@@ -515,20 +562,27 @@ function btnStopClicked(uuid) {
         source.disconnect();
       } catch (error) {
         // 忽略已停止的源错误
-        if (debug) console.warn('[Playback] Error stopping source (may already be stopped):', error);
+        if (debug) {
+          console.warn("[Playback] Error stopping source (may already be stopped):", error);
+        }
       }
     }
 
     // 关闭音频上下文
     if (audioContext) {
-      audioContext.close().then(() => {
-        if (debug) console.log('[Playback] Audio context closed, uuid:', uuid);
-      }).catch(error => {
-        console.error('[Playback] Error closing audio context:', error);
-      });
+      audioContext
+        .close()
+        .then(() => {
+          if (debug) {
+            console.log("[Playback] Audio context closed, uuid:", uuid);
+          }
+        })
+        .catch((error) => {
+          console.error("[Playback] Error closing audio context:", error);
+        });
     }
   } catch (error) {
-    console.error('[Playback] Error in btnStopClicked:', error);
+    console.error("[Playback] Error in btnStopClicked:", error);
   }
 }
 
@@ -539,25 +593,31 @@ function btnStopClicked(uuid) {
  * @param {Function} onEnded - 播放结束回调
  */
 function playAudioBuffer(uuid, onBefore, onEnded) {
-  if (debug) console.log('[Playback] Playing audio buffer, uuid:', uuid);
+  if (debug) {
+    console.log("[Playback] Playing audio buffer, uuid:", uuid);
+  }
 
   try {
-    if (onBefore) onBefore();
+    if (onBefore) {
+      onBefore();
+    }
 
-    let audioContext = mapAudioContext.get(uuid);
+    const audioContext = mapAudioContext.get(uuid);
     const audioBufferCache = mapAudioBufferCache.get(uuid);
     let source = mapSource.get(uuid);
 
     if (!audioContext || !audioBufferCache) {
-      console.error('[Playback] Missing audio context or buffer, uuid:', uuid);
-      if (onEnded) onEnded();
+      console.error("[Playback] Missing audio context or buffer, uuid:", uuid);
+      if (onEnded) {
+        onEnded();
+      }
       return;
     }
 
     // 如果上下文被暂停，恢复它
-    if (audioContext.state === 'suspended') {
-      audioContext.resume().catch(error => {
-        console.error('[Playback] Error resuming audio context:', error);
+    if (audioContext.state === "suspended") {
+      audioContext.resume().catch((error) => {
+        console.error("[Playback] Error resuming audio context:", error);
       });
       return;
     }
@@ -581,11 +641,11 @@ function playAudioBuffer(uuid, onBefore, onEnded) {
     source.start(0);
 
     // 播放结束处理
-    source.onended = function() {
+    source.onended = function () {
       const loop = mapAudioLoop.get(uuid);
       if (loop) {
         // 循环播放：延迟 200ms 后重新播放
-        setTimeout(function() {
+        setTimeout(function () {
           playAudioBuffer(uuid, onBefore, onEnded);
         }, 200);
       } else {
@@ -598,13 +658,19 @@ function playAudioBuffer(uuid, onBefore, onEnded) {
           }
         }
         mapSource.set(uuid, null);
-        if (onEnded) onEnded();
-        if (debug) console.log('[Playback] Playback finished, uuid:', uuid);
+        if (onEnded) {
+          onEnded();
+        }
+        if (debug) {
+          console.log("[Playback] Playback finished, uuid:", uuid);
+        }
       }
     };
   } catch (error) {
-    console.error('[Playback] Error playing audio buffer:', error);
-    if (onEnded) onEnded();
+    console.error("[Playback] Error playing audio buffer:", error);
+    if (onEnded) {
+      onEnded();
+    }
   }
 }
 
@@ -613,9 +679,9 @@ function playAudioBuffer(uuid, onBefore, onEnded) {
 // ============================================================================
 
 // 等待 DOM 加载完成后再初始化
-if (typeof window !== 'undefined' && typeof module === 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPlayback);
+if (typeof window !== "undefined" && typeof module === "undefined") {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPlayback);
   } else {
     // DOM 已经加载完成
     initPlayback();
@@ -623,7 +689,7 @@ if (typeof window !== 'undefined' && typeof module === 'undefined') {
 }
 
 // 导出函数供测试使用（在 Node.js 环境中）
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     add_content_block,
     get_current_lastNode,
@@ -638,6 +704,6 @@ if (typeof module !== 'undefined' && module.exports) {
     btnStopClicked,
     playAudioBuffer,
     // 导出常量供其他模块使用
-    ClassNameForTxtAreaButton
+    ClassNameForTxtAreaButton,
   };
 }

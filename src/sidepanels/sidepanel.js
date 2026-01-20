@@ -3,7 +3,9 @@
 // 功能：管理侧边栏的 UI 和消息处理
 // ============================================================================
 
-if (debug) console.log('[Sidepanel] Sidepanel loaded, debug mode:', debug);
+if (debug) {
+  console.log("[Sidepanel] Sidepanel loaded, debug mode:", debug);
+}
 
 // ============================================================================
 // 状态管理
@@ -20,7 +22,7 @@ let current_auth_token = default_auth_token;
 // Chat 配置
 let current_chat_endpoint = default_chat_endpoint;
 let current_chat_model = default_chat_model;
-let current_action_items_active = default_action_items.filter(item => item.active === true);
+let current_action_items_active = default_action_items.filter((item) => item.active === true);
 
 // ============================================================================
 // UI 元素引用
@@ -55,56 +57,56 @@ function handleStorageChanges(changes, allChanges) {
   // - allChanges: 完整的变化对象（第二个参数，可选）
   // 为了兼容，我们使用第一个参数
   if (debug) {
-    console.log('[Sidepanel] Storage changed:', Object.keys(changes));
-    console.log('[Sidepanel] Changes details:', changes);
+    console.log("[Sidepanel] Storage changed:", Object.keys(changes));
+    console.log("[Sidepanel] Changes details:", changes);
   }
 
-  if (changes['onoff']) {
-    currentOnoff = changes['onoff'].newValue;
+  if (changes["onoff"]) {
+    currentOnoff = changes["onoff"].newValue;
     _showOnoff(currentOnoff);
   }
 
   // 使用 ?? 运算符，如果新值为 null 或 undefined，则使用默认值
-  if (changes['tts_endpoint']) {
-    current_tts_endpoint = changes['tts_endpoint'].newValue ?? default_tts_endpoint;
+  if (changes["tts_endpoint"]) {
+    current_tts_endpoint = changes["tts_endpoint"].newValue ?? default_tts_endpoint;
   }
 
-  if (changes['tts_model']) {
-    current_tts_model = changes['tts_model'].newValue ?? default_tts_model;
+  if (changes["tts_model"]) {
+    current_tts_model = changes["tts_model"].newValue ?? default_tts_model;
   }
 
-  if (changes['tts_voice']) {
-    current_tts_voice = changes['tts_voice'].newValue ?? default_tts_voice;
+  if (changes["tts_voice"]) {
+    current_tts_voice = changes["tts_voice"].newValue ?? default_tts_voice;
   }
 
-  if (changes['auth_token']) {
-    current_auth_token = changes['auth_token'].newValue ?? default_auth_token;
+  if (changes["auth_token"]) {
+    current_auth_token = changes["auth_token"].newValue ?? default_auth_token;
   }
 
-  if (changes['chat_endpoint']) {
-    current_chat_endpoint = changes['chat_endpoint'].newValue ?? default_chat_endpoint;
+  if (changes["chat_endpoint"]) {
+    current_chat_endpoint = changes["chat_endpoint"].newValue ?? default_chat_endpoint;
   }
 
-  if (changes['chat_model']) {
-    current_chat_model = changes['chat_model'].newValue ?? default_chat_model;
+  if (changes["chat_model"]) {
+    current_chat_model = changes["chat_model"].newValue ?? default_chat_model;
   }
 
-  if (changes['action_items']) {
-    const action_items = changes['action_items'].newValue;
+  if (changes["action_items"]) {
+    const action_items = changes["action_items"].newValue;
     if (action_items && Array.isArray(action_items)) {
-      current_action_items_active = action_items.filter(item => item.active);
+      current_action_items_active = action_items.filter((item) => item.active);
     } else {
-      current_action_items_active = default_action_items.filter(item => item.active);
+      current_action_items_active = default_action_items.filter((item) => item.active);
     }
   }
-  
+
   if (debug) {
-    console.log('[Sidepanel] Config updated:', {
+    console.log("[Sidepanel] Config updated:", {
       tts_endpoint: current_tts_endpoint,
       tts_model: current_tts_model,
       tts_voice: current_tts_voice,
       chat_endpoint: current_chat_endpoint,
-      chat_model: current_chat_model
+      chat_model: current_chat_model,
     });
   }
 }
@@ -118,7 +120,9 @@ let removeStorageListener = null;
  * 设置存储变化监听器
  */
 function setupStorageListeners() {
-  if (debug) console.log('[Sidepanel] Setting up storage listeners...');
+  if (debug) {
+    console.log("[Sidepanel] Setting up storage listeners...");
+  }
 
   try {
     // 如果已经有监听器，先移除旧的
@@ -129,22 +133,25 @@ function setupStorageListeners() {
 
     const storageUtils = window.storageUtils;
     const keysToWatch = [
-      'onoff',
-      'tts_endpoint',
-      'tts_model',
-      'tts_voice',
-      'auth_token',
-      'chat_endpoint',
-      'chat_model',
-      'action_items'
+      "onoff",
+      "tts_endpoint",
+      "tts_model",
+      "tts_voice",
+      "auth_token",
+      "chat_endpoint",
+      "chat_model",
+      "action_items",
     ];
 
     // if (storageUtils && storageUtils.createStorageListener) {
-      // 使用 storageUtils 创建监听器
-      removeStorageListener = storageUtils.createStorageListener(keysToWatch, handleStorageChanges);
-      if (debug) {
-        console.log('[Sidepanel] Storage listeners set up using createStorageListener for keys:', keysToWatch);
-      }
+    // 使用 storageUtils 创建监听器
+    removeStorageListener = storageUtils.createStorageListener(keysToWatch, handleStorageChanges);
+    if (debug) {
+      console.log(
+        "[Sidepanel] Storage listeners set up using createStorageListener for keys:",
+        keysToWatch
+      );
+    }
     // } else {
     //   // 降级方案：直接使用 Chrome API
     //   chrome.storage.local.onChanged.addListener(handleStorageChanges);
@@ -153,9 +160,11 @@ function setupStorageListeners() {
     //   }
     // }
 
-    if (debug) console.log('[Sidepanel] Storage listeners set up successfully');
+    if (debug) {
+      console.log("[Sidepanel] Storage listeners set up successfully");
+    }
   } catch (error) {
-    console.error('[Sidepanel] Error setting up storage listeners:', error);
+    console.error("[Sidepanel] Error setting up storage listeners:", error);
   }
 }
 
@@ -167,12 +176,14 @@ function setupStorageListeners() {
  * 初始化侧边栏
  */
 async function init() {
-  if (debug) console.log('[Sidepanel] Initializing...');
+  if (debug) {
+    console.log("[Sidepanel] Initializing...");
+  }
 
   try {
     // 获取 DOM 元素引用
-    toggleSwitch = document.getElementById('toggleSwitch');
-    divDebuginfo = debug ? document.getElementById('debuginfo') : null;
+    toggleSwitch = document.getElementById("toggleSwitch");
+    divDebuginfo = debug ? document.getElementById("debuginfo") : null;
 
     // 显示调试信息
     if (debug && divDebuginfo) {
@@ -194,9 +205,11 @@ async function init() {
     // 设置消息监听器(接收网页上选中的内容)
     setupMessageListeners();
 
-    if (debug) console.log('[Sidepanel] Initialized successfully');
+    if (debug) {
+      console.log("[Sidepanel] Initialized successfully");
+    }
   } catch (error) {
-    console.error('[Sidepanel] Error during initialization:', error);
+    console.error("[Sidepanel] Error during initialization:", error);
   }
 }
 
@@ -206,15 +219,15 @@ async function init() {
 async function initOnoffState() {
   try {
     if (!toggleSwitch) {
-      console.warn('[Sidepanel] toggleSwitch element not found');
+      console.warn("[Sidepanel] toggleSwitch element not found");
       return;
     }
 
     const storageUtils = window.storageUtils;
-    
+
     // 打开sidepanel时，即将Onoff开关设为true。 并更新缓存内的参数
     // if (storageUtils && storageUtils.setStorageValue) {
-      await storageUtils.setStorageValue("onoff", currentOnoff);
+    await storageUtils.setStorageValue("onoff", currentOnoff);
     // } else {
     //   await chrome.storage.local.set({ "onoff": currentOnoff });
     // }
@@ -223,16 +236,16 @@ async function initOnoffState() {
     _showOnoff(currentOnoff);
 
     // 对开关加事件监听，当开关状态改变时，更新缓存内的参数
-    toggleSwitch.addEventListener('change', async function() {
+    toggleSwitch.addEventListener("change", async function () {
       const newValue = this.checked;
       // if (storageUtils && storageUtils.setStorageValue) {
-        await storageUtils.setStorageValue("onoff", newValue);
+      await storageUtils.setStorageValue("onoff", newValue);
       // } else {
       //   await chrome.storage.local.set({ "onoff": newValue });
       // }
     });
   } catch (error) {
-    console.error('[Sidepanel] Error initializing onoff state:', error);
+    console.error("[Sidepanel] Error initializing onoff state:", error);
   }
 }
 
@@ -249,22 +262,22 @@ function applyConfigData(data) {
   current_auth_token = data.auth_token ?? default_auth_token;
   current_chat_endpoint = data.chat_endpoint ?? default_chat_endpoint;
   current_chat_model = data.chat_model ?? default_chat_model;
-  
+
   if (data.action_items && Array.isArray(data.action_items)) {
-    current_action_items_active = data.action_items.filter(item => item.active);
+    current_action_items_active = data.action_items.filter((item) => item.active);
   } else {
     // 如果没有 action_items 或不是数组，使用默认值
-    current_action_items_active = default_action_items.filter(item => item.active);
+    current_action_items_active = default_action_items.filter((item) => item.active);
   }
-  
+
   if (debug) {
-    console.log('[Sidepanel] Config applied:', {
+    console.log("[Sidepanel] Config applied:", {
       tts_endpoint: current_tts_endpoint,
       tts_model: current_tts_model,
       tts_voice: current_tts_voice,
       chat_endpoint: current_chat_endpoint,
       chat_model: current_chat_model,
-      action_items_count: current_action_items_active.length
+      action_items_count: current_action_items_active.length,
     });
   }
 }
@@ -282,12 +295,12 @@ async function initConfig() {
       "auth_token",
       "chat_endpoint",
       "chat_model",
-      "action_items"
+      "action_items",
     ];
 
     let data;
     // if (storageUtils && storageUtils.getStorageValues) {
-      data = await storageUtils.getStorageValues(keys);
+    data = await storageUtils.getStorageValues(keys);
     // } else {
     //   // 降级方案：直接使用 Chrome API
     //   data = await chrome.storage.local.get(keys);
@@ -296,7 +309,7 @@ async function initConfig() {
     // 应用配置数据
     applyConfigData(data);
   } catch (error) {
-    console.error('[Sidepanel] Error initializing config:', error);
+    console.error("[Sidepanel] Error initializing config:", error);
   }
 }
 
@@ -306,12 +319,12 @@ async function initConfig() {
 function initButtons() {
   try {
     // “设置”按钮（左上角的设置按钮） -- 点击后打开option页面
-    const btnSetting = document.getElementById('btnSetting');
+    const btnSetting = document.getElementById("btnSetting");
     if (btnSetting) {
       btnSetting.id = "SettingButton";
       const btnName = chrome.i18n.getMessage("btn_name_setting");
       btnSetting.innerHTML = `${SVGSetting_6} ${btnName}`;
-      btnSetting.addEventListener('click', function() {
+      btnSetting.addEventListener("click", function () {
         if (chrome.runtime.openOptionsPage) {
           chrome.runtime.openOptionsPage();
         }
@@ -319,14 +332,14 @@ function initButtons() {
     }
 
     // “添加内容块”按钮（右下角的加号） -- 点击后增加一块空白块，可输入任何内容
-    const btnAddOne = document.getElementById('btnAddOne');
+    const btnAddOne = document.getElementById("btnAddOne");
     if (btnAddOne) {
-      btnAddOne.addEventListener('click', function() {
+      btnAddOne.addEventListener("click", function () {
         add_content_block("");
       });
     }
   } catch (error) {
-    console.error('[Sidepanel] Error initializing buttons:', error);
+    console.error("[Sidepanel] Error initializing buttons:", error);
   }
 }
 
@@ -344,14 +357,14 @@ function _showOnoff(bOnoff) {
       toggleSwitch.checked = bOnoff;
     }
 
-    const onoffElement = document.body.querySelector('#definition-onoff');
+    const onoffElement = document.body.querySelector("#definition-onoff");
     if (onoffElement) {
-      onoffElement.innerText = bOnoff 
-        ? chrome.i18n.getMessage("onoff_on") 
+      onoffElement.innerText = bOnoff
+        ? chrome.i18n.getMessage("onoff_on")
         : chrome.i18n.getMessage("onoff_off");
     }
   } catch (error) {
-    console.error('[Sidepanel] Error showing onoff:', error);
+    console.error("[Sidepanel] Error showing onoff:", error);
   }
 }
 
@@ -362,18 +375,19 @@ function _showOnoff(bOnoff) {
 function getBtnSetting() {
   try {
     const btnName = chrome.i18n.getMessage("btn_name_setting");
-    const btnSetting = document.createElement('a');
-    btnSetting.className = "flex items-center justify-center gap-x-1.5 p-1 font-semibold text-red-600 hover:bg-blue-100 hover:underline";
+    const btnSetting = document.createElement("a");
+    btnSetting.className =
+      "flex items-center justify-center gap-x-1.5 p-1 font-semibold text-red-600 hover:bg-blue-100 hover:underline";
     btnSetting.innerHTML = `<span aria-hidden="true">→</span>${SVGSetting} ${btnName}`;
-    btnSetting.addEventListener('click', function() {
+    btnSetting.addEventListener("click", function () {
       if (chrome.runtime.openOptionsPage) {
         chrome.runtime.openOptionsPage();
       }
     });
     return btnSetting;
   } catch (error) {
-    console.error('[Sidepanel] Error creating setting button:', error);
-    return document.createElement('div'); // 返回空元素作为降级
+    console.error("[Sidepanel] Error creating setting button:", error);
+    return document.createElement("div"); // 返回空元素作为降级
   }
 }
 
@@ -387,15 +401,15 @@ function getBtnSetting() {
  */
 function createButton(btnId, btnClassName, btnHtml, disabled = false) {
   try {
-    const btnButton = document.createElement('button');
+    const btnButton = document.createElement("button");
     btnButton.id = btnId;
     btnButton.className = btnClassName;
     btnButton.innerHTML = btnHtml;
     btnButton.disabled = disabled;
     return btnButton;
   } catch (error) {
-    console.error('[Sidepanel] Error creating button:', error);
-    return document.createElement('div'); // 返回空元素作为降级
+    console.error("[Sidepanel] Error creating button:", error);
+    return document.createElement("div"); // 返回空元素作为降级
   }
 }
 
@@ -406,17 +420,19 @@ function createButton(btnId, btnClassName, btnHtml, disabled = false) {
 /**
  * 处理来自 content script 的消息
  */
-function setupMessageListeners(){
-  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+function setupMessageListeners() {
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (debug) {
-      console.log('[Sidepanel] Message received:', request.type);
-      console.log('[Sidepanel] Sender:', sender);
+      console.log("[Sidepanel] Message received:", request.type);
+      console.log("[Sidepanel] Sender:", sender);
     }
 
     try {
-      if (request.type === 'selectedText') {
-        if (debug) console.log('[Sidepanel] Selected text:', request.msg);
-        
+      if (request.type === "selectedText") {
+        if (debug) {
+          console.log("[Sidepanel] Selected text:", request.msg);
+        }
+
         add_content_block(request.msg);
         sendResponse({ data: "success" });
         return true; // 异步响应
@@ -424,7 +440,7 @@ function setupMessageListeners(){
 
       sendResponse({ data: "done" });
     } catch (error) {
-      console.error('[Sidepanel] Error handling message:', error);
+      console.error("[Sidepanel] Error handling message:", error);
       sendResponse({ data: "error", error: error.message });
     }
   });
@@ -435,9 +451,9 @@ function setupMessageListeners(){
 // ============================================================================
 
 // 等待 DOM 加载完成后再初始化
-if (typeof window !== 'undefined' && typeof module === 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+if (typeof window !== "undefined" && typeof module === "undefined") {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
   } else {
     // DOM 已经加载完成
     init();
@@ -445,7 +461,7 @@ if (typeof window !== 'undefined' && typeof module === 'undefined') {
 }
 
 // 导出函数供测试使用（在 Node.js 环境中）
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     init,
     initOnoffState,
@@ -463,6 +479,6 @@ if (typeof module !== 'undefined' && module.exports) {
     SVGDelete_light,
     SVGCopy_light,
     SVGClose_light,
-    SVGDeleteAll_6
+    SVGDeleteAll_6,
   };
 }

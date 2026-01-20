@@ -13,7 +13,7 @@
  * @returns {boolean} 是否为有效键名
  */
 function isValidKey(key) {
-  return typeof key === 'string' && key.length > 0;
+  return typeof key === "string" && key.length > 0;
 }
 
 /**
@@ -24,13 +24,13 @@ function isValidKey(key) {
 function logStorage(message, value) {
   if (debug) {
     // 对于敏感键（如 auth_token），不记录实际值
-    const sensitiveKeys = ['auth_token', 'api_key', 'password', 'token'];
-    const isSensitive = sensitiveKeys.some(sk => message.toLowerCase().includes(sk));
-    
+    const sensitiveKeys = ["auth_token", "api_key", "password", "token"];
+    const isSensitive = sensitiveKeys.some((sk) => message.toLowerCase().includes(sk));
+
     if (isSensitive && value) {
       console.log(`[Storage] ${message}: [REDACTED]`);
     } else {
-      console.log(`[Storage] ${message}`, value !== undefined ? `: ${value}` : '');
+      console.log(`[Storage] ${message}`, value !== undefined ? `: ${value}` : "");
     }
   }
 }
@@ -46,7 +46,7 @@ function logStorage(message, value) {
  */
 async function getStorageValue(key) {
   if (!isValidKey(key)) {
-    console.error('[Storage] Invalid key provided to getStorageValue:', key);
+    console.error("[Storage] Invalid key provided to getStorageValue:", key);
     return null;
   }
 
@@ -54,7 +54,7 @@ async function getStorageValue(key) {
     const data = await chrome.storage.local.get(key);
     const value = data[key] ?? null;
     if (debug) {
-      logStorage(`Get ${key}`, value !== null ? 'success' : 'not found');
+      logStorage(`Get ${key}`, value !== null ? "success" : "not found");
     }
     return value;
   } catch (error) {
@@ -71,13 +71,13 @@ async function getStorageValue(key) {
  */
 async function setStorageValue(key, value) {
   if (!isValidKey(key)) {
-    console.error('[Storage] Invalid key provided to setStorageValue:', key);
+    console.error("[Storage] Invalid key provided to setStorageValue:", key);
     return false;
   }
 
   try {
     await chrome.storage.local.set({ [key]: value });
-    logStorage(`Set ${key}`, 'success');
+    logStorage(`Set ${key}`, "success");
     return true;
   } catch (error) {
     console.error(`[Storage] Error setting ${key}:`, error);
@@ -92,12 +92,12 @@ async function setStorageValue(key, value) {
  */
 async function getStorageValues(keys) {
   if (!Array.isArray(keys) || keys.length === 0) {
-    console.error('[Storage] Invalid keys array provided to getStorageValues');
+    console.error("[Storage] Invalid keys array provided to getStorageValues");
     return {};
   }
 
   // 验证所有键名
-  const validKeys = keys.filter(key => {
+  const validKeys = keys.filter((key) => {
     if (!isValidKey(key)) {
       console.warn(`[Storage] Invalid key in array: ${key}`);
       return false;
@@ -106,13 +106,13 @@ async function getStorageValues(keys) {
   });
 
   if (validKeys.length === 0) {
-    console.error('[Storage] No valid keys provided');
+    console.error("[Storage] No valid keys provided");
     return {};
   }
 
   try {
     const data = await chrome.storage.local.get(validKeys);
-    logStorage(`Get ${validKeys.length} values`, 'success');
+    logStorage(`Get ${validKeys.length} values`, "success");
     return data;
   } catch (error) {
     console.error(`[Storage] Error getting values for keys:`, error);
@@ -126,8 +126,8 @@ async function getStorageValues(keys) {
  * @returns {Promise<boolean>} 是否设置成功
  */
 async function setStorageValues(values) {
-  if (!values || typeof values !== 'object' || Array.isArray(values)) {
-    console.error('[Storage] Invalid values object provided to setStorageValues');
+  if (!values || typeof values !== "object" || Array.isArray(values)) {
+    console.error("[Storage] Invalid values object provided to setStorageValues");
     return false;
   }
 
@@ -142,14 +142,14 @@ async function setStorageValues(values) {
   });
 
   if (validEntries.length === 0) {
-    console.error('[Storage] No valid key-value pairs provided');
+    console.error("[Storage] No valid key-value pairs provided");
     return false;
   }
 
   try {
     const validValues = Object.fromEntries(validEntries);
     await chrome.storage.local.set(validValues);
-    logStorage(`Set ${validEntries.length} values`, 'success');
+    logStorage(`Set ${validEntries.length} values`, "success");
     return true;
   } catch (error) {
     console.error(`[Storage] Error setting multiple values:`, error);
@@ -164,13 +164,13 @@ async function setStorageValues(values) {
  */
 async function removeStorageValue(key) {
   if (!isValidKey(key)) {
-    console.error('[Storage] Invalid key provided to removeStorageValue:', key);
+    console.error("[Storage] Invalid key provided to removeStorageValue:", key);
     return false;
   }
 
   try {
     await chrome.storage.local.remove(key);
-    logStorage(`Remove ${key}`, 'success');
+    logStorage(`Remove ${key}`, "success");
     return true;
   } catch (error) {
     console.error(`[Storage] Error removing ${key}:`, error);
@@ -185,12 +185,12 @@ async function removeStorageValue(key) {
  */
 async function removeStorageValues(keys) {
   if (!Array.isArray(keys) || keys.length === 0) {
-    console.error('[Storage] Invalid keys array provided to removeStorageValues');
+    console.error("[Storage] Invalid keys array provided to removeStorageValues");
     return false;
   }
 
   // 验证所有键名
-  const validKeys = keys.filter(key => {
+  const validKeys = keys.filter((key) => {
     if (!isValidKey(key)) {
       console.warn(`[Storage] Invalid key in array: ${key}`);
       return false;
@@ -199,13 +199,13 @@ async function removeStorageValues(keys) {
   });
 
   if (validKeys.length === 0) {
-    console.error('[Storage] No valid keys provided');
+    console.error("[Storage] No valid keys provided");
     return false;
   }
 
   try {
     await chrome.storage.local.remove(validKeys);
-    logStorage(`Remove ${validKeys.length} values`, 'success');
+    logStorage(`Remove ${validKeys.length} values`, "success");
     return true;
   } catch (error) {
     console.error(`[Storage] Error removing values:`, error);
@@ -220,10 +220,10 @@ async function removeStorageValues(keys) {
 async function clearStorage() {
   try {
     await chrome.storage.local.clear();
-    logStorage('Clear all storage', 'success');
+    logStorage("Clear all storage", "success");
     return true;
   } catch (error) {
-    console.error('[Storage] Error clearing storage:', error);
+    console.error("[Storage] Error clearing storage:", error);
     return false;
   }
 }
@@ -240,21 +240,21 @@ async function clearStorage() {
  */
 async function initStorageValue(key, defaultValue) {
   if (!isValidKey(key)) {
-    console.error('[Storage] Invalid key provided to initStorageValue:', key);
+    console.error("[Storage] Invalid key provided to initStorageValue:", key);
     return defaultValue;
   }
 
   logStorage(`Initializing ${key}`, defaultValue);
-  
+
   try {
     // 获取当前值
     // const data = await chrome.storage.local.get(key);
     // const existingValue = data[key];
-    const existingValue = await getStorageValue(key)
-    
+    const existingValue = await getStorageValue(key);
+
     // 如果值为 null 或 undefined，使用默认值
     const value = existingValue == null ? defaultValue : existingValue;
-    
+
     // 初始化时总是设置值（确保值被正确设置和同步）
     // 注意：即使值已经存在，也会重新设置，这是初始化的预期行为
     const success = await setStorageValue(key, value);
@@ -262,7 +262,7 @@ async function initStorageValue(key, defaultValue) {
       console.warn(`[Storage] Failed to set value for ${key}, using computed value`);
       return value;
     }
-    
+
     return value;
   } catch (error) {
     console.error(`[Storage] Error initializing ${key}:`, error);
@@ -283,26 +283,26 @@ async function initStorageValue(key, defaultValue) {
  * @returns {Promise<Object>} 初始化后的所有值
  */
 async function initStorageValues(config) {
-  if (!config || typeof config !== 'object' || Array.isArray(config)) {
-    console.error('[Storage] Invalid config object provided to initStorageValues');
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    console.error("[Storage] Invalid config object provided to initStorageValues");
     return {};
   }
 
-  logStorage('Batch initializing storage values', `${Object.keys(config).length} keys`);
-  
+  logStorage("Batch initializing storage values", `${Object.keys(config).length} keys`);
+
   try {
     const entries = Object.entries(config);
     const results = await Promise.all(
       entries.map(([key, defaultValue]) =>
-        initStorageValue(key, defaultValue).then(value => [key, value])
+        initStorageValue(key, defaultValue).then((value) => [key, value])
       )
     );
-    
+
     const resultObject = Object.fromEntries(results);
-    logStorage('Batch initialization completed', 'success');
+    logStorage("Batch initialization completed", "success");
     return resultObject;
   } catch (error) {
-    console.error('[Storage] Error during batch initialization:', error);
+    console.error("[Storage] Error during batch initialization:", error);
     return {};
   }
 }
@@ -318,22 +318,26 @@ async function initStorageValues(config) {
  * @returns {Function} 移除监听器的函数
  */
 function createStorageListener(keys, callback) {
-  if (debug) console.log('[createStorageListener] - begin');
-  if (!callback || typeof callback !== 'function') {
-    console.error('[Storage] Invalid callback provided to createStorageListener');
+  if (debug) {
+    console.log("[createStorageListener] - begin");
+  }
+  if (!callback || typeof callback !== "function") {
+    console.error("[Storage] Invalid callback provided to createStorageListener");
     return () => {};
   }
 
   const keysArray = Array.isArray(keys) ? keys : [keys];
-  const validKeys = keysArray.filter(key => isValidKey(key));
+  const validKeys = keysArray.filter((key) => isValidKey(key));
 
   if (validKeys.length === 0) {
-    console.error('[Storage] No valid keys provided to createStorageListener');
+    console.error("[Storage] No valid keys provided to createStorageListener");
     return () => {};
   }
 
   const listener = (changes) => {
-    if (debug) console.log('[Storage] Storage changed, checking keys:', validKeys);
+    if (debug) {
+      console.log("[Storage] Storage changed, checking keys:", validKeys);
+    }
 
     // 检查是否有监听的键发生变化
     const relevantChanges = {};
@@ -347,14 +351,18 @@ function createStorageListener(keys, callback) {
     }
 
     if (hasChanges) {
-      if (debug) console.log('[Storage] Relevant changes detected:', Object.keys(relevantChanges));
+      if (debug) {
+        console.log("[Storage] Relevant changes detected:", Object.keys(relevantChanges));
+      }
       callback(relevantChanges, changes);
     }
   };
 
   chrome.storage.local.onChanged.addListener(listener);
 
-  if (debug) console.log('[createStorageListener]End');
+  if (debug) {
+    console.log("[createStorageListener]End");
+  }
 
   // 返回移除监听器的函数
   return () => {
@@ -376,24 +384,24 @@ const storageUtils = {
   removeStorageValue,
   removeStorageValues,
   clearStorage,
-  
+
   // 初始化操作
   initStorageValue,
   initStorageValues,
-  
+
   // 监听器
-  createStorageListener
+  createStorageListener,
 };
 
 // 导出函数供其他文件使用（在浏览器环境和 Service Worker 环境中）
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.storageUtils = storageUtils;
-} else if (typeof self !== 'undefined') {
+} else if (typeof self !== "undefined") {
   // Service Worker 环境
   self.storageUtils = storageUtils;
 }
 
 // 导出函数供测试使用（在 Node.js 环境中）
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = storageUtils;
 }

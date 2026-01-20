@@ -3,7 +3,9 @@
 // 功能：管理扩展的配置选项，包括 TTS、Chat 和 Action Items 设置
 // ============================================================================
 
-if (debug) console.log('[Options] Options page loaded, debug mode:', debug);
+if (debug) {
+  console.log("[Options] Options page loaded, debug mode:", debug);
+}
 
 // ============================================================================
 // 常量定义
@@ -50,11 +52,13 @@ async function initTTSEndpoint(form) {
     }
 
     form.TTSEndpoint.addEventListener("change", async (event) => {
-      if (debug) console.log('[Options] TTS endpoint changed:', event.target.value);
+      if (debug) {
+        console.log("[Options] TTS endpoint changed:", event.target.value);
+      }
       await window.storageUtils.setStorageValue("tts_endpoint", event.target.value);
     });
   } catch (error) {
-    console.error('[Options] Error initializing TTS endpoint:', error);
+    console.error("[Options] Error initializing TTS endpoint:", error);
   }
 }
 
@@ -112,13 +116,15 @@ async function initAPIKey(form) {
 
     // 输入框输入事件：根据内容启用/禁用保存按钮
     form.TTSOpenAIAPIKey.addEventListener("input", (event) => {
-      if (debug) console.log('[Options] API key input:', event.target.value.length > 0);
+      if (debug) {
+        console.log("[Options] API key input:", event.target.value.length > 0);
+      }
       const hasContent = event.target.value.length > 0;
       form.onoffTTSOpenAIAPIKey.disabled = !hasContent;
       form.onoffTTSOpenAIAPIKey.innerHTML = hasContent ? SVGCheck : SVGCheckDisabled;
     });
   } catch (error) {
-    console.error('[Options] Error initializing API key:', error);
+    console.error("[Options] Error initializing API key:", error);
   }
 }
 
@@ -133,11 +139,11 @@ async function initTTSModel() {
     const currentModel = await window.storageUtils.getStorageValue("tts_model");
     const container = document.getElementById("tts_model_container");
 
-    arrTTSModel.forEach(model => {
+    arrTTSModel.forEach((model) => {
       container.appendChild(createRadioOption("tts_model", model, currentModel));
     });
   } catch (error) {
-    console.error('[Options] Error initializing TTS model:', error);
+    console.error("[Options] Error initializing TTS model:", error);
   }
 }
 
@@ -152,11 +158,11 @@ async function initTTSVoice() {
     const currentVoice = await window.storageUtils.getStorageValue("tts_voice");
     const container = document.getElementById("tts_voice_container");
 
-    arrTTSVoice.forEach(voice => {
+    arrTTSVoice.forEach((voice) => {
       container.appendChild(createRadioOption("tts_voice", voice, currentVoice));
     });
   } catch (error) {
-    console.error('[Options] Error initializing TTS voice:', error);
+    console.error("[Options] Error initializing TTS voice:", error);
   }
 }
 
@@ -176,11 +182,13 @@ async function initChatEndpoint(form) {
     }
 
     form.ChatEndpoint.addEventListener("change", async (event) => {
-      if (debug) console.log('[Options] Chat endpoint changed:', event.target.value);
+      if (debug) {
+        console.log("[Options] Chat endpoint changed:", event.target.value);
+      }
       await window.storageUtils.setStorageValue("chat_endpoint", event.target.value);
     });
   } catch (error) {
-    console.error('[Options] Error initializing chat endpoint:', error);
+    console.error("[Options] Error initializing chat endpoint:", error);
   }
 }
 
@@ -195,11 +203,11 @@ async function initChatModel() {
     const currentModel = await window.storageUtils.getStorageValue("chat_model");
     const container = document.getElementById("chat_model_container");
 
-    arrChatModel.forEach(model => {
+    arrChatModel.forEach((model) => {
       container.appendChild(createRadioOption("chat_model", model, currentModel));
     });
   } catch (error) {
-    console.error('[Options] Error initializing chat model:', error);
+    console.error("[Options] Error initializing chat model:", error);
   }
 }
 
@@ -230,7 +238,7 @@ function constructActionItemsHTML(actionItems, container, template) {
     html = html.replace(/\{prompt\}/g, chrome.i18n.getMessage("prompt"));
 
     // 创建新的 action item 元素
-    const divActionItem = document.createElement('div');
+    const divActionItem = document.createElement("div");
     divActionItem.innerHTML = html;
     container.appendChild(divActionItem);
 
@@ -240,8 +248,8 @@ function constructActionItemsHTML(actionItems, container, template) {
     const inputStatus = divActionItem.querySelector(`#action_status_${itemIndex}`);
 
     // 设置初始值
-    inputName.value = actionItem.name || '';
-    inputPrompt.value = actionItem.prompt || '';
+    inputName.value = actionItem.name || "";
+    inputPrompt.value = actionItem.prompt || "";
     inputStatus.checked = actionItem.active || false;
 
     // 名称输入事件
@@ -252,7 +260,7 @@ function constructActionItemsHTML(actionItems, container, template) {
 
       let newValue = event.target.value.slice(0, 10).trim();
       newValue = newValue.length === 0 ? actionItem.name : newValue;
-      
+
       actionItem.name = newValue;
       inputName.value = newValue;
       await window.storageUtils.setStorageValue("action_items", actionItems);
@@ -289,11 +297,12 @@ async function initActionItems() {
     containerName.innerHTML = chrome.i18n.getMessage("container_action_items_name");
 
     const container = document.getElementById("container_action_items");
-    const actionItems = await window.storageUtils.getStorageValue("action_items") || default_action_items;
+    const actionItems =
+      (await window.storageUtils.getStorageValue("action_items")) || default_action_items;
 
     constructActionItemsHTML(actionItems, container, templateActionItem);
   } catch (error) {
-    console.error('[Options] Error initializing action items:', error);
+    console.error("[Options] Error initializing action items:", error);
   }
 }
 
@@ -309,15 +318,15 @@ async function initActionItems() {
  * @returns {HTMLElement} 包含单选按钮的 div 元素
  */
 function createRadioOption(radioName, radioValue, currentValue) {
-  const container = document.createElement('div');
+  const container = document.createElement("div");
   container.className = "flex items-center gap-x-3";
 
   // 格式化值（将点号替换为 dot，用于 ID）
-  const formattedValue = radioValue.replace(".", 'dot');
+  const formattedValue = radioValue.replace(".", "dot");
   const radioId = `${radioName}_${formattedValue}`;
 
   // 创建单选按钮
-  const radioInput = document.createElement('input');
+  const radioInput = document.createElement("input");
   radioInput.id = radioId;
   radioInput.type = "radio";
   radioInput.className = "h-4 w-4 border-gray-300 text-blue-500 focus:ring-blue-500";
@@ -326,7 +335,7 @@ function createRadioOption(radioName, radioValue, currentValue) {
   radioInput.name = radioName;
 
   // 创建标签
-  const label = document.createElement('label');
+  const label = document.createElement("label");
   label.htmlFor = radioId;
   label.className = "block text-sm font-medium leading-6 text-gray-900";
   label.textContent = radioValue;
@@ -337,7 +346,9 @@ function createRadioOption(radioName, radioValue, currentValue) {
   // 添加变更事件监听器
   radioInput.addEventListener("change", async (event) => {
     if (event.target.checked) {
-      if (debug) console.log(`[Options] ${radioName} changed:`, event.target.value);
+      if (debug) {
+        console.log(`[Options] ${radioName} changed:`, event.target.value);
+      }
       await window.storageUtils.setStorageValue(radioName, event.target.value);
     }
   });
@@ -362,7 +373,7 @@ function setHelpInfo(containerId, href, preTitleKey, titleKey) {
 
     container.innerHTML = chrome.i18n.getMessage(preTitleKey);
 
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = href;
     link.target = "_blank";
     link.className = "text-xs font-semibold leading-6 text-gray-900";
@@ -384,7 +395,9 @@ function setHelpInfo(containerId, href, preTitleKey, titleKey) {
  */
 async function resetToDefaults(form) {
   try {
-    if (debug) console.log('[Options] Resetting to defaults');
+    if (debug) {
+      console.log("[Options] Resetting to defaults");
+    }
 
     // 重置 TTS 配置
     await window.storageUtils.setStorageValue("tts_endpoint", default_tts_endpoint);
@@ -394,23 +407,29 @@ async function resetToDefaults(form) {
 
     form.TTSEndpoint.value = default_tts_endpoint;
     form.TTSOpenAIAPIKey.value = default_auth_token;
-    
+
     // 更新单选按钮状态
     const ttsModelRadio = document.getElementById(`tts_model_${default_tts_model}`);
-    if (ttsModelRadio) ttsModelRadio.checked = true;
+    if (ttsModelRadio) {
+      ttsModelRadio.checked = true;
+    }
 
     const ttsVoiceRadio = document.getElementById(`tts_voice_${default_tts_voice}`);
-    if (ttsVoiceRadio) ttsVoiceRadio.checked = true;
+    if (ttsVoiceRadio) {
+      ttsVoiceRadio.checked = true;
+    }
 
     // 重置 Chat 配置
     await window.storageUtils.setStorageValue("chat_endpoint", default_chat_endpoint);
     await window.storageUtils.setStorageValue("chat_model", default_chat_model);
 
     form.ChatEndpoint.value = default_chat_endpoint;
-    
-    const formattedChatModel = default_chat_model.replace(".", 'dot');
+
+    const formattedChatModel = default_chat_model.replace(".", "dot");
     const chatModelRadio = document.getElementById(`chat_model_${formattedChatModel}`);
-    if (chatModelRadio) chatModelRadio.checked = true;
+    if (chatModelRadio) {
+      chatModelRadio.checked = true;
+    }
 
     // 重置 Action Items
     await window.storageUtils.setStorageValue("action_items", default_action_items);
@@ -418,9 +437,11 @@ async function resetToDefaults(form) {
     const container = document.getElementById("container_action_items");
     constructActionItemsHTML(actionItems, container, templateActionItem);
 
-    if (debug) console.log('[Options] Reset completed');
+    if (debug) {
+      console.log("[Options] Reset completed");
+    }
   } catch (error) {
-    console.error('[Options] Error resetting to defaults:', error);
+    console.error("[Options] Error resetting to defaults:", error);
   }
 }
 
@@ -431,17 +452,17 @@ function initResetButton() {
   try {
     const btnReset = document.getElementById("btnReset");
     if (!btnReset) {
-      console.warn('[Options] Reset button not found');
+      console.warn("[Options] Reset button not found");
       return;
     }
 
     btnReset.innerHTML = chrome.i18n.getMessage("btn_name_reset");
-    btnReset.addEventListener('click', async () => {
+    btnReset.addEventListener("click", async () => {
       const form = document.getElementById("optionsForm");
       await resetToDefaults(form);
     });
   } catch (error) {
-    console.error('[Options] Error initializing reset button:', error);
+    console.error("[Options] Error initializing reset button:", error);
   }
 }
 
@@ -453,12 +474,14 @@ function initResetButton() {
  * 初始化选项页面
  */
 async function initializeOptions() {
-  if (debug) console.log('[Options] Initializing options page...');
+  if (debug) {
+    console.log("[Options] Initializing options page...");
+  }
 
   try {
     const form = document.getElementById("optionsForm");
     if (!form) {
-      console.error('[Options] Options form not found');
+      console.error("[Options] Options form not found");
       return;
     }
 
@@ -479,15 +502,42 @@ async function initializeOptions() {
     initResetButton();
 
     // 设置帮助信息
-    setHelpInfo("TTSEndpoint_help", "https://platform.openai.com/docs/api-reference/audio", "howtofill", "learnmore");
-    setHelpInfo("TTSOpenAIAPIKey_help", "https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key", "howtofindmykey", "learnmore");
-    setHelpInfo("tts_model_container_help", "https://platform.openai.com/docs/guides/text-to-speech", "howtochoose", "learnmore");
-    setHelpInfo("tts_voice_container_help", "https://platform.openai.com/docs/guides/text-to-speech", "howtochoose", "learnmore");
-    setHelpInfo("ChatEndpoint_help", "https://platform.openai.com/docs/api-reference/chat", "howtofill", "learnmore");
+    setHelpInfo(
+      "TTSEndpoint_help",
+      "https://platform.openai.com/docs/api-reference/audio",
+      "howtofill",
+      "learnmore"
+    );
+    setHelpInfo(
+      "TTSOpenAIAPIKey_help",
+      "https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key",
+      "howtofindmykey",
+      "learnmore"
+    );
+    setHelpInfo(
+      "tts_model_container_help",
+      "https://platform.openai.com/docs/guides/text-to-speech",
+      "howtochoose",
+      "learnmore"
+    );
+    setHelpInfo(
+      "tts_voice_container_help",
+      "https://platform.openai.com/docs/guides/text-to-speech",
+      "howtochoose",
+      "learnmore"
+    );
+    setHelpInfo(
+      "ChatEndpoint_help",
+      "https://platform.openai.com/docs/api-reference/chat",
+      "howtofill",
+      "learnmore"
+    );
 
-    if (debug) console.log('[Options] Options page initialized successfully');
+    if (debug) {
+      console.log("[Options] Options page initialized successfully");
+    }
   } catch (error) {
-    console.error('[Options] Error during initialization:', error);
+    console.error("[Options] Error during initialization:", error);
   }
 }
 
@@ -495,10 +545,10 @@ async function initializeOptions() {
 initializeOptions();
 
 // 导出函数供测试使用（在 Node.js 环境中）
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   // 在测试环境中，从 storage.js 模块导入
-  const storageUtils = require('../scripts/storage.js');
-  
+  const storageUtils = require("../scripts/storage.js");
+
   module.exports = {
     storageUtils,
     initTTSEndpoint,
@@ -513,6 +563,6 @@ if (typeof module !== 'undefined' && module.exports) {
     setHelpInfo,
     resetToDefaults,
     initResetButton,
-    initializeOptions
+    initializeOptions,
   };
 }
