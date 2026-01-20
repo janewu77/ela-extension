@@ -98,6 +98,10 @@ global.HTMLTextAreaElement = class HTMLTextAreaElement {
   }
 };
 
+// 设置测试环境的 debug 变量
+// 在测试环境中，debug 始终为 true
+global.debug = true;
+
 // 保留原始 console 方法，但允许在测试中 mock
 // 这样测试可以选择性地 mock console 方法
 if (!global.console._original) {

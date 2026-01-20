@@ -7,7 +7,12 @@
 // 1. 调试和基础配置
 // ============================================================================
 
-const debug = false;
+// 使用 NODE_ENV 控制 debug 模式
+// 注意：Parcel 不会替换通过 importScripts 加载的文件中的 process.env.NODE_ENV
+// 因此使用构建脚本（copy-assets.sh）在构建后替换 process.env.NODE_ENV 为字面量字符串
+// 开发模式（watch）：NODE_ENV=development → process.env.NODE_ENV 被替换为 'development' → debug = true
+// 生产模式（build）：NODE_ENV=production → process.env.NODE_ENV 被替换为 'production' → debug = false
+const debug = process.env.NODE_ENV !== 'production';
 const defaultOnoff = false; // 是否打开功能
 
 // ============================================================================
