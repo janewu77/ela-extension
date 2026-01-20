@@ -28,6 +28,10 @@ export default [
         TextDecoder: 'readonly',
         HTMLTextAreaElement: 'readonly',
         self: 'readonly',
+        Blob: 'readonly', // Blob API
+        URL: 'readonly', // URL API
+        AudioContext: 'readonly', // Web Audio API
+        webkitAudioContext: 'readonly', // Web Audio API (Safari)
         // Node.js 环境（用于测试）
         global: 'readonly',
         process: 'readonly',
@@ -95,9 +99,12 @@ export default [
         SVGPlay: 'readonly',
         SVGPause: 'readonly',
         SVGStop: 'readonly',
+        SVGDownload: 'readonly',
         SVGEdit: 'readonly',
         SVGCheck: 'readonly',
         SVGCheckDisabled: 'readonly',
+        // MP3 编码库（从 lamejs.min.js 加载）
+        lamejs: 'readonly',
       },
     },
     

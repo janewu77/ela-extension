@@ -42,6 +42,12 @@
   "btn_player_loop": {
     "message": "循环"
   },
+  "btn_download_audio": {
+    "message": "下载"
+  },
+  "err_no_audio_to_download": {
+    "message": "没有可下载的音频。请先生成音频。"
+  },
   "button": {
     "message": "按钮"
   },

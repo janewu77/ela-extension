@@ -120,6 +120,7 @@ global.SVGPause = icons.SVGPause;
 global.SVGStop = icons.SVGStop;
 global.SVGEdit = icons.SVGEdit;
 global.SVGCheck = icons.SVGCheck;
+global.SVGDownload = icons.SVGDownload;
 global.SVGCheckDisabled = icons.SVGCheckDisabled;
 
 // 保留原始 console 方法，但允许在测试中 mock

@@ -103,6 +103,7 @@ function deleteAllBlocks() {
         btnStopClicked(uuid); //先停止音频播放
         mapMsg.delete(uuid); //清除map里的缓存数据
         mapAudioLoop.delete(uuid);
+        mapAudioBufferCache.delete(uuid); // 删除音频缓存
 
         const element = document.getElementById(uuid);
         if (element) {
@@ -270,6 +271,15 @@ function _createContentElement(uuid, content) {
     mapAudioContext.set(uuid, null);
     mapAudioBufferCache.set(uuid, null);
     mapSource.set(uuid, null);
+
+    // 禁用下载按钮（因为音频已失效）
+    const pannelElement = document.getElementById(`PlayerPannel_${uuid}`);
+    if (pannelElement) {
+      const btnDownload = pannelElement.querySelector('[id="downloadAudio"]');
+      if (btnDownload) {
+        btnDownload.disabled = true;
+      }
+    }
   });
 
   // 计算并设置 textarea 行数
@@ -353,28 +363,32 @@ function createPlayerPannel(uuid, container, divSysMsg) {
     const pannelElement = document.createElement("div");
     pannelElement.id = `PlayerPannel_${uuid}`;
     pannelElement.className =
-      "mt-2 grid grid-cols-4 divide-x divide-gray-900/5 bg-gray-100 rounded";
+      "mt-2 grid grid-cols-5 divide-x divide-gray-900/5 bg-gray-100 rounded";
 
     // 创建按钮
     const btnPlay = createButton("playAudio", ClassNameForPlayButton, SVGPlay, false);
     const btnPause = createButton("pauseAudio", ClassNameForPlayButton, SVGPause, true);
     const btnStop = createButton("stopAudio", ClassNameForPlayButton, SVGStop, true);
+    const btnDownload = createButton("downloadAudio", ClassNameForPlayButton, SVGDownload, true);
 
     pannelElement.appendChild(btnPlay);
     pannelElement.appendChild(btnPause);
     pannelElement.appendChild(btnStop);
+    pannelElement.appendChild(btnDownload);
 
     // 定义回调函数
     const onBeforePlay = function () {
       btnPlay.innerHTML = SVGPlay;
       btnPause.disabled = false;
       btnStop.disabled = false;
+      btnDownload.disabled = false;
     };
 
     const onPlayEnded = function () {
       btnPlay.innerHTML = SVGPlay;
       btnPlay.disabled = false;
       btnPause.disabled = true;
+      // btnDownload.disabled = false;
     };
 
     const onErrorAudio = function (error) {
@@ -382,6 +396,7 @@ function createPlayerPannel(uuid, container, divSysMsg) {
       btnPlay.disabled = false;
       btnPause.disabled = true;
       btnStop.disabled = true;
+      btnDownload.disabled = true;
 
       // 显示错误消息
       // 使用 textContent 防止 XSS 攻击，安全地显示错误消息
@@ -430,10 +445,12 @@ function createPlayerPannel(uuid, container, divSysMsg) {
       divSysMsg.hidden = true;
 
       btnPlay.disabled = true;
+      btnDownload.disabled = true;
 
       // 检查是否有缓存的音频数据
       const audioBufferCache = mapAudioBufferCache.get(uuid);
       if (audioBufferCache) {
+        // 确保下载按钮已启用
         playAudioBuffer(uuid, onBeforePlay, onPlayEnded);
       } else {
         // 获取音频数据
@@ -481,8 +498,18 @@ function createPlayerPannel(uuid, container, divSysMsg) {
       btnPlay.disabled = false;
       btnPause.disabled = true;
       btnStop.disabled = true;
+      btnDownload.disabled = true;
 
       btnStopClicked(uuid);
+    });
+
+    // 下载按钮事件
+    btnDownload.addEventListener("click", function () {
+      if (debug) {
+        console.log("[Playback] Download button clicked, uuid:", uuid);
+      }
+
+      downloadAudio(uuid);
     });
 
     // 创建删除按钮容器
@@ -501,11 +528,13 @@ function createPlayerPannel(uuid, container, divSysMsg) {
       btnPlay.disabled = true;
       btnPause.disabled = true;
       btnStop.disabled = true;
+      btnDownload.disabled = true;
 
       btnStopClicked(uuid);
 
       mapMsg.delete(uuid);
       mapAudioLoop.delete(uuid);
+      mapAudioBufferCache.delete(uuid); // 删除音频缓存
       container.remove();
 
       get_current_lastNode();
@@ -533,6 +562,177 @@ function createPlayerPannel(uuid, container, divSysMsg) {
   } catch (error) {
     console.error("[Playback] Error creating player panel:", error);
     return document.createElement("div");
+  }
+}
+
+// ============================================================================
+// 音频下载功能
+// ============================================================================
+
+/**
+ * 将 AudioBuffer 转换为 MP3 格式的 ArrayBuffer
+ * @param {AudioBuffer} audioBuffer - 音频缓冲区
+ * @returns {ArrayBuffer} MP3 格式的音频数据
+ */
+function audioBufferToMp3(audioBuffer) {
+  const numChannels = audioBuffer.numberOfChannels;
+  const sampleRate = audioBuffer.sampleRate;
+  const length = audioBuffer.length;
+
+  // 创建 MP3 编码器
+  const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, 128); // 128 kbps bitrate
+  const sampleBlockSize = 1152; // MP3 编码的块大小
+  const mp3Data = [];
+
+  // 获取音频数据
+  const leftChannel = numChannels > 0 ? audioBuffer.getChannelData(0) : null;
+  const rightChannel = numChannels > 1 ? audioBuffer.getChannelData(1) : leftChannel;
+
+  // 将浮点音频数据转换为 16 位 PCM
+  const leftInt16 = leftChannel ? new Int16Array(leftChannel.length) : null;
+  const rightInt16 = rightChannel ? new Int16Array(rightChannel.length) : null;
+
+  if (leftInt16) {
+    for (let i = 0; i < leftChannel.length; i++) {
+      const sample = Math.max(-1, Math.min(1, leftChannel[i]));
+      leftInt16[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+    }
+  }
+
+  if (rightInt16 && rightChannel !== leftChannel) {
+    for (let i = 0; i < rightChannel.length; i++) {
+      const sample = Math.max(-1, Math.min(1, rightChannel[i]));
+      rightInt16[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+    }
+  }
+
+  // 编码音频数据
+  let remaining = length;
+  let offset = 0;
+
+  while (remaining >= sampleBlockSize) {
+    const leftChunk = leftInt16
+      ? leftInt16.subarray(offset, offset + sampleBlockSize)
+      : new Int16Array(0);
+    const rightChunk =
+      rightInt16 && rightChannel !== leftChannel
+        ? rightInt16.subarray(offset, offset + sampleBlockSize)
+        : leftChunk; // 单声道时使用左声道数据
+
+    let mp3buf;
+    if (numChannels === 1) {
+      mp3buf = mp3encoder.encodeBuffer(leftChunk);
+    } else {
+      mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+    }
+
+    if (mp3buf.length > 0) {
+      mp3Data.push(mp3buf);
+    }
+
+    offset += sampleBlockSize;
+    remaining -= sampleBlockSize;
+  }
+
+  // 编码剩余数据
+  if (remaining > 0) {
+    const leftChunk = leftInt16
+      ? leftInt16.subarray(offset, offset + remaining)
+      : new Int16Array(0);
+    const rightChunk =
+      rightInt16 && rightChannel !== leftChannel
+        ? rightInt16.subarray(offset, offset + remaining)
+        : leftChunk; // 单声道时使用左声道数据
+
+    let mp3buf;
+    if (numChannels === 1) {
+      mp3buf = mp3encoder.encodeBuffer(leftChunk);
+    } else {
+      mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+    }
+
+    if (mp3buf.length > 0) {
+      mp3Data.push(mp3buf);
+    }
+  }
+
+  // 刷新编码器，获取最后的 MP3 数据
+  const finalMp3buf = mp3encoder.flush();
+  if (finalMp3buf.length > 0) {
+    mp3Data.push(finalMp3buf);
+  }
+
+  // 合并所有 MP3 数据块
+  const totalLength = mp3Data.reduce((sum, buf) => sum + buf.length, 0);
+  const result = new Uint8Array(totalLength);
+  let pos = 0;
+  for (const buf of mp3Data) {
+    result.set(buf, pos);
+    pos += buf.length;
+  }
+
+  return result.buffer;
+}
+
+/**
+ * 下载音频文件
+ * @param {number} uuid - 唯一标识符
+ */
+function downloadAudio(uuid) {
+  if (debug) {
+    console.log("[Playback] Downloading audio, uuid:", uuid);
+  }
+
+  try {
+    const audioBufferCache = mapAudioBufferCache.get(uuid);
+
+    if (!audioBufferCache) {
+      const errorMsg =
+        chrome.i18n?.getMessage("err_no_audio_to_download") ||
+        "No audio available to download. Please generate audio first.";
+      console.error("[Playback]", errorMsg);
+      // 可以在这里显示错误消息给用户
+      return;
+    }
+
+    // 将 AudioBuffer 转换为 MP3
+    const mp3ArrayBuffer = audioBufferToMp3(audioBufferCache);
+
+    // 创建 Blob
+    const blob = new Blob([mp3ArrayBuffer], { type: "audio/mpeg" });
+
+    // 创建下载链接
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+
+    // 生成文件名（使用 uuid 和时间戳）
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5);
+    const msg = mapMsg.get(uuid);
+    // 使用消息的前30个字符作为文件名的一部分（清理特殊字符）
+    const safeMsg = msg
+      ? msg
+          .substring(0, 30)
+          .replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, "_")
+          .trim() || "audio"
+      : "audio";
+    link.download = `ela_${safeMsg}_${uuid}_${timestamp}.mp3`;
+
+    // 触发下载
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // 清理 URL 对象
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 100);
+
+    if (debug) {
+      console.log("[Playback] Audio download started, uuid:", uuid);
+    }
+  } catch (error) {
+    console.error("[Playback] Error downloading audio:", error);
   }
 }
 
@@ -705,6 +905,8 @@ if (typeof module !== "undefined" && module.exports) {
     createLoopCheckbox,
     createPlayerPannel,
     btnStopClicked,
+    downloadAudio,
+    audioBufferToMp3,
     playAudioBuffer,
     // 导出常量供其他模块使用
     ClassNameForTxtAreaButton,

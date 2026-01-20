@@ -41,6 +41,12 @@
   "btn_player_loop": {
     "message": "loop"
   },
+  "btn_download_audio": {
+    "message": "Download"
+  },
+  "err_no_audio_to_download": {
+    "message": "No audio available to download. Please generate audio first."
+  },
   "prompt": {
     "message": "System prompt"
   },
