@@ -1,0 +1,16 @@
+# 依赖和构建产物
+node_modules/
+dist/
+coverage/
+.parcel-cache/
+archive/
+
+# 第三方库
+*.min.js
+
+# 配置文件
+package-lock.json
+
+# 其他
+*.log
+*.zip
