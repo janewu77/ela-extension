@@ -1,5 +1,6 @@
 // backend api
 
+// eslint-disable-next-line no-unused-vars
 function getApiVersion() {
   const url = `${api_endpoint}/version`;
   fetch(url)

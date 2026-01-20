@@ -204,7 +204,7 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
 
             // 获取或创建 textarea
             let txtArea = divMsg.querySelector(`#${textareaElementID}`);
-            if (txtArea == null) {
+            if (txtArea === null) {
               // 清空并添加新元素
               while (divMsg.firstChild) {
                 divMsg.removeChild(divMsg.firstChild);

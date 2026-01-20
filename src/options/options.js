@@ -91,7 +91,7 @@ async function initAPIKey(form) {
     }
 
     // 编辑/保存按钮点击事件
-    form.onoffTTSOpenAIAPIKey.addEventListener("click", async (event) => {
+    form.onoffTTSOpenAIAPIKey.addEventListener("click", async () => {
       const isEditing = !form.TTSOpenAIAPIKey.disabled;
 
       if (isEditing) {

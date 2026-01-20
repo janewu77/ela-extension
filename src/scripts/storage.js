@@ -253,7 +253,8 @@ async function initStorageValue(key, defaultValue) {
     const existingValue = await getStorageValue(key);
 
     // 如果值为 null 或 undefined，使用默认值
-    const value = existingValue == null ? defaultValue : existingValue;
+    const value =
+      existingValue === null || existingValue === undefined ? defaultValue : existingValue;
 
     // 初始化时总是设置值（确保值被正确设置和同步）
     // 注意：即使值已经存在，也会重新设置，这是初始化的预期行为

@@ -337,7 +337,19 @@ npm run zip
 
 ### 快速发布命令
 
-一键执行完整的发布前检查：
+一键执行代码检查和格式化：
+
+```bash
+npm run check
+```
+
+一键执行完整的发布前检查（包括打包）：
+
+```bash
+npm run check && npm run pack
+```
+
+或者使用原来的多行命令：
 
 ```bash
 npm run lint:fix && \

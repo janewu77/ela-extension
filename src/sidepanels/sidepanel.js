@@ -17,7 +17,8 @@ let currentOnoff = true;
 let current_tts_endpoint = default_tts_endpoint;
 let current_tts_model = default_tts_model;
 let current_tts_voice = default_tts_voice;
-let current_auth_token = default_auth_token;
+// eslint-disable-next-line no-unused-vars
+let current_auth_token = default_auth_token; // 在 api.js 中使用
 
 // Chat 配置
 let current_chat_endpoint = default_chat_endpoint;
@@ -51,7 +52,7 @@ const SVGClose_light = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 
  * 处理存储变化
  * @param {Object} changes - 存储变化对象
  */
-function handleStorageChanges(changes, allChanges) {
+function handleStorageChanges(changes, _allChanges) {
   // createStorageListener 会传递两个参数：
   // - changes: 过滤后的相关变化（第一个参数）
   // - allChanges: 完整的变化对象（第二个参数，可选）
@@ -298,9 +299,8 @@ async function initConfig() {
       "action_items",
     ];
 
-    let data;
     // if (storageUtils && storageUtils.getStorageValues) {
-    data = await storageUtils.getStorageValues(keys);
+    const data = await storageUtils.getStorageValues(keys);
     // } else {
     //   // 降级方案：直接使用 Chrome API
     //   data = await chrome.storage.local.get(keys);

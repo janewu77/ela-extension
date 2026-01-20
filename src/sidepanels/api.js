@@ -236,7 +236,7 @@ function streamResponseRead(reader, afterGetContent, onDone) {
 
               if (json["choices"] && json["choices"].length > 0) {
                 const content = json["choices"][0]["delta"]?.["content"];
-                if (content != null && afterGetContent) {
+                if (content !== null && content !== undefined && afterGetContent) {
                   afterGetContent(content);
                 }
               }

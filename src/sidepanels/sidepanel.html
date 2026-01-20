@@ -1,56 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>英文学习助手ELA</title>
-    <link rel="stylesheet" href="../css/button.css">
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/button.css" />
+    <link rel="stylesheet" href="../css/main.css" />
     <script src="../scripts/const.js"></script>
     <script src="../scripts/util.js"></script>
     <script src="../scripts/storage.js"></script>
     <script src="../scripts/marked.min.js"></script>
     <style>
       .float-button {
-          width: 50px;
-          height: 50px;
-          background-color: #007BFF;
-          color: white;
-          border: none;
-          border-radius: 50%;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
       }
-  </style>
+    </style>
   </head>
   <body>
     <!-- onff switch -->
     <!-- <div class=" flex-auto overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5"> -->
-    <div class="  bg-white  ring-1 ring-gray-900/5">
-      <div class="group relative flex items-center gap-x-6 rounded-lg p-4 ">
+    <div class="bg-white ring-1 ring-gray-900/5">
+      <div class="group relative flex items-center gap-x-6 rounded-lg p-4">
         <div id="debuginfo" class="flex-auto"></div>
-        <div class="flex flex-none items-center justify-center rounded-lg gap-x-4 ">
+        <div class="flex flex-none items-center justify-center rounded-lg gap-x-4">
           <p id="definition-onoff" class="text-sm font-semibold"></p>
           <label class="switch">
-            <input type="checkbox" id="toggleSwitch">
-            <span class="slider" ></span>
+            <input type="checkbox" id="toggleSwitch" />
+            <span class="slider"></span>
           </label>
         </div>
       </div>
       <!-- Setting &&  Clear all buttons -->
-      <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 p-2 ">
-        <a href="#" id="btnSetting" class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100">
+      <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 p-2">
+        <a
+          href="#"
+          id="btnSetting"
+          class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100"
+        >
         </a>
-        <a href="#" id="btnDeleteAll" class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100">
-        </a> 
+        <a
+          href="#"
+          id="btnDeleteAll"
+          class="text-sm flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-blue-100"
+        >
+        </a>
       </div>
-  </div>
+    </div>
     <!-- <hr class="mt-2 mb-2"/> -->
     <div id="container-content" class=" "></div>
-    <div id="container-contentxx" class=" grid-cols-5 grid-cols-4 grid-cols-3 grid-cols-2 grid-cols-1 hidden"></div>
+    <div
+      id="container-contentxx"
+      class="grid-cols-5 grid-cols-4 grid-cols-3 grid-cols-2 grid-cols-1 hidden"
+    ></div>
     <button id="btnAddOne" class="fixed bottom-4 right-4 float-button">+</button>
     <script src="sidepanel.js"></script>
     <script src="api.js"></script>

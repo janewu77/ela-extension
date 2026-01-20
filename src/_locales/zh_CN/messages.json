@@ -1,94 +1,94 @@
 {
-    "app_description": {
-      "message": "掌握英语，提升效率！集成了先进的TTS和LLM技术，提供个性化学习解决方案，适合帮助用户提高语言能力。",
-      "description": ""
-    },
-    "app_name": {
-      "message": "ELA-英文学习助手",
-      "description": ""
-    },
-    "onoff_on": {
-      "message": "开",
-      "description": ""
-    },
-    "onoff_off": {
-      "message": "关",
-      "description": ""
-    },
-    "btn_name_setting": {
-      "message": "设置"
-    },
-    "btn_clearall": {
-      "message": "清除"
-    },
-    "tts_model_container_name": {
-      "message": "声音模型"
-    },
-    "tts_voice_container_name": {
-      "message": "声音"
-    },
-    "chat_model_container_name": {
-      "message": "语言模型"
-    },
-    "container_action_items_name": {
-      "message": "按钮定义"
-    },
-    "btn_name_active": {
-      "message": "启用"
-    },
-    "btn_name_reset": {
-      "message": "复 位"
-    },
-    "btn_player_loop": {
-      "message": "循环"
-    },
-    "button": {
-      "message": "按钮"
-    },
-    "prompt": {
-      "message": "系统提示词"
-    },
-    "howtochoose": {
-      "message": "我要怎么选?"
-    },
-    "howtofill": {
-      "message": "我要怎么填?"
-    },
-    "learnmore": {
-      "message": " 了解更多"
-    },
-    "howtofindmykey": {
-      "message": "在哪里能找到我的OpenAI API Key? "
-    },
-    "err_key": {
-      "message": "请检查【OpenAI-API-Key】是否正确设置。"
-    },
-    "err_empty_message_audio": {
-      "message": "请提供要转换为语音的文本。"
-    },
-    "err_empty_message_chat": {
-      "message": "请提供消息内容。"
-    },
-    "err_tts_not_configured": {
-      "message": "TTS 端点或 API 密钥未配置，请检查设置。"
-    },
-    "err_chat_not_configured": {
-      "message": "聊天端点或 API 密钥未配置，请检查设置。"
-    },
-    "err_unknown": {
-      "message": "发生未知错误。"
-    },
-    "err_empty_message": {
-      "message": "请提供消息内容。"
-    },
-    "err_invalid_response": {
-      "message": "收到无效的响应格式。"
-    },
-    "err_parse_failed": {
-      "message": "解析响应失败。"
-    },
-    "other": {
-      "message": "",
-      "description": ""
-    }
+  "app_description": {
+    "message": "掌握英语，提升效率！集成了先进的TTS和LLM技术，提供个性化学习解决方案，适合帮助用户提高语言能力。",
+    "description": ""
+  },
+  "app_name": {
+    "message": "ELA-英文学习助手",
+    "description": ""
+  },
+  "onoff_on": {
+    "message": "开",
+    "description": ""
+  },
+  "onoff_off": {
+    "message": "关",
+    "description": ""
+  },
+  "btn_name_setting": {
+    "message": "设置"
+  },
+  "btn_clearall": {
+    "message": "清除"
+  },
+  "tts_model_container_name": {
+    "message": "声音模型"
+  },
+  "tts_voice_container_name": {
+    "message": "声音"
+  },
+  "chat_model_container_name": {
+    "message": "语言模型"
+  },
+  "container_action_items_name": {
+    "message": "按钮定义"
+  },
+  "btn_name_active": {
+    "message": "启用"
+  },
+  "btn_name_reset": {
+    "message": "复 位"
+  },
+  "btn_player_loop": {
+    "message": "循环"
+  },
+  "button": {
+    "message": "按钮"
+  },
+  "prompt": {
+    "message": "系统提示词"
+  },
+  "howtochoose": {
+    "message": "我要怎么选?"
+  },
+  "howtofill": {
+    "message": "我要怎么填?"
+  },
+  "learnmore": {
+    "message": " 了解更多"
+  },
+  "howtofindmykey": {
+    "message": "在哪里能找到我的OpenAI API Key? "
+  },
+  "err_key": {
+    "message": "请检查【OpenAI-API-Key】是否正确设置。"
+  },
+  "err_empty_message_audio": {
+    "message": "请提供要转换为语音的文本。"
+  },
+  "err_empty_message_chat": {
+    "message": "请提供消息内容。"
+  },
+  "err_tts_not_configured": {
+    "message": "TTS 端点或 API 密钥未配置，请检查设置。"
+  },
+  "err_chat_not_configured": {
+    "message": "聊天端点或 API 密钥未配置，请检查设置。"
+  },
+  "err_unknown": {
+    "message": "发生未知错误。"
+  },
+  "err_empty_message": {
+    "message": "请提供消息内容。"
+  },
+  "err_invalid_response": {
+    "message": "收到无效的响应格式。"
+  },
+  "err_parse_failed": {
+    "message": "解析响应失败。"
+  },
+  "other": {
+    "message": "",
+    "description": ""
+  }
 }

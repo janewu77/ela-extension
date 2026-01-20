@@ -337,7 +337,19 @@ Before releasing a new version, ensure the following checks are completed:
 
 ### Quick Release Command
 
-One-command execution of complete pre-release checks:
+One-command execution of code checks and formatting:
+
+```bash
+npm run check
+```
+
+One-command execution of complete pre-release checks (including packaging):
+
+```bash
+npm run check && npm run pack
+```
+
+Or use the original multi-line command:
 
 ```bash
 npm run lint:fix && \
