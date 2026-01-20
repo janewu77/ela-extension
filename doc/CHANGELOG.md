@@ -9,26 +9,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.4.5] - 2024-12-XX
+## [0.4.5] - 2026-01-20
 
 ### Added
-- Audio download functionality
-  - Added download button in player panel
-  - Support downloading generated audio as MP3 format
-  - Integrated lamejs library for MP3 encoding
+- **Audio Download Functionality**
+  - Added download button in player panel to download generated audio as MP3 files
+  - Integrated lamejs library for high-quality MP3 encoding (128 kbps)
   - Added download icon (SVGDownload)
-  - Updated internationalization (English and Chinese)
   - Smart button state management (enabled only when audio is available)
+  - Automatic file naming: `ela_{message}_{uuid}_{timestamp}.mp3`
+  - Audio cache is preserved after stopping playback to allow download
+
+- **Code Quality & Tooling**
+  - Added comprehensive ESLint configuration with recommended rules
+  - Added Prettier for consistent code formatting
+  - Added `npm run check` command for lint, format, and test in one go
+  - Applied Prettier formatting across entire codebase
+
+- **Security Improvements**
+  - Fixed XSS vulnerabilities by replacing `innerHTML` with `textContent` in multiple modules
+    - Fixed XSS risks in `chataction.js` (actionItem.name)
+    - Fixed XSS risks in `playback.js` (uuid display)
+    - Fixed XSS risks in `sidepanel.js` (button content)
+  - Added `isTrusted` check in `content.js` to prevent script-generated events
+  - Added secure HTML setting utility functions in `util.js`
+
+- **Code Organization & Refactoring**
+  - Created unified icon module (`icons.js`) to centrally manage all SVG icons
+  - Improved error message internationalization (api.js, chataction.js)
+  - Refactored `const.js` with better organization and clear comments
+  - Implemented `NODE_ENV`-based debug mode control
+  - Fixed Service Worker registration issues
+
+- **Documentation**
+  - Added comprehensive system architecture documentation (ARCHITECTURE.md/zh.md, 750+ lines each)
+  - Created detailed developer guides (DEVELOPMENT.md/zh.md, 500+ lines each)
+  - Created INDEX.md as documentation index
+  - Reorganized doc directory structure
+  - Added bilingual CHANGELOG support
+  - Added ESLint & Prettier setup documentation (bilingual)
+  - Updated README files with download functionality description
 
 ### Changed
 - Updated player panel layout to accommodate download button (grid-cols-4 → grid-cols-5)
-- Updated ESLint configuration to include new globals (Blob, URL, AudioContext, lamejs, SVGDownload)
+- Updated ESLint configuration to include new globals (Blob, URL, AudioContext, lamejs, SVGDownload, etc.)
 - Updated test configuration to mock SVGDownload icon
+- Enhanced package.json with keywords, author, repository, bugs, and homepage metadata
+- Fixed license from ISC to MIT to match LICENSE file
+- Fixed all `==` and `!=` to `===` and `!==` for better code quality
+- Fixed unused variable warnings and prefer-const warnings
 
-### Technical Details
-- Audio encoding: AudioBuffer → MP3 using lamejs (128 kbps)
-- File naming: `ela_{message}_{uuid}_{timestamp}.mp3`
-- Audio cache is preserved after stopping playback to allow download
+### Fixed
+- Fixed Service Worker registration failure (`process is not defined`)
+- Fixed ESLint errors across all modules
+- Fixed XSS security vulnerabilities
+- Fixed API headers encoding issues (using Headers object)
+- Fixed test environment mocks and configurations
 
 ---
 

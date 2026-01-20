@@ -9,26 +9,62 @@
 
 ---
 
-## [0.4.5] - 2024-12-XX
+## [0.4.5] - 2026-01-20
 
 ### 新增
-- 音频下载功能
-  - 在播放器面板添加下载按钮
-  - 支持将生成的音频下载为 MP3 格式
-  - 集成 lamejs 库进行 MP3 编码
-  - 添加下载图标 (SVGDownload)
-  - 更新国际化文本（中英文）
+- **音频下载功能**
+  - 在播放器面板添加下载按钮，支持将生成的音频下载为 MP3 文件
+  - 集成 lamejs 库进行高质量 MP3 编码（128 kbps）
+  - 添加下载图标 SVGDownload
   - 智能按钮状态管理（仅在音频可用时启用）
+  - 自动文件命名：`ela_{消息}_{uuid}_{时间戳}.mp3`
+  - 停止播放后保留音频缓存，以便下载
+
+- **代码质量与工具**
+  - 添加全面的 ESLint 配置和推荐规则
+  - 添加 Prettier 实现一致的代码格式化
+  - 添加 `npm run check` 命令，一键执行 lint、format 和 test
+  - 对整个代码库应用 Prettier 格式化
+
+- **安全改进**
+  - 修复 XSS 漏洞：在多个模块中将 `innerHTML` 替换为 `textContent`
+    - 修复 `chataction.js` 中的 XSS 风险（actionItem.name）
+    - 修复 `playback.js` 中的 XSS 风险（uuid 显示）
+    - 修复 `sidepanel.js` 中的 XSS 风险（按钮内容）
+  - 在 `content.js` 中添加 `isTrusted` 检查，防止脚本生成的事件
+  - 在 `util.js` 中添加安全的 HTML 设置工具函数
+
+- **代码组织与重构**
+  - 创建统一图标模块（`icons.js`）集中管理所有 SVG 图标
+  - 改进错误消息国际化（api.js, chataction.js）
+  - 重构 `const.js`，改进组织结构和清晰注释
+  - 实现基于 `NODE_ENV` 的调试模式控制
+  - 修复 Service Worker 注册问题
+
+- **文档**
+  - 添加全面的系统架构文档（ARCHITECTURE.md/zh.md，每个 750+ 行）
+  - 创建详细的开发者指南（DEVELOPMENT.md/zh.md，每个 500+ 行）
+  - 创建 INDEX.md 作为文档索引
+  - 重组 doc 目录结构
+  - 添加双语更新日志支持
+  - 添加 ESLint & Prettier 设置文档（双语）
+  - 更新 README 文件，添加下载功能描述
 
 ### 变更
 - 更新播放器面板布局以容纳下载按钮（grid-cols-4 → grid-cols-5）
-- 更新 ESLint 配置，添加新的全局变量（Blob, URL, AudioContext, lamejs, SVGDownload）
+- 更新 ESLint 配置，添加新的全局变量（Blob, URL, AudioContext, lamejs, SVGDownload 等）
 - 更新测试配置，添加 SVGDownload 图标 mock
+- 增强 package.json，添加 keywords、author、repository、bugs 和 homepage 元数据
+- 修复许可证从 ISC 到 MIT，与 LICENSE 文件匹配
+- 修复所有 `==` 和 `!=` 为 `===` 和 `!==`，提升代码质量
+- 修复未使用变量警告和 prefer-const 警告
 
-### 技术细节
-- 音频编码：使用 lamejs 将 AudioBuffer 转换为 MP3（128 kbps）
-- 文件命名：`ela_{消息}_{uuid}_{时间戳}.mp3`
-- 停止播放后保留音频缓存，以便下载
+### 修复
+- 修复 Service Worker 注册失败（`process is not defined`）
+- 修复所有模块中的 ESLint 错误
+- 修复 XSS 安全漏洞
+- 修复 API headers 编码问题（使用 Headers 对象）
+- 修复测试环境 mocks 和配置
 
 ---
 
