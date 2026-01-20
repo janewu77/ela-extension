@@ -171,7 +171,8 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
         // 获取消息内容
         const msg = mapMsg.get(uuid);
         if (!msg || msg.trim().length === 0) {
-          throw new Error('Empty message');
+          const errorMsg = chrome.i18n?.getMessage('err_empty_message') || 'Empty message';
+          throw new Error(errorMsg);
         }
 
         // 调用 Chat API
@@ -213,11 +214,13 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
                 const lineCount = calculateLines(txtArea, textareaClassName);
                 txtArea.rows = lineCount > 12 ? 12 : lineCount;
               } else {
-                throw new Error('Invalid response format');
+                const errorMsg = chrome.i18n?.getMessage('err_invalid_response') || 'Invalid response format';
+                throw new Error(errorMsg);
               }
             } catch (parseError) {
               console.error('[ChatAction] Error parsing response:', parseError);
-              throw new Error('Failed to parse response');
+              const errorMsg = chrome.i18n?.getMessage('err_parse_failed') || 'Failed to parse response';
+              throw new Error(errorMsg);
             }
 
             showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "visible");

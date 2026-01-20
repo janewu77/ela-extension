@@ -1,21 +1,64 @@
+// ============================================================================
+// 常量定义文件
+// 功能：定义扩展使用的所有常量，包括配置、默认值、选项列表等
+// ============================================================================
+
+// ============================================================================
+// 1. 调试和基础配置
+// ============================================================================
+
 const debug = false;
-const defaultOnoff = false; //是否打开功能
+const defaultOnoff = false; // 是否打开功能
 
-const default_auth_token="Your-OpenAI-API-Key";
+// ============================================================================
+// 2. API 配置
+// ============================================================================
 
-//tts
-const default_tts_endpoint="https://api.openai.com/v1/audio/speech";
-const default_tts_model= "gpt-4o-mini-tts"; //tts-1 tts-1-hd
-const default_tts_voice = "marin"; //alloy, ash, coral, echo, fable, onyx, nova, sage, and shimmer 
+const default_auth_token = "Your-OpenAI-API-Key"; // API Key 占位符
 
-const arrTTSModel = ["tts-1", "tts-1-hd", "gpt-4o-mini-tts", "gpt-4o-mini-tts-2025-12-15"];
-const arrTTSVoice = ["alloy", "ash", "ballad", "coral", "echo", "fable", "onyx", "nova", "sage", "shimmer", "verse", "marin", "cedar"];
+// ============================================================================
+// 3. TTS (Text-to-Speech) 配置
+// ============================================================================
 
+// TTS 默认配置
+const default_tts_endpoint = "https://api.openai.com/v1/audio/speech";
+const default_tts_model = "gpt-4o-mini-tts"; // tts-1 tts-1-hd
+const default_tts_voice = "marin"; // alloy, ash, coral, echo, fable, onyx, nova, sage, shimmer
 
+// TTS 模型选项列表
+const arrTTSModel = [
+  "tts-1",
+  "tts-1-hd",
+  "gpt-4o-mini-tts",
+  "gpt-4o-mini-tts-2025-12-15"
+];
 
-//llm : chat
+// TTS 声音选项列表
+const arrTTSVoice = [
+  "alloy",
+  "ash",
+  "ballad",
+  "coral",
+  "echo",
+  "fable",
+  "onyx",
+  "nova",
+  "sage",
+  "shimmer",
+  "verse",
+  "marin",
+  "cedar"
+];
+
+// ============================================================================
+// 4. Chat/LLM 配置
+// ============================================================================
+
+// Chat 默认配置
 const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
-// const arrChatModel = ["gpt-4-turbo", "gpt-4o", "gpt-4o-mini"]; // "gpt-3.5-turbo", 
+const default_chat_model = "gpt-4.1-mini";
+
+// Chat 模型选项列表
 const arrChatModel = [
   "gpt-4.1-nano",   // 翻译批量 / 超省钱
   "gpt-4.1-mini",   // 翻译默认（主力）
@@ -24,39 +67,39 @@ const arrChatModel = [
   "gpt-5-mini",     // 问答默认 / 翻译+本地化改写（增强）
   "gpt-5.2",        // 最强（仅少量使用）
   "gpt-4o-mini",    // 仅为了以前的兼容
-]
-const default_chat_model = "gpt-4.1-mini";
+];
 
+// ============================================================================
+// 5. 自定义操作按钮配置
+// ============================================================================
 
-
-
-//actions
+// 默认操作按钮定义
 const _default_action_word = {
-    "name": 'word📖', 
-    "prompt":  `
+  "name": 'word📖',
+  "prompt": `
     - explain the word in detail in English
     - explain the word in detail in English
     - phonetic notation
     - common collocations or frequent word combinations
     - examples in English
     - explain the word in detail in Chinese
-    `,
-    "active":true,
-    "other":false
-  };
+  `,
+  "active": true,
+  "other": false
+};
 
 const _default_action_translate = {
-    "name": '翻译🇺🇸🇨🇳', 
-    "prompt":  `你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
+  "name": '翻译🇺🇸🇨🇳',
+  "prompt": `你是一位精通简体中文的专业翻译，尤其擅长将专业学术论文翻译成浅显易懂的科普文章。请将用户提供的英文段落翻译成中文，风格与中文科普读物相似。
     规则：
     - 翻译时要准确传达原文的事实和背景。
     - 即使意译也要保留原始段落格式，以及保留术语，例如 FLAC，JPEG 等。保留公司缩写，例如 Microsoft, Amazon, OpenAI 等。
     - 人名不翻译
     - 同时要保留引用的论文，例如 [20] 这样的引用。
-    - 对于 Figure 和 Table，翻译的同时保留原有格式，例如：“Figure 1: ”翻译为“图 1: ”，“Table 1: ”翻译为：“表 1: ”。
+    - 对于 Figure 和 Table，翻译的同时保留原有格式，例如："Figure 1: "翻译为"图 1: "，"Table 1: "翻译为："表 1: "。
     - 全角括号换成半角括号，并在左括号前面加半角空格，右括号后面加半角空格。
     - 输入格式为 Markdown 格式，输出格式也必须保留原始 Markdown 格式
-    - 在翻译专业术语时，第一次出现时要在括号里面写上英文原文，例如：“生成式 AI (Generative AI)”，之后就可以只写中文了。
+    - 在翻译专业术语时，第一次出现时要在括号里面写上英文原文，例如："生成式 AI (Generative AI)"，之后就可以只写中文了。
     - 以下是常见的 AI 相关术语词汇对应表（English -> 中文）：
         * Transformer -> Transformer
         * Token -> Token
@@ -84,34 +127,45 @@ const _default_action_translate = {
 
     ### 意译
     {意译结果}
-    `,
-    "active":true,
-    "other":false
-  }
+  `,
+  "active": true,
+  "other": false
+};
 
 const _default_action_3 = {
-    "name": '总结', 
-    "prompt": `summary`,
-    "active":false,
-    "other":false
-};
-const _default_action_4 = {
-    "name": 'action 4', 
-    "prompt": ``,
-    "active":false,
-    "other":false
-};
-const _default_action_5 = {
-    "name": 'action 5', 
-    "prompt": ``,
-    "active":false,
-    "other":false
-};
-const _default_action_6 = {
-    "name": 'action 6', 
-    "prompt": ``,
-    "active":false,
-    "other":false
+  "name": '总结',
+  "prompt": `summary`,
+  "active": false,
+  "other": false
 };
 
-const default_action_items = [_default_action_translate, _default_action_word, _default_action_3, _default_action_4, _default_action_5,_default_action_6];
+const _default_action_4 = {
+  "name": 'action 4',
+  "prompt": ``,
+  "active": false,
+  "other": false
+};
+
+const _default_action_5 = {
+  "name": 'action 5',
+  "prompt": ``,
+  "active": false,
+  "other": false
+};
+
+const _default_action_6 = {
+  "name": 'action 6',
+  "prompt": ``,
+  "active": false,
+  "other": false
+};
+
+// 默认操作按钮列表
+const default_action_items = [
+  _default_action_translate,
+  _default_action_word,
+  _default_action_3,
+  _default_action_4,
+  _default_action_5,
+  _default_action_6
+];

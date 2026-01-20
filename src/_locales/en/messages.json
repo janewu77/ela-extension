@@ -59,6 +59,30 @@
   "err_key": {
     "message": "Please verify that the [OpenAI-API-Key] is correctly configured."
   },
+  "err_empty_message_audio": {
+    "message": "Please provide text to convert to speech."
+  },
+  "err_empty_message_chat": {
+    "message": "Please provide a message."
+  },
+  "err_tts_not_configured": {
+    "message": "TTS endpoint or API key is not configured. Please check your settings."
+  },
+  "err_chat_not_configured": {
+    "message": "Chat endpoint or API key is not configured. Please check your settings."
+  },
+  "err_unknown": {
+    "message": "An unknown error occurred."
+  },
+  "err_empty_message": {
+    "message": "Please provide a message."
+  },
+  "err_invalid_response": {
+    "message": "Invalid response format received."
+  },
+  "err_parse_failed": {
+    "message": "Failed to parse response."
+  },
   "other": {
     "message": "",
     "description": ""

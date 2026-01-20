@@ -19,14 +19,16 @@ function fetchAudio(msg, onSuccess, onError) {
   if (debug) console.log('[API] fetchAudio:', msg?.substring(0, 50));
 
   if (!msg || typeof msg !== 'string' || msg.trim().length === 0) {
-    const error = new Error('Empty message provided to fetchAudio');
+    const errorMsg = chrome.i18n?.getMessage('err_empty_message_audio') || 'Empty message provided to fetchAudio';
+    const error = new Error(errorMsg);
     console.error('[API]', error.message);
     onError(error);
     return;
   }
 
   if (!current_tts_endpoint || !current_auth_token) {
-    const error = new Error('TTS endpoint or auth token not configured');
+    const errorMsg = chrome.i18n?.getMessage('err_tts_not_configured') || 'TTS endpoint or auth token not configured';
+    const error = new Error(errorMsg);
     console.error('[API]', error.message);
     onError(error);
     return;
@@ -47,11 +49,13 @@ function fetchAudio(msg, onSuccess, onError) {
   })
     .then(response => {
       if (!response.ok) {
-        let errorMsg = response.statusText || 'Unknown error';
+        let errorMsg = response.statusText;
         
         // 处理 401 错误（认证失败）
-        if (response.status === 401 && errorMsg.length < 1) {
-          errorMsg = chrome.i18n.getMessage("err_key") || "Please check if your OpenAI API Key is correctly set.";
+        if (response.status === 401) {
+          errorMsg = chrome.i18n?.getMessage("err_key") || "Please check if your OpenAI API Key is correctly set.";
+        } else if (!errorMsg || errorMsg.length === 0) {
+          errorMsg = chrome.i18n?.getMessage("err_unknown") || 'Unknown error';
         }
         
         throw new Error(`${errorMsg} [${response.status}]`);
@@ -84,14 +88,16 @@ function fetchChat(msg, prompt, onSuccess, onError, stream = true) {
   if (debug) console.log('[API] fetchChat, stream:', stream);
 
   if (!msg || typeof msg !== 'string' || msg.trim().length === 0) {
-    const error = new Error('Empty message provided to fetchChat');
+    const errorMsg = chrome.i18n?.getMessage('err_empty_message_chat') || 'Empty message provided to fetchChat';
+    const error = new Error(errorMsg);
     console.error('[API]', error.message);
     onError(error);
     return;
   }
 
   if (!current_chat_endpoint || !current_auth_token) {
-    const error = new Error('Chat endpoint or auth token not configured');
+    const errorMsg = chrome.i18n?.getMessage('err_chat_not_configured') || 'Chat endpoint or auth token not configured';
+    const error = new Error(errorMsg);
     console.error('[API]', error.message);
     onError(error);
     return;
@@ -118,11 +124,13 @@ function fetchChat(msg, prompt, onSuccess, onError, stream = true) {
   })
     .then(response => {
       if (!response.ok) {
-        let errorMsg = response.statusText || 'Unknown error';
+        let errorMsg = response.statusText;
         
         // 处理 401 错误（认证失败）
-        if (response.status === 401 && errorMsg.length < 1) {
-          errorMsg = chrome.i18n.getMessage("err_key") || "Please check if your OpenAI API Key is correctly set.";
+        if (response.status === 401) {
+          errorMsg = chrome.i18n?.getMessage("err_key") || "Please check if your OpenAI API Key is correctly set.";
+        } else if (!errorMsg || errorMsg.length === 0) {
+          errorMsg = chrome.i18n?.getMessage("err_unknown") || 'Unknown error';
         }
         
         throw new Error(`${errorMsg} [${response.status}]`);

@@ -63,6 +63,30 @@
     "err_key": {
       "message": "请检查【OpenAI-API-Key】是否正确设置。"
     },
+    "err_empty_message_audio": {
+      "message": "请提供要转换为语音的文本。"
+    },
+    "err_empty_message_chat": {
+      "message": "请提供消息内容。"
+    },
+    "err_tts_not_configured": {
+      "message": "TTS 端点或 API 密钥未配置，请检查设置。"
+    },
+    "err_chat_not_configured": {
+      "message": "聊天端点或 API 密钥未配置，请检查设置。"
+    },
+    "err_unknown": {
+      "message": "发生未知错误。"
+    },
+    "err_empty_message": {
+      "message": "请提供消息内容。"
+    },
+    "err_invalid_response": {
+      "message": "收到无效的响应格式。"
+    },
+    "err_parse_failed": {
+      "message": "解析响应失败。"
+    },
     "other": {
       "message": "",
       "description": ""
