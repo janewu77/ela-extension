@@ -237,7 +237,9 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
           }
 
           const divErrMsg = document.createElement('div');
-          divErrMsg.innerHTML = `!!! ${error}`;
+          // 使用 textContent 防止 XSS 攻击，安全地显示错误消息
+          const errorText = error instanceof Error ? error.message : String(error);
+          divErrMsg.textContent = `!! ${errorText}`;
           divErrMsg.appendChild(getBtnSetting());
           divMsg.appendChild(divErrMsg);
 

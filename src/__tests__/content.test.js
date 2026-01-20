@@ -266,7 +266,8 @@ describe('Content.js 测试', () => {
 
         const event = {
           target: document.body,
-          timeStamp: Date.now()
+          timeStamp: Date.now(),
+          isTrusted: true // 模拟用户触发的事件
         };
 
         content.handleMouseUp(event);
@@ -282,7 +283,26 @@ describe('Content.js 测试', () => {
 
         const event = {
           target: document.body,
-          timeStamp: Date.now()
+          timeStamp: Date.now(),
+          isTrusted: true // 模拟用户触发的事件
+        };
+
+        content.handleMouseUp(event);
+
+        await new Promise(resolve => setTimeout(resolve, 10));
+
+        expect(chrome.runtime.sendMessage).not.toHaveBeenCalled();
+      });
+
+      it('应该忽略不信任的事件（安全保护）', async () => {
+        content.setCurrentOnoff(true);
+        mockSelection.toString.mockReturnValue('selected text');
+        chrome.runtime.sendMessage.mockClear();
+
+        const event = {
+          target: document.body,
+          timeStamp: Date.now(),
+          isTrusted: false // 模拟脚本生成的事件
         };
 
         content.handleMouseUp(event);
@@ -377,7 +397,8 @@ describe('Content.js 测试', () => {
       // 3. 触发鼠标事件
       const event = {
         target: document.body,
-        timeStamp: Date.now()
+        timeStamp: Date.now(),
+        isTrusted: true // 模拟用户触发的事件
       };
       content.handleMouseUp(event);
 
@@ -400,7 +421,8 @@ describe('Content.js 测试', () => {
 
       const event = {
         target: document.body,
-        timeStamp: Date.now()
+        timeStamp: Date.now(),
+        isTrusted: true // 模拟用户触发的事件
       };
       content.handleMouseUp(event);
 

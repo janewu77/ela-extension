@@ -121,11 +121,18 @@ function handleMouseUp(event) {
     console.log('[Content] Mouse up event, onoff:', currentOnoff);
     console.log('[Content] Event details:', {
       target: event.target,
-      timestamp: event.timeStamp
+      timestamp: event.timeStamp,
+      isTrusted: event.isTrusted
     });
   }
 
-  // TODO: 检查 event.origin 以增加安全性
+  // 安全检查：确保事件是由用户操作触发的，而不是脚本生成的
+  // 这可以防止恶意页面通过程序化方式触发事件
+  if (!event.isTrusted) {
+    if (debug) console.warn('[Content] Ignoring untrusted mouse event (potential security risk)');
+    return;
+  }
+
   handleTextSelection();
 }
 

@@ -358,8 +358,10 @@ function createPlayerPannel(uuid, container, divSysMsg) {
       btnStop.disabled = true;
 
       // 显示错误消息
+      // 使用 textContent 防止 XSS 攻击，安全地显示错误消息
       divSysMsg.hidden = false;
-      divSysMsg.innerHTML = `!!! ${error}`;
+      const errorText = error instanceof Error ? error.message : String(error);
+      divSysMsg.textContent = `!! ${errorText}`;
       divSysMsg.appendChild(getBtnSetting());
     };
 
