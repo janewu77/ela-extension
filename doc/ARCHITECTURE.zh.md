@@ -223,10 +223,11 @@ initConfig()
 
 **文件**: `src/sidepanels/playback.js`
 
-**职责**:
+**功能**:
 - 管理内容块的创建和删除
 - 控制音频播放（播放、暂停、停止）
 - 管理音频资源（AudioContext、AudioBuffer）
+- 提供音频下载功能（MP3 格式）
 
 **关键功能**:
 ```javascript
@@ -242,6 +243,17 @@ playAudioBuffer(uuid, onBefore, onEnded)
   - 解码音频数据
   - 播放音频
   - 处理循环播放
+
+// 音频下载
+downloadAudio(uuid)
+  - 将 AudioBuffer 转换为 MP3 格式
+  - 创建下载链接
+  - 触发文件下载
+
+audioBufferToMp3(audioBuffer)
+  - 使用 lamejs 将 AudioBuffer 编码为 MP3
+  - 支持单声道和立体声
+  - 返回 MP3 ArrayBuffer
 
 // 资源管理
 btnStopClicked(uuid)
@@ -483,6 +495,37 @@ Playback Module 检查缓存
             │
             ▼
         处理循环播放
+            │
+            ▼
+        启用下载按钮
+```
+
+### 4.3 音频下载流程
+
+```
+用户点击下载按钮
+    │
+    ▼
+检查音频缓存是否存在
+    │
+    ├─ 无缓存 ──► 显示错误消息
+    │
+    └─ 有缓存 ──► 调用 audioBufferToMp3()
+            │
+            ▼
+        将 AudioBuffer 编码为 MP3
+            │
+            ▼
+        创建包含 MP3 数据的 Blob
+            │
+            ▼
+        创建下载链接
+            │
+            ▼
+        触发文件下载
+            │
+            ▼
+        清理 URL 对象
 ```
 
 ### 4.3 Chat 功能流程
@@ -561,6 +604,7 @@ Background 和 Side Panel 监听器触发
   - TTS API (Text-to-Speech)
   - Chat API (GPT models)
 - **Marked**: Markdown 解析（可选）
+- **lamejs**: MP3 音频编码库（用于音频下载功能）
 
 ### 5.4 开发工具
 

@@ -9,6 +9,29 @@
 
 ---
 
+## [0.4.5] - 2024-12-XX
+
+### 新增
+- 音频下载功能
+  - 在播放器面板添加下载按钮
+  - 支持将生成的音频下载为 MP3 格式
+  - 集成 lamejs 库进行 MP3 编码
+  - 添加下载图标 (SVGDownload)
+  - 更新国际化文本（中英文）
+  - 智能按钮状态管理（仅在音频可用时启用）
+
+### 变更
+- 更新播放器面板布局以容纳下载按钮（grid-cols-4 → grid-cols-5）
+- 更新 ESLint 配置，添加新的全局变量（Blob, URL, AudioContext, lamejs, SVGDownload）
+- 更新测试配置，添加 SVGDownload 图标 mock
+
+### 技术细节
+- 音频编码：使用 lamejs 将 AudioBuffer 转换为 MP3（128 kbps）
+- 文件命名：`ela_{消息}_{uuid}_{时间戳}.mp3`
+- 停止播放后保留音频缓存，以便下载
+
+---
+
 ## [0.4.4]
 
 ### 重构

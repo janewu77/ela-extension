@@ -77,6 +77,7 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 - Play: Play/Continue playing/Replay
 - Pause: Pause
 - Stop: Stop playback. After stopped, clicking play again will regenerate the sound and play it.
+- Download: Download the generated audio as an MP3 file. The download button is only enabled after the audio has been successfully generated.
 
 - Translate: Translate English into Chinese.
 - word:Look up words

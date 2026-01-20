@@ -77,6 +77,7 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 - 播放：播放/继续播放/重新播放
 - 暂停
 - 停止：停止播放。停止后，再次点击播放，将会重新生成声音并播放。
+- 下载：将生成的音频下载为 MP3 格式文件。只有在音频生成成功后，下载按钮才会启用。
 
 - 英翻中：将英文翻译成中文。
 - 查单词

@@ -227,6 +227,7 @@ initConfig()
 - Manage content block creation and deletion
 - Control audio playback (play, pause, stop)
 - Manage audio resources (AudioContext, AudioBuffer)
+- Provide audio download functionality (MP3 format)
 
 **Key Functions**:
 ```javascript
@@ -242,6 +243,17 @@ playAudioBuffer(uuid, onBefore, onEnded)
   - Decode audio data
   - Play audio
   - Handle loop playback
+
+// Audio download
+downloadAudio(uuid)
+  - Convert AudioBuffer to MP3 format
+  - Create download link
+  - Trigger file download
+
+audioBufferToMp3(audioBuffer)
+  - Encode AudioBuffer to MP3 using lamejs
+  - Support mono and stereo
+  - Return MP3 ArrayBuffer
 
 // Resource management
 btnStopClicked(uuid)
@@ -483,6 +495,37 @@ Playback Module checks cache
             │
             ▼
         Handle loop playback
+            │
+            ▼
+        Enable download button
+```
+
+### 4.3 Audio Download Flow
+
+```
+User clicks download button
+    │
+    ▼
+Check if audio cache exists
+    │
+    ├─ No cache ──► Show error message
+    │
+    └─ Has cache ──► Call audioBufferToMp3()
+            │
+            ▼
+        Encode AudioBuffer to MP3
+            │
+            ▼
+        Create Blob with MP3 data
+            │
+            ▼
+        Create download link
+            │
+            ▼
+        Trigger file download
+            │
+            ▼
+        Clean up URL object
 ```
 
 ### 4.3 Chat Function Flow
@@ -561,6 +604,7 @@ Update UI display
   - TTS API (Text-to-Speech)
   - Chat API (GPT models)
 - **Marked**: Markdown parsing (optional)
+- **lamejs**: MP3 audio encoding library (for audio download functionality)
 
 ### 5.4 Development Tools
 

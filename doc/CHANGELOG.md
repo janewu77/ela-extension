@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.5] - 2024-12-XX
+
+### Added
+- Audio download functionality
+  - Added download button in player panel
+  - Support downloading generated audio as MP3 format
+  - Integrated lamejs library for MP3 encoding
+  - Added download icon (SVGDownload)
+  - Updated internationalization (English and Chinese)
+  - Smart button state management (enabled only when audio is available)
+
+### Changed
+- Updated player panel layout to accommodate download button (grid-cols-4 → grid-cols-5)
+- Updated ESLint configuration to include new globals (Blob, URL, AudioContext, lamejs, SVGDownload)
+- Updated test configuration to mock SVGDownload icon
+
+### Technical Details
+- Audio encoding: AudioBuffer → MP3 using lamejs (128 kbps)
+- File naming: `ela_{message}_{uuid}_{timestamp}.mp3`
+- Audio cache is preserved after stopping playback to allow download
+
+---
+
 ## [0.4.4]
 
 ### Refactored
