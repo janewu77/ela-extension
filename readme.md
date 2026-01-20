@@ -111,9 +111,9 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 
 
 
-## update.log
+## Changelog
 
-[update.log](/doc/update.log.md)
+[Changelog](./doc/CHANGELOG.md) | [更新日志](./doc/CHANGELOG.zh.md)
 
 ## How to Contribute
 

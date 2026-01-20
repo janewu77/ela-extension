@@ -1,82 +1,84 @@
-# ESLint 和 Prettier 配置说明
+# ESLint and Prettier Configuration
 
-## 📋 概述
+[中文版 (Chinese Version)](./eslint-prettier-setup.zh.md)
 
-本项目已配置 ESLint（代码质量检查）和 Prettier（代码格式化），用于：
-- 统一代码风格
-- 发现潜在错误
-- 提升代码质量
-- 减少代码审查时间
+## 📋 Overview
 
-## 🛠️ 安装的依赖
+This project is configured with ESLint (code quality checker) and Prettier (code formatter) for:
+- Unified code style
+- Detecting potential errors
+- Improving code quality
+- Reducing code review time
 
-- `eslint`: 代码质量检查工具
-- `prettier`: 代码格式化工具
-- `eslint-config-prettier`: 禁用与 Prettier 冲突的 ESLint 规则
-- `eslint-plugin-prettier`: 将 Prettier 作为 ESLint 规则运行
+## 🛠️ Installed Dependencies
 
-## 📝 配置文件
+- `eslint`: Code quality checker
+- `prettier`: Code formatter
+- `eslint-config-prettier`: Disables ESLint rules that conflict with Prettier
+- `eslint-plugin-prettier`: Runs Prettier as an ESLint rule
 
-- `eslint.config.mjs`: ESLint 配置文件（使用 ESLint 9 的 flat config 格式）
-- `.prettierrc`: Prettier 配置文件
-- `.prettierignore`: Prettier 忽略文件列表
+## 📝 Configuration Files
 
-## 🚀 使用方法
+- `eslint.config.mjs`: ESLint configuration file (using ESLint 9 flat config format)
+- `.prettierrc`: Prettier configuration file
+- `.prettierignore`: Prettier ignore file list
 
-### 检查代码问题
+## 🚀 Usage
+
+### Check Code Issues
 
 ```bash
-# 检查所有代码
+# Check all code
 npm run lint
 
-# 检查并自动修复可修复的问题
+# Check and auto-fix fixable issues
 npm run lint:fix
 ```
 
-### 格式化代码
+### Format Code
 
 ```bash
-# 格式化所有代码
+# Format all code
 npm run format
 
-# 检查格式（不修改文件）
+# Check formatting (without modifying files)
 npm run format:check
 ```
 
-### 在提交前检查
+### Pre-Commit Check
 
-建议在提交代码前运行：
+It's recommended to run before committing code:
 
 ```bash
 npm run lint:fix && npm run format
 ```
 
-## ⚙️ 配置说明
+## ⚙️ Configuration Details
 
-### ESLint 规则
+### ESLint Rules
 
-- **代码质量检查**：
-  - `no-unused-vars`: 警告未使用的变量（允许以 `_` 开头的变量）
-  - `no-console`: 允许使用 console（调试用）
-  - `prefer-const`: 建议使用 `const` 而不是 `let`
-  - `no-var`: 禁止使用 `var`
-  - `eqeqeq`: 强制使用 `===` 而不是 `==`
+- **Code Quality Checks**:
+  - `no-unused-vars`: Warn about unused variables (variables starting with `_` are allowed)
+  - `no-console`: Allow `console` (for debugging)
+  - `prefer-const`: Prefer `const` over `let`
+  - `no-var`: Disallow `var`
+  - `eqeqeq`: Enforce `===` instead of `==`
 
-- **特殊文件处理**：
-  - `const.js`: 禁用 `no-unused-vars`（全局常量会被其他文件使用）
-  - 测试文件: 允许未使用的变量
+- **Special File Handling**:
+  - `const.js`: Disable `no-unused-vars` (global constants are used by other files)
+  - Test files: Allow unused variables
 
-### Prettier 配置
+### Prettier Configuration
 
-- `semi`: 使用分号
-- `singleQuote`: 使用双引号（`false`）
-- `tabWidth`: 2 个空格缩进
-- `printWidth`: 每行最大 100 个字符
-- `trailingComma`: ES5 兼容的尾随逗号
+- `semi`: Use semicolons
+- `singleQuote`: Use double quotes (`false`)
+- `tabWidth`: 2 spaces indentation
+- `printWidth`: Maximum 100 characters per line
+- `trailingComma`: ES5-compatible trailing commas
 
-## 📁 忽略的文件
+## 📁 Ignored Files
 
-以下文件/目录会被忽略：
+The following files/directories are ignored:
 - `node_modules/`
 - `dist/`
 - `coverage/`
@@ -84,15 +86,15 @@ npm run lint:fix && npm run format
 - `*.min.js`
 - `archive/`
 
-## 🔧 编辑器集成
+## 🔧 Editor Integration
 
 ### VS Code
 
-安装以下扩展：
+Install the following extensions:
 - ESLint
 - Prettier - Code formatter
 
-在 `.vscode/settings.json` 中添加：
+Add to `.vscode/settings.json`:
 
 ```json
 {
@@ -107,48 +109,48 @@ npm run lint:fix && npm run format
 }
 ```
 
-### 其他编辑器
+### Other Editors
 
-参考 [Prettier 编辑器集成文档](https://prettier.io/docs/en/editors.html) 和 [ESLint 编辑器集成文档](https://eslint.org/docs/latest/use/integrations#editors)
+Refer to [Prettier Editor Integration](https://prettier.io/docs/en/editors.html) and [ESLint Editor Integration](https://eslint.org/docs/latest/use/integrations#editors)
 
-## 📊 常见问题
+## 📊 FAQ
 
-### Q: 如何禁用某个文件的 ESLint 检查？
+### Q: How to disable ESLint checking for a specific file?
 
-在文件顶部添加：
+Add at the top of the file:
 
 ```javascript
 /* eslint-disable */
 ```
 
-或针对特定规则：
+Or for specific rules:
 
 ```javascript
 /* eslint-disable no-console */
 ```
 
-### Q: 如何禁用某个行的 ESLint 检查？
+### Q: How to disable ESLint checking for a specific line?
 
-在行尾添加：
+Add at the end of the line:
 
 ```javascript
-const unused = 'test'; // eslint-disable-line no-unused-vars
+const unused = "test"; // eslint-disable-line no-unused-vars
 ```
 
-### Q: Prettier 和 ESLint 冲突怎么办？
+### Q: What if Prettier and ESLint conflict?
 
-已安装 `eslint-config-prettier` 自动处理冲突，无需手动配置。
+`eslint-config-prettier` is installed to automatically handle conflicts, no manual configuration needed.
 
-### Q: 如何修改代码风格规则？
+### Q: How to modify code style rules?
 
-编辑 `.prettierrc` 文件修改 Prettier 配置，编辑 `eslint.config.mjs` 修改 ESLint 规则。
+Edit `.prettierrc` to modify Prettier configuration, edit `eslint.config.mjs` to modify ESLint rules.
 
-## 📚 相关资源
+## 📚 Related Resources
 
-- [ESLint 官方文档](https://eslint.org/)
-- [Prettier 官方文档](https://prettier.io/)
-- [ESLint + Prettier 集成指南](https://prettier.io/docs/en/integrating-with-linters.html)
+- [ESLint Official Documentation](https://eslint.org/)
+- [Prettier Official Documentation](https://prettier.io/)
+- [ESLint + Prettier Integration Guide](https://prettier.io/docs/en/integrating-with-linters.html)
 
 ---
 
-**最后更新**: 2025-01-13
+**Last Updated**: 2026-01-20

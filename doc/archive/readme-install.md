@@ -1,4 +1,16 @@
-# Dev Env Setting
+# ⚠️ 旧文档说明
+
+> **此文档已不再更新，请查看新的开发者指南：**
+> 
+> 📖 **[DEVELOPMENT.md](../DEVELOPMENT.md)** - 完整的开发者指南（英文，推荐）
+> 
+> 📖 **[DEVELOPMENT.zh.md](../DEVELOPMENT.zh.md)** - 完整的开发者指南（中文）
+> 
+> 新文档包含更详细的内容和最新的开发流程说明。
+
+---
+
+# Dev Env Setting（旧文档，仅供参考）
 
 ### install parcel (v2)
 

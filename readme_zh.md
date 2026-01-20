@@ -112,9 +112,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 - [OpenAI 提示词工程指南](https://platform.openai.com/docs/guides/prompt-engineering/strategy-write-clear-instructions): 针对 openAI 模型的提示词写作指南.
   - [OpenAI 试用入口](https://platform.openai.com/playground): 通过聊天界面调试 prompt.
 
-## update.log
+## 更新日志
 
-[update.log](/doc/update.log.md)
+[更新日志](./doc/CHANGELOG.zh.md) | [Changelog](./doc/CHANGELOG.md)
 
 ## 如何贡献
 
