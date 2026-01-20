@@ -1,5 +1,7 @@
 # 英文学习助手 ELA
 
+[English Version](./readme.md)
+
 英文学习助手 English learner Assistant
 
 https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
@@ -114,9 +116,8 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 
 [update.log](/doc/update.log.md)
 
-## todo
+## 如何贡献
 
-- 设定可导入/导出
-- 支持其他 tts，llm
-- 将内容导出至 notion
-- 下载声音文件
+欢迎贡献代码！请 Fork 项目并提交 Pull Request。
+
+更多详细信息请参考：[开发者指南](./doc/DEVELOPMENT.zh.md)

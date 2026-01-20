@@ -1,6 +1,6 @@
 # English learner Assistant ELA
 
-[中文说明](/doc/readme_zh.md)
+[中文说明](./readme_zh.md)
 
 English learner Assistant ELA
 
@@ -118,3 +118,5 @@ p.s. After closing the sidebar, all content currently on the sidebar will be del
 ## How to Contribute
 
 Contributions are highly encouraged! Please fork and submit a PR.
+
+For more details, see: [Developer Guide](./doc/DEVELOPMENT.md)
