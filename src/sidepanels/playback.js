@@ -147,7 +147,18 @@ function initDeleteAllButton() {
 
     btnDeleteAll.id = "DeleteAll";
     const btnName = chrome.i18n.getMessage("btn_clearall");
-    btnDeleteAll.innerHTML = `${SVGDeleteAll_6} ${btnName}`;
+    // 安全地设置按钮内容：SVG（来自常量）+ 文本（来自 i18n，安全）
+    btnDeleteAll.textContent = ""; // 清空内容
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = SVGDeleteAll_6; // SVG 来自常量，安全
+    const svgElement = tempDiv.firstElementChild;
+    if (svgElement) {
+      btnDeleteAll.appendChild(svgElement);
+    }
+    // 使用 textContent 安全地添加文本
+    if (btnName) {
+      btnDeleteAll.appendChild(document.createTextNode(" " + btnName));
+    }
     btnDeleteAll.addEventListener("click", deleteAllBlocks);
   } catch (error) {
     console.error("[Playback] Error initializing delete all button:", error);
@@ -238,10 +249,14 @@ function _createContentElement(uuid, content) {
   const contentElement = document.createElement("div");
   contentElement.id = `Content_${uuid}`;
   contentElement.className = "mb-2";
-  contentElement.innerHTML = "";
+  contentElement.textContent = ""; // 使用 textContent 更安全
 
   if (debug) {
-    contentElement.innerHTML = `<p class="text-sm">${uuid}</p>`;
+    // 安全地显示 debug 信息
+    const debugP = document.createElement("p");
+    debugP.className = "text-sm";
+    debugP.textContent = String(uuid); // 使用 textContent 防止 XSS
+    contentElement.appendChild(debugP);
   }
 
   // 创建可编辑的 textarea

@@ -72,6 +72,16 @@ global.document = {
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
   createElement: jest.fn(),
+  createTextNode: jest.fn((text) => {
+    // 创建文本节点的 mock
+    const textNode = {
+      nodeType: 3, // TEXT_NODE
+      nodeValue: text,
+      textContent: text,
+      data: text,
+    };
+    return textNode;
+  }),
   body: {
     appendChild: jest.fn(),
     removeChild: jest.fn()

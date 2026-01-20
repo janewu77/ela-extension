@@ -318,12 +318,23 @@ async function initConfig() {
  */
 function initButtons() {
   try {
-    // “设置”按钮（左上角的设置按钮） -- 点击后打开option页面
+    // "设置"按钮（左上角的设置按钮） -- 点击后打开option页面
     const btnSetting = document.getElementById("btnSetting");
     if (btnSetting) {
       btnSetting.id = "SettingButton";
       const btnName = chrome.i18n.getMessage("btn_name_setting");
-      btnSetting.innerHTML = `${SVGSetting_6} ${btnName}`;
+      // 安全地设置按钮内容：SVG（来自常量）+ 文本（来自 i18n，安全）
+      btnSetting.textContent = ""; // 清空内容
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = SVGSetting_6; // SVG 来自常量，安全
+      const svgElement = tempDiv.firstElementChild;
+      if (svgElement) {
+        btnSetting.appendChild(svgElement);
+      }
+      // 使用 textContent 安全地添加文本（即使来自 i18n 也转义）
+      if (btnName) {
+        btnSetting.appendChild(document.createTextNode(" " + btnName));
+      }
       btnSetting.addEventListener("click", function () {
         if (chrome.runtime.openOptionsPage) {
           chrome.runtime.openOptionsPage();
@@ -378,7 +389,22 @@ function getBtnSetting() {
     const btnSetting = document.createElement("a");
     btnSetting.className =
       "flex items-center justify-center gap-x-1.5 p-1 font-semibold text-red-600 hover:bg-blue-100 hover:underline";
-    btnSetting.innerHTML = `<span aria-hidden="true">→</span>${SVGSetting} ${btnName}`;
+    // 安全地设置按钮内容
+    const arrowSpan = document.createElement("span");
+    arrowSpan.setAttribute("aria-hidden", "true");
+    arrowSpan.textContent = "→";
+    btnSetting.appendChild(arrowSpan);
+    // 添加 SVG
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = SVGSetting; // SVG 来自常量，安全
+    const svgElement = tempDiv.firstElementChild;
+    if (svgElement) {
+      btnSetting.appendChild(svgElement);
+    }
+    // 使用 textContent 安全地添加文本
+    if (btnName) {
+      btnSetting.appendChild(document.createTextNode(" " + btnName));
+    }
     btnSetting.addEventListener("click", function () {
       if (chrome.runtime.openOptionsPage) {
         chrome.runtime.openOptionsPage();
@@ -395,7 +421,7 @@ function getBtnSetting() {
  * 创建按钮元素
  * @param {string} btnId - 按钮 ID
  * @param {string} btnClassName - 按钮类名
- * @param {string} btnHtml - 按钮 HTML 内容
+ * @param {string} btnHtml - 按钮 HTML 内容（仅用于安全的 SVG 等，文本应使用 textContent）
  * @param {boolean} disabled - 是否禁用，默认 false
  * @returns {HTMLElement} 按钮元素
  */
@@ -404,7 +430,10 @@ function createButton(btnId, btnClassName, btnHtml, disabled = false) {
     const btnButton = document.createElement("button");
     btnButton.id = btnId;
     btnButton.className = btnClassName;
-    btnButton.innerHTML = btnHtml;
+    // 注意：这里使用 innerHTML 是为了支持 SVG 图标
+    // 调用者应确保 btnHtml 来自安全的常量（如 SVG 图标），而不是用户输入
+    // 对于用户输入的内容，应该使用 textContent 或 setButtonContent 函数
+    btnButton.innerHTML = btnHtml || "";
     btnButton.disabled = disabled;
     return btnButton;
   } catch (error) {

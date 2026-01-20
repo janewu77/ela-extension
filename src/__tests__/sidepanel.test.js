@@ -67,6 +67,15 @@ function resetDOM() {
   mockBtnSetting = {
     id: "btnSetting",
     innerHTML: "",
+    textContent: "",
+    childNodes: [],
+    appendChild: jest.fn((child) => {
+      mockBtnSetting.childNodes.push(child);
+      if (child.textContent) {
+        mockBtnSetting.textContent += child.textContent;
+      }
+      return child;
+    }),
     addEventListener: jest.fn(),
   };
 
@@ -110,11 +119,41 @@ function resetDOM() {
         tagName: tag.toUpperCase(),
         className: "",
         innerHTML: "",
+        textContent: "",
         id: "",
         disabled: false,
+        childNodes: [],
+        firstElementChild: null,
+        firstChild: null,
+        appendChild: jest.fn((child) => {
+          element.childNodes.push(child);
+          if (child.textContent) {
+            element.textContent += child.textContent;
+          }
+          if (child.nodeType === 1) {
+            // ELEMENT_NODE
+            element.firstElementChild = child;
+          }
+          if (!element.firstChild) {
+            element.firstChild = child;
+          }
+          return child;
+        }),
+        setAttribute: jest.fn(),
+        getAttribute: jest.fn(),
         addEventListener: jest.fn(),
       };
       return element;
+    }),
+    createTextNode: jest.fn((text) => {
+      // 创建文本节点的 mock
+      const textNode = {
+        nodeType: 3, // TEXT_NODE
+        nodeValue: text,
+        textContent: text,
+        data: text,
+      };
+      return textNode;
     }),
     body: mockBody,
     addEventListener: jest.fn(),
@@ -266,7 +305,12 @@ describe("Sidepanel.js 测试", () => {
 
       expect(button.tagName).toBe("A");
       expect(button.className).toContain("flex");
-      expect(button.innerHTML).toContain("设置");
+      // 检查 textContent 或子节点中包含文本（因为现在使用 textContent 而不是 innerHTML）
+      const hasText =
+        button.textContent.includes("设置") ||
+        (button.childNodes &&
+          button.childNodes.some((node) => node.textContent && node.textContent.includes("设置")));
+      expect(hasText).toBe(true);
       expect(button.addEventListener).toHaveBeenCalledWith("click", expect.any(Function));
     });
 
@@ -548,7 +592,14 @@ describe("Sidepanel.js 测试", () => {
       sidepanel.initButtons();
 
       expect(mockBtnSetting.id).toBe("SettingButton");
-      expect(mockBtnSetting.innerHTML).toContain("设置");
+      // 检查 textContent 或子节点中包含文本（因为现在使用 textContent 而不是 innerHTML）
+      const hasText =
+        mockBtnSetting.textContent.includes("设置") ||
+        (mockBtnSetting.childNodes &&
+          mockBtnSetting.childNodes.some(
+            (node) => node.textContent && node.textContent.includes("设置")
+          ));
+      expect(hasText).toBe(true);
       expect(mockBtnSetting.addEventListener).toHaveBeenCalledWith("click", expect.any(Function));
     });
 

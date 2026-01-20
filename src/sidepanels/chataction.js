@@ -179,7 +179,18 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
 
       try {
         // 更新按钮状态
-        btnAction.innerHTML = SVGLoadingSpin + actionItem.name;
+        // 安全地设置按钮内容：SVG（来自常量，安全）+ 文本（来自用户配置，需要转义）
+        btnAction.textContent = ""; // 清空内容
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = SVGLoadingSpin; // SVG 来自常量，安全
+        const svgElement = tempDiv.firstElementChild;
+        if (svgElement) {
+          btnAction.appendChild(svgElement);
+        }
+        // 使用 textContent 安全地添加用户输入的文本
+        if (actionItem.name) {
+          btnAction.appendChild(document.createTextNode(actionItem.name));
+        }
         showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "hidden");
         showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "hidden");
         disableAllBtn(arrActionButton, true);
@@ -196,7 +207,8 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
           msg,
           actionItem.prompt,
           function (response, stream) {
-            btnAction.innerHTML = actionItem.name;
+            // 安全地设置按钮文本（防止 XSS）
+            btnAction.textContent = actionItem.name || "";
 
             if (debug) {
               console.log("[ChatAction] Chat response received, stream:", stream);
@@ -258,7 +270,8 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
           },
           function (error) {
             // 错误处理
-            btnAction.innerHTML = actionItem.name;
+            // 安全地设置按钮文本（防止 XSS）
+            btnAction.textContent = actionItem.name || "";
             showBtn(divTxtAreaMenu.querySelector(`#btnClear_${uuid}`), "hidden");
             showBtn(divTxtAreaMenu.querySelector(`#btnCopy_${uuid}`), "hidden");
 
@@ -280,7 +293,8 @@ function _createActionPannel(uuid, arrActionButton, divMsg) {
         );
       } catch (error) {
         console.error("[ChatAction] Error in action button click:", error);
-        btnAction.innerHTML = actionItem.name;
+        // 安全地设置按钮文本（防止 XSS）
+        btnAction.textContent = actionItem.name || "";
         disableAllBtn(arrActionButton, false);
       }
     });

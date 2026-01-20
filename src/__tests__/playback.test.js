@@ -32,7 +32,7 @@ let mockElements = {};
  * 创建 mock DOM 元素
  */
 function createMockElement(tag = "div", props = {}) {
-  return {
+  const element = {
     tagName: tag.toUpperCase(),
     className: "",
     innerHTML: "",
@@ -44,15 +44,26 @@ function createMockElement(tag = "div", props = {}) {
     textContent: "",
     value: "",
     checked: false,
-    appendChild: jest.fn(),
+    appendChild: jest.fn((child) => {
+      if (!element.childNodes) {
+        element.childNodes = [];
+      }
+      element.childNodes.push(child);
+      return child;
+    }),
     removeChild: jest.fn(),
     remove: jest.fn(),
     addEventListener: jest.fn(),
     querySelector: jest.fn(),
     querySelectorAll: jest.fn(() => []),
     childNodes: [],
+    setAttribute: jest.fn(),
+    getAttribute: jest.fn(),
+    firstElementChild: null,
+    firstChild: null,
     ...props,
   };
+  return element;
 }
 
 /**
@@ -98,6 +109,16 @@ function resetDOM() {
     readyState: "complete",
     getElementById: createGetElementByIdMock(),
     createElement: jest.fn((tag) => createMockElement(tag)),
+    createTextNode: jest.fn((text) => {
+      // 创建文本节点的 mock
+      const textNode = {
+        nodeType: 3, // TEXT_NODE
+        nodeValue: text,
+        textContent: text,
+        data: text,
+      };
+      return textNode;
+    }),
     addEventListener: jest.fn(),
   };
 }
@@ -328,7 +349,14 @@ describe("Playback.js 测试", () => {
       playback.initDeleteAllButton();
 
       expect(mockBtnDeleteAll.id).toBe("DeleteAll");
-      expect(mockBtnDeleteAll.innerHTML).toContain("清除全部");
+      // 检查 textContent 或子节点中包含文本（因为现在使用 textContent 而不是 innerHTML）
+      const hasText =
+        mockBtnDeleteAll.textContent.includes("清除全部") ||
+        (mockBtnDeleteAll.childNodes &&
+          mockBtnDeleteAll.childNodes.some(
+            (node) => node.textContent && node.textContent.includes("清除全部")
+          ));
+      expect(hasText).toBe(true);
       expect(mockBtnDeleteAll.addEventListener).toHaveBeenCalledWith("click", expect.any(Function));
     });
 

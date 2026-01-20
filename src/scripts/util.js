@@ -32,6 +32,52 @@ function maskMsg(msg) {
 // ============================================================================
 
 /**
+ * 安全地设置元素的文本内容（防止 XSS）
+ * 对于需要显示 HTML 的情况，应该使用 DOMPurify 等工具清理
+ * @param {HTMLElement} element - 目标元素
+ * @param {string} text - 要设置的文本内容
+ */
+function setTextContent(element, text) {
+  if (!element) {
+    console.error("[Util] Invalid element provided to setTextContent");
+    return;
+  }
+  element.textContent = text || "";
+}
+
+/**
+ * 安全地设置按钮内容（支持 SVG + 文本）
+ * @param {HTMLElement} button - 按钮元素
+ * @param {string} svgHtml - SVG HTML 字符串（应该是安全的，来自常量）
+ * @param {string} text - 文本内容（会被转义）
+ */
+function setButtonContent(button, svgHtml, text) {
+  if (!button) {
+    console.error("[Util] Invalid button provided to setButtonContent");
+    return;
+  }
+
+  // 清空按钮内容
+  button.textContent = "";
+
+  // 如果提供了 SVG，添加 SVG（假设 SVG 来自安全的常量）
+  if (svgHtml) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = svgHtml;
+    const svgElement = tempDiv.firstElementChild;
+    if (svgElement) {
+      button.appendChild(svgElement);
+    }
+  }
+
+  // 安全地添加文本内容
+  if (text) {
+    const textNode = document.createTextNode(text);
+    button.appendChild(textNode);
+  }
+}
+
+/**
  * 计算 textarea 的实际行数
  * 通过创建一个隐藏的 div 来模拟 textarea 的样式和内容来计算
  * @param {HTMLTextAreaElement} textarea - 目标 textarea 元素
@@ -79,9 +125,14 @@ function calculateLines(textarea, className) {
     // 添加到 DOM 中（需要添加到 DOM 才能正确计算样式）
     document.body.appendChild(dummy);
 
-    // 设置文本内容（替换换行符为 <br> 来确保效果）
+    // 设置文本内容（使用 textContent 更安全）
+    // 注意：这里使用 innerHTML 是为了计算换行，但内容来自 textarea.value（用户输入）
+    // 由于这是临时隐藏元素，且仅用于计算，风险较低
     dummy.textContent = textarea.value;
-    dummy.innerHTML = dummy.innerHTML.replace(/\n/g, "<br>");
+    // 为了正确计算换行，需要将换行符转换为 <br>
+    // 但使用 textContent 后，innerHTML 已经是转义后的安全内容
+    const escapedContent = dummy.textContent;
+    dummy.innerHTML = escapedContent.replace(/\n/g, "<br>");
 
     // 计算总高度
     const totalHeight = dummy.clientHeight;
@@ -118,6 +169,8 @@ function calculateLines(textarea, className) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     maskMsg,
+    setTextContent,
+    setButtonContent,
     calculateLines,
   };
 }

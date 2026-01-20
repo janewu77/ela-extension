@@ -150,6 +150,8 @@ export default [
       '**/*.min.js',
       '**/marked.min.js',
       'archive/**',
+      // 生成的 CSS 文件（由 Tailwind CSS 生成，不需要 lint）
+      'src/css/main.css',
     ],
   },
 ];
