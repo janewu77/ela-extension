@@ -47,7 +47,8 @@ ela-extension/
 
 ### 📝 Release & Changelog
 
-- **[Release Notes](./RELEASE_NOTES_0.4.3_0.4.4.md)** - Release notes for versions 0.4.3 and 0.4.4
+- **[Release Notes 0.4.3–0.4.4](./RELEASE_NOTES_0.4.3_0.4.4.md)** - Release notes for versions 0.4.3 and 0.4.4
+- **[Release Notes 0.4.5](./RELEASE_NOTES_0.4.5.md)** - Release notes for version 0.4.5
 - **[Changelog](./CHANGELOG.md)** - Complete changelog history (English)
 
 ### 📦 Archive
@@ -67,11 +68,12 @@ ela-extension/
 
 - **[开发者指南](./DEVELOPMENT.zh.md)** - 完整的开发者指南（环境设置、开发流程、测试、发布）
 - **[系统架构文档](./ARCHITECTURE.zh.md)** - 系统架构文档（模块说明、数据流、技术栈）
-- **[ESLint & Prettier 配置说明](./eslint-prettier-setup.md)** - 代码质量和格式化工具配置
+- **[ESLint & Prettier 配置说明](./eslint-prettier-setup.zh.md)** - 代码质量和格式化工具配置
 
 ### 📝 发布与更新日志
 
-- **[发布说明](./RELEASE_NOTES_0.4.3_0.4.4.md)** - 版本 0.4.3 和 0.4.4 的发布说明
+- **[发布说明 0.4.3–0.4.4](./RELEASE_NOTES_0.4.3_0.4.4.md)** - 版本 0.4.3 和 0.4.4 的发布说明
+- **[发布说明 0.4.5](./RELEASE_NOTES_0.4.5.md)** - 版本 0.4.5 的发布说明
 - **[更新日志](./CHANGELOG.zh.md)** - 完整的更新历史记录（中文）
 
 ### 📦 归档文档
@@ -92,13 +94,13 @@ ela-extension/
 
 - [Developer Guide](./DEVELOPMENT.md) | [开发者指南](./DEVELOPMENT.zh.md)
 - [System Architecture](./ARCHITECTURE.md) | [系统架构文档](./ARCHITECTURE.zh.md)
-- [ESLint & Prettier Setup](./eslint-prettier-setup.md)
+- [ESLint & Prettier Setup](./eslint-prettier-setup.md) | [ESLint & Prettier 配置说明](./eslint-prettier-setup.zh.md)
 
 ### Release Information
 
 - [Changelog](./CHANGELOG.md) | [更新日志](./CHANGELOG.zh.md)
-- [Release Notes](./RELEASE_NOTES_0.4.3_0.4.4.md)
+- [Release Notes 0.4.3–0.4.4](./RELEASE_NOTES_0.4.3_0.4.4.md) | [Release Notes 0.4.5](./RELEASE_NOTES_0.4.5.md)
 
 ---
 
-**Last Updated**: 2026-01-20
+**Last Updated**: 2026-02-09
