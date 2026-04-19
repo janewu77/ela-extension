@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: 'PingFang SC', 'Noto Sans CJK SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+    background: #0a0a1a;
+  }
+  .wrapper { width: 1280px; height: 800px; overflow: hidden; position: relative; flex-shrink: 0; }
+
+  .bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, #1e0a4a 0%, #0a0a1a 70%);
+  }
+  .bg-glow {
+    position: absolute;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);
+    top: 50%; left: 55%; transform: translate(-50%, -50%);
+  }
+  .bg-glow2 {
+    position: absolute;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,108,247,0.2) 0%, transparent 70%);
+    top: 20%; left: 30%; transform: translate(-50%, -50%);
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .layout {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; align-items: center;
+    padding: 0 80px; gap: 80px;
+  }
+
+  .left { flex: 1; }
+
+  .logo-row {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px;
+  }
+  .logo-img { width: 56px; height: 56px; object-fit: contain; }
+  .logo-name { font-size: 20px; font-weight: 800; color: white; letter-spacing: 0.5px; }
+
+  .tag {
+    display: inline-block;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    color: #a78bfa;
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.25);
+    padding: 5px 14px; border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .headline {
+    font-size: 58px; font-weight: 900;
+    line-height: 1.15; color: white;
+    margin-bottom: 20px; letter-spacing: 2px;
+  }
+  .headline span {
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .subline {
+    font-size: 17px; line-height: 1.8;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 36px; max-width: 480px;
+  }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    display: flex; align-items: center; gap: 7px;
+    padding: 8px 18px; border-radius: 30px;
+    font-size: 14px; font-weight: 600; color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+  }
+  .pill-icon { font-size: 16px; }
+
+  .right { width: 380px; display: flex; flex-direction: column; gap: 14px; }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 20px 22px;
+    backdrop-filter: blur(10px);
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .card-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+  .card-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 4px; }
+  .card-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+  .card.highlight {
+    background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(74,108,247,0.2));
+    border-color: rgba(124,58,237,0.4);
+  }
+
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+    padding: 16px 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.3);
+  }
+  .bottom-left { font-size: 13px; color: rgba(255,255,255,0.3); }
+  .cta {
+    font-size: 14px; font-weight: 700;
+    background: linear-gradient(135deg, #7c3aed, #4a6cf7);
+    color: white; padding: 10px 24px; border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="bg"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+<div class="grid"></div>
+
+<div class="layout">
+  <div class="left">
+    <div class="logo-row">
+      <img class="logo-img" src="../src/images/j_logo_128.png" alt="ELA logo">
+      <span class="logo-name">ELA · 日常语言学习助手</span>
+    </div>
+    <div class="tag">✦ Chrome 扩展 · 免费</div>
+    <div class="headline">你的随身<br><span>语言学习伴侣</span></div>
+    <div class="subline">在任意网页选中文本——即可朗读、查词、翻译，无需切换标签页。支持英语、德语、法语、日语等多种语言。</div>
+    <div class="pills">
+      <div class="pill"><span class="pill-icon">🎧</span> AI 朗读</div>
+      <div class="pill"><span class="pill-icon">📖</span> 查词</div>
+      <div class="pill"><span class="pill-icon">🌐</span> 翻译</div>
+      <div class="pill"><span class="pill-icon">⚡</span> 自定义 AI 按钮</div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="card highlight">
+      <div class="card-icon">🎧</div>
+      <div>
+        <div class="card-title">AI 文字转语音</div>
+        <div class="card-desc">13 种自然音色，基于 OpenAI 最新 TTS 模型，选中即读，即时发音。</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📖</div>
+      <div>
+        <div class="card-title">深度查词</div>
+        <div class="card-desc">音标、搭配、例句一次搞定，秒级完成任意单词的完整解析。</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <div>
+        <div class="card-title">多语言支持</div>
+        <div class="card-desc">不限于英语，德语、法语、日语、西班牙语……任何你在学的语言都能用。</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div>
+        <div class="card-title">自定义 AI 操作按钮</div>
+        <div class="card-desc">最多 6 个自定义提示词按钮，翻译、总结、简化……完全按你的需求定制。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <span class="bottom-left">由 OpenAI 驱动 · 支持全部网页 · API Key 仅存本地 · 完全开源</span>
+  <span class="cta">添加到 Chrome · 免费</span>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: #1a1a2e;
+  }
+  .wrapper {
+    width: 440px; height: 280px; overflow: hidden;
+    position: relative; flex-shrink: 0;
+  }
+
+  .bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 120% 120% at 70% 60%, #1e0a4a 0%, #0a0a1a 65%);
+  }
+  .glow {
+    position: absolute;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%);
+    top: 50%; left: 60%; transform: translate(-50%, -50%);
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .layout {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; align-items: center;
+    padding: 28px 32px;
+    gap: 24px;
+  }
+
+  /* Logo */
+  .logo-col {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .logo-img { width: 64px; height: 64px; object-fit: contain; }
+  .logo-name {
+    font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.5);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* Divider */
+  .divider { width: 1px; height: 100px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+
+  /* Text */
+  .text-col { flex: 1; }
+
+  .tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: #a78bfa; margin-bottom: 10px;
+  }
+  .headline {
+    font-size: 26px; font-weight: 900; line-height: 1.15;
+    color: white; margin-bottom: 10px; letter-spacing: -0.5px;
+  }
+  .headline span {
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .pill {
+    font-size: 10px; font-weight: 600;
+    padding: 3px 9px; border-radius: 20px;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .cta {
+    display: inline-block;
+    font-size: 11px; font-weight: 700;
+    background: linear-gradient(135deg, #7c3aed, #4a6cf7);
+    color: white; padding: 7px 16px; border-radius: 20px;
+    box-shadow: 0 3px 12px rgba(124,58,237,0.4);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="bg"></div>
+<div class="glow"></div>
+<div class="grid"></div>
+
+<div class="layout">
+  <div class="logo-col">
+    <img class="logo-img" src="../src/images/j_logo_128.png" alt="ELA">
+    <div class="logo-name">ELA</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="text-col">
+    <div class="tag">✦ Everyday Language Assistant</div>
+    <div class="headline">Your everyday<br><span>language</span><br>companion</div>
+    <div class="pills">
+      <div class="pill">🎧 TTS</div>
+      <div class="pill">🌐 Translate</div>
+      <div class="pill">📖 Word Lookup</div>
+      <div class="pill">⚡ Custom AI</div>
+    </div>
+    <div class="cta">Add to Chrome — Free</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

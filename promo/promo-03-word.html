@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: #080f0a;
+  }
+  .wrapper { width: 1280px; height: 800px; overflow: hidden; position: relative; flex-shrink: 0; }
+
+  .bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 70% at 60% 40%, #061a0e 0%, #080f0a 70%);
+  }
+  .glow {
+    position: absolute;
+    width: 600px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
+    top: 30%; left: 55%; transform: translate(-50%, -50%);
+  }
+
+  .layout {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; align-items: center;
+    padding: 0 80px;
+    gap: 70px;
+  }
+
+  /* Left */
+  .left { flex: 1; }
+
+  .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
+  .logo-img { width: 44px; height: 44px; object-fit: contain; }
+  .logo-name { font-size: 17px; font-weight: 700; color: rgba(255,255,255,0.6); }
+
+  .tag {
+    font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #34d399; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tag::before { content: ''; display: block; width: 24px; height: 2px; background: #34d399; border-radius: 1px; }
+
+  .headline {
+    font-size: 54px; font-weight: 900; line-height: 1.1;
+    color: white; margin-bottom: 20px; letter-spacing: -1.5px;
+  }
+  .headline span {
+    background: linear-gradient(135deg, #34d399, #60a5fa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .subline { font-size: 18px; line-height: 1.7; color: rgba(255,255,255,0.45); margin-bottom: 40px; max-width: 460px; }
+
+  .features { display: flex; flex-direction: column; gap: 14px; }
+  .feat { display: flex; align-items: center; gap: 14px; }
+  .feat-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #34d399; flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(52,211,153,0.6);
+  }
+  .feat-text { font-size: 16px; color: rgba(255,255,255,0.6); }
+  .feat-text strong { color: rgba(255,255,255,0.9); }
+
+  /* Right: word card */
+  .right { width: 440px; }
+
+  .word-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 20px;
+    padding: 28px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .word-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
+  .word-main { font-size: 36px; font-weight: 900; color: white; letter-spacing: -0.5px; }
+  .word-btn {
+    background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.3);
+    color: #34d399; font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+  }
+  .word-phonetic { font-size: 16px; color: #6ee7b7; font-family: serif; margin-bottom: 6px; }
+  .word-pos { display: inline-block; font-size: 11px; background: rgba(52,211,153,0.15); color: #34d399; padding: 3px 10px; border-radius: 8px; margin-bottom: 14px; font-weight: 600; }
+
+  .divider { height: 1px; background: rgba(255,255,255,0.07); margin: 14px 0; }
+
+  .section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .def-en { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 10px; }
+  .def-zh { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; padding: 10px 12px; background: rgba(255,255,255,0.04); border-radius: 8px; border-left: 2px solid #34d399; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+
+  .examples { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .example { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; font-style: italic; padding-left: 12px; border-left: 2px solid rgba(52,211,153,0.3); }
+  .example em { color: #6ee7b7; font-style: normal; font-weight: 600; }
+
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+    padding: 14px 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3);
+  }
+  .bottom-text { font-size: 13px; color: rgba(255,255,255,0.25); }
+  .kbd {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15); font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.06);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="bg"></div>
+<div class="glow"></div>
+
+<div class="layout">
+  <div class="left">
+    <div class="logo-row">
+      <img class="logo-img" src="../src/images/j_logo_128.png" alt="ELA">
+      <span class="logo-name">ELA · Everyday Language Assistant</span>
+    </div>
+    <div class="tag">Word Lookup</div>
+    <div class="headline">One click.<br><span>Know any word</span><br>inside out.</div>
+    <div class="subline">Stop switching tabs to look things up. Get a full breakdown — definition, phonetics, collocations, and examples — right where you're reading.</div>
+    <div class="features">
+      <div class="feat"><div class="feat-dot"></div><div class="feat-text"><strong>Phonetic notation</strong> — know exactly how to say it</div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-text"><strong>Common collocations</strong> — learn how it's really used</div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-text"><strong>Bilingual explanations</strong> — in your target + native language</div></div>
+      <div class="feat"><div class="feat-dot"></div><div class="feat-text"><strong>Usage examples</strong> — see it in real context</div></div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="word-card">
+      <div class="word-header">
+        <div class="word-main">emergent</div>
+        <div class="word-btn">word📖</div>
+      </div>
+      <div class="word-phonetic">/ɪˈmɜːrdʒənt/</div>
+      <div class="word-pos">adjective</div>
+
+      <div class="section-label">Definition (EN)</div>
+      <div class="def-en">Newly arising or coming into prominence; (in AI/systems theory) describing properties that arise from a complex system but cannot be predicted from its individual components.</div>
+
+      <div class="divider"></div>
+
+      <div class="section-label">释义 (ZH)</div>
+      <div class="def-zh">新兴的；涌现的 — 在复杂系统中自发出现、无法从单个组件预测的属性或行为。常见于人工智能语境，描述随模型规模扩大而突然出现的能力。</div>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Common Collocations</div>
+      <div class="chips">
+        <div class="chip">emergent behavior</div>
+        <div class="chip">emergent property</div>
+        <div class="chip">emergent capability</div>
+        <div class="chip">emergent technology</div>
+      </div>
+
+      <div class="examples">
+        <div class="example">"In-context learning is considered an <em>emergent</em> capability of large language models."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <span class="bottom-text">Works on every webpage · arxiv.org, medium.com, news sites, academic papers…</span>
+  <div class="kbd">⌘ Shift S &nbsp;to open</div>
+</div>
+</div>
+</body>
+</html>

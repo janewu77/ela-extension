@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: #05101f;
+  }
+  .wrapper { width: 1280px; height: 800px; overflow: hidden; position: relative; flex-shrink: 0; }
+
+  .bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 30% 50%, #001a3a 0%, #05101f 70%);
+  }
+  .accent {
+    position: absolute;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);
+    top: 50%; left: 28%; transform: translate(-50%, -50%);
+  }
+
+  /* Sound wave decoration */
+  .waves {
+    position: absolute;
+    right: 60px; top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; gap: 5px;
+    height: 300px;
+  }
+  .bar {
+    width: 6px; border-radius: 3px;
+    background: linear-gradient(to top, #38bdf8, #818cf8);
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .bar:nth-child(1)  { height: 40px;  animation-delay: 0s; }
+  .bar:nth-child(2)  { height: 80px;  animation-delay: 0.1s; }
+  .bar:nth-child(3)  { height: 130px; animation-delay: 0.2s; }
+  .bar:nth-child(4)  { height: 190px; animation-delay: 0.3s; }
+  .bar:nth-child(5)  { height: 240px; animation-delay: 0.15s; }
+  .bar:nth-child(6)  { height: 280px; animation-delay: 0.25s; }
+  .bar:nth-child(7)  { height: 240px; animation-delay: 0.35s; }
+  .bar:nth-child(8)  { height: 200px; animation-delay: 0.1s; }
+  .bar:nth-child(9)  { height: 160px; animation-delay: 0.2s; }
+  .bar:nth-child(10) { height: 120px; animation-delay: 0.3s; }
+  .bar:nth-child(11) { height: 80px;  animation-delay: 0.05s; }
+  .bar:nth-child(12) { height: 50px;  animation-delay: 0.15s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(1); opacity: 0.7; }
+    50% { transform: scaleY(0.5); opacity: 1; }
+  }
+
+  .layout {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; align-items: center;
+    padding: 0 100px 60px;
+    gap: 60px;
+  }
+
+  .content { flex: 1; }
+
+  .logo-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 40px;
+  }
+  .logo-img { width: 44px; height: 44px; object-fit: contain; }
+  .logo-name { font-size: 17px; font-weight: 700; color: rgba(255,255,255,0.7); }
+
+  .tag {
+    font-size: 12px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #38bdf8;
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tag::before { content: ''; display: block; width: 24px; height: 2px; background: #38bdf8; border-radius: 1px; }
+
+  .headline {
+    font-size: 58px; font-weight: 900; line-height: 1.1;
+    color: white; margin-bottom: 20px; letter-spacing: -1.5px;
+  }
+  .headline span {
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .subline {
+    font-size: 18px; line-height: 1.7;
+    color: rgba(255,255,255,0.5); margin-bottom: 44px; max-width: 500px;
+  }
+
+  /* Voice chips */
+  .voices-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
+  .voices { display: flex; flex-wrap: wrap; gap: 10px; max-width: 520px; }
+  .v-chip {
+    padding: 7px 16px; border-radius: 24px; font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .v-chip.active {
+    background: linear-gradient(135deg, rgba(56,189,248,0.25), rgba(129,140,248,0.25));
+    border-color: #38bdf8; color: #7dd3fc;
+    box-shadow: 0 0 12px rgba(56,189,248,0.2);
+  }
+
+  /* Models */
+  .models { margin-top: 24px; display: flex; gap: 10px; align-items: center; }
+  .models-label { font-size: 12px; color: rgba(255,255,255,0.3); margin-right: 4px; }
+  .m-chip {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1);
+  }
+  .m-chip.active { background: #38bdf8; color: #001a3a; border-color: #38bdf8; }
+
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+    padding: 14px 100px;
+    display: flex; align-items: center; gap: 32px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.3);
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 800; color: #38bdf8; }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+  .stat-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.08); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+<div class="bg"></div>
+<div class="accent"></div>
+
+<!-- Sound wave bars -->
+<div class="waves">
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+</div>
+
+<div class="layout">
+  <div class="content">
+    <div class="logo-row">
+      <img class="logo-img" src="../src/images/j_logo_128.png" alt="ELA">
+      <span class="logo-name">ELA · Everyday Language Assistant</span>
+    </div>
+
+    <div class="tag">AI Text-to-Speech</div>
+
+    <div class="headline">Hear it.<br><span>Feel it.</span><br>Own it.</div>
+
+    <div class="subline">Select any text on any webpage and have it read aloud instantly — in any language. Train your ear to natural pronunciation, rhythm, and intonation.</div>
+
+    <div class="voices-label">13 Natural Voices to choose from</div>
+    <div class="voices">
+      <div class="v-chip active">nova ♪</div>
+      <div class="v-chip">alloy</div>
+      <div class="v-chip">ash</div>
+      <div class="v-chip">coral</div>
+      <div class="v-chip">echo</div>
+      <div class="v-chip">fable</div>
+      <div class="v-chip">onyx</div>
+      <div class="v-chip">shimmer</div>
+      <div class="v-chip">marin</div>
+      <div class="v-chip">cedar</div>
+      <div class="v-chip">sage</div>
+      <div class="v-chip">ballad</div>
+      <div class="v-chip">verse</div>
+    </div>
+
+    <div class="models">
+      <span class="models-label">TTS Model:</span>
+      <div class="m-chip active">gpt-4o-mini-tts</div>
+      <div class="m-chip">tts-1-hd</div>
+      <div class="m-chip">tts-1</div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <div class="stat"><div class="stat-num">13</div><div class="stat-label">Natural Voices</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">TTS Models</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Webpages Supported</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num">🔁</div><div class="stat-label">Loop + Download MP3</div></div>
+</div>
+</div>
+</body>
+</html>

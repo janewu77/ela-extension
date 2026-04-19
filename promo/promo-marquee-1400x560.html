@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+    background: #111;
+  }
+  .wrapper {
+    width: 1400px; height: 560px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+    background: #08080f;
+  }
+
+  /* Background */
+  .bg-grad {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 55% 90% at 15% 50%, #130a2e 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 85% 50%, #0a1628 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 50% 50%, #0d0a1a 0%, #08080f 80%);
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  /* Left purple glow */
+  .glow-l {
+    position: absolute;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 65%);
+    top: 50%; left: 18%; transform: translate(-50%, -50%);
+  }
+  /* Right blue glow */
+  .glow-r {
+    position: absolute;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 65%);
+    top: 50%; left: 82%; transform: translate(-50%, -50%);
+  }
+
+  /* Layout: three columns */
+  .layout {
+    position: relative; z-index: 10;
+    width: 100%; height: 100%;
+    display: flex; align-items: center;
+    padding: 0 80px;
+    gap: 0;
+  }
+
+  /* Left: brand + headline */
+  .col-brand {
+    width: 420px; flex-shrink: 0;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+
+  .logo-row {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px;
+  }
+  .logo-img { width: 52px; height: 52px; object-fit: contain; }
+  .logo-text { }
+  .logo-name {
+    font-size: 20px; font-weight: 800; color: white; line-height: 1.2;
+  }
+  .logo-sub {
+    font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .headline {
+    font-size: 48px; font-weight: 900; line-height: 1.1;
+    color: white; letter-spacing: -1.5px; margin-bottom: 16px;
+  }
+  .headline span {
+    background: linear-gradient(135deg, #a78bfa, #38bdf8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subline {
+    font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.45);
+    margin-bottom: 28px; max-width: 360px;
+  }
+
+  .lang-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .lang-pill {
+    font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+    color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+  }
+  .lang-pill.hi { border-color: rgba(167,139,250,0.4); color: #c4b5fd; background: rgba(167,139,250,0.08); }
+
+  /* Center divider */
+  .col-divider {
+    width: 1px; height: 320px; flex-shrink: 0;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.1) 70%, transparent);
+    margin: 0 60px;
+  }
+
+  /* Right: feature cards */
+  .col-features {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .feat {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .feat.accent {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(56,189,248,0.1));
+    border-color: rgba(124,58,237,0.3);
+  }
+  .feat-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .feat-title { font-size: 14px; font-weight: 700; color: white; margin-bottom: 4px; }
+  .feat-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.55; }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+    padding: 13px 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.35);
+  }
+  .bottom-left { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.2px; }
+  .cta {
+    font-size: 13px; font-weight: 700;
+    background: linear-gradient(135deg, #7c3aed, #4a6cf7);
+    color: white; padding: 9px 22px; border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="bg-grad"></div>
+  <div class="grid"></div>
+  <div class="glow-l"></div>
+  <div class="glow-r"></div>
+
+  <div class="layout">
+    <!-- Brand + Headline -->
+    <div class="col-brand">
+      <div class="logo-row">
+        <img class="logo-img" src="../src/images/j_logo_128.png" alt="ELA">
+        <div class="logo-text">
+          <div class="logo-name">ELA</div>
+          <div class="logo-sub">Everyday Language Assistant</div>
+        </div>
+      </div>
+      <div class="headline">Read smarter.<br><span>Learn faster.</span></div>
+      <div class="subline">AI-powered TTS, translation, and word lookup — right inside your browser, for any language you're learning.</div>
+      <div class="lang-pills">
+        <div class="lang-pill hi">English</div>
+        <div class="lang-pill">Deutsch</div>
+        <div class="lang-pill">日本語</div>
+        <div class="lang-pill">Français</div>
+        <div class="lang-pill">Español</div>
+        <div class="lang-pill">+ more</div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="col-divider"></div>
+
+    <!-- Features -->
+    <div class="col-features">
+      <div class="feat accent">
+        <div class="feat-icon">🎧</div>
+        <div>
+          <div class="feat-title">AI Text-to-Speech</div>
+          <div class="feat-desc">13 natural voices via OpenAI TTS. Hear any selected text read aloud instantly.</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📖</div>
+        <div>
+          <div class="feat-title">Word Lookup</div>
+          <div class="feat-desc">Phonetics, collocations, and examples — full word breakdown in seconds.</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🌐</div>
+        <div>
+          <div class="feat-title">Translation</div>
+          <div class="feat-desc">Pre-configured expert translation with a 3-step methodology. Customizable for any language pair.</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">⚡</div>
+        <div>
+          <div class="feat-title">Custom AI Actions</div>
+          <div class="feat-desc">Define up to 6 prompt buttons — tailor ELA to any language, subject, or workflow.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <span class="bottom-left">Powered by OpenAI · Works on every webpage · API key stored locally · Open source</span>
+    <span class="cta">Add to Chrome — Free</span>
+  </div>
+</div>
+</body>
+</html>
