@@ -29,7 +29,7 @@ ELA is designed to boost your English(or other languages) proficiency, utilizing
 
 With its user-friendly interface and high customizability, ELA is perfect not only for individuals learning English but also for professionals and scholars needing to access specialized English content. Moreover, it can facilitate learning other languages, thereby significantly enhancing efficiency in your professional and educational pursuits.
 
-![demo](./doc/images/0.3/en/demo.png)
+![demo](./assets/0.3/en/demo.png)
 
 ## ✨ Key Features
 
@@ -69,9 +69,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 ## ⚙️ Configuration
 
 - 🔑 Open the "Settings" and input your OpenAI-API-Key.
-  ![how to setting - key](./doc/images/0.3/en/setting1.png)
+  ![how to setting - key](./assets/0.3/en/setting1.png)
 - 🎛️ Configure custom buttons
-  ![how to setting - 1](./doc/images/0.3/en/setting2.png)
+  ![how to setting - 1](./assets/0.3/en/setting2.png)
 
 ## 🚀 How to Use
 
@@ -81,11 +81,11 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 4. Use the pre-configured [Translate] and [Word Lookup] buttons, or any custom buttons you've set up in Settings.
 
 - 📺 demo
-  ![func](./doc/images/0.3/en/func1.png)
+  ![func](./assets/0.3/en/func1.png)
 
 #### 🎛️ Description of button functions
 
-![button functions](./doc/images/0.3/en/sidepanel.png)
+![button functions](./assets/0.3/en/sidepanel.png)
 
 - 🔘 On/OFF: on, the content selected on the webpage will appear in the side panel.
 - ⚙️ Setting: Parameter settings. You can specify the AI model for sound and language in the settings.
@@ -133,7 +133,7 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 
 ## 📝 Changelog
 
-[Changelog](./doc/CHANGELOG.md) | [更新日志](./doc/CHANGELOG.zh.md)
+[Changelog](./CHANGELOG.md) | [更新日志](./CHANGELOG.zh.md)
 
 ## 🤝 How to Contribute
 

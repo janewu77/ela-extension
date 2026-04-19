@@ -29,7 +29,7 @@ Everyday Language Assistant
 
 这款工具的易用性、高度定制性不仅适用于学习英语，还适合专业人士或学者深入阅读专业英文材料，以及用于学习其他语言，从而有效提高工作和学习效率。
 
-![demo](./doc/images/0.3/zh/demo.png)
+![demo](./assets/0.3/zh/demo.png)
 
 ## ✨ 主要功能
 
@@ -69,9 +69,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 ## ⚙️ 配置
 
 - 🔑 打开“设置”填入 openAI-API-key  
-  ![how to setting - key](./doc/images/0.3/zh/setting1.png)
+  ![how to setting - key](./assets/0.3/zh/setting1.png)
 - 🎛️ 配置自定义按钮
-  ![how to setting - 1](./doc/images/0.3/zh/setting2.png)
+  ![how to setting - 1](./assets/0.3/zh/setting2.png)
 
 ## 🚀 如何使用
 
@@ -81,11 +81,11 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 4. 点击预置的【英翻中】【查单词】按钮，或使用你在设置中配置的自定义按钮。
 
 - 📺 功能演示
-  ![func](./doc/images/0.3/zh/func1.png)
+  ![func](./assets/0.3/zh/func1.png)
 
 #### 🎛️ 按钮说明
 
-![button description](./doc/images/0.3/zh/sidepanel.png)
+![button description](./assets/0.3/zh/sidepanel.png)
 
 - 🔘 开/关：打开，网页上选中的内容，会出现在侧边栏内；关闭，网页上选中的内容不会出现在侧边栏内。
 - ⚙️ 设置[选项]：进入参数设置。在设置里可以指定声音、语言的 AI 模型。
@@ -132,7 +132,7 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 
 ## 📝 更新日志
 
-[更新日志](./doc/CHANGELOG.zh.md) | [Changelog](./doc/CHANGELOG.md)
+[更新日志](./CHANGELOG.zh.md) | [Changelog](./CHANGELOG.md)
 
 ## 🤝 如何贡献
 

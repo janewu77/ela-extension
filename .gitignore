@@ -6,3 +6,4 @@ archive/dist
 doc/other
 coverage
 *.log
+tmp
