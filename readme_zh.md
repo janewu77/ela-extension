@@ -1,8 +1,8 @@
-# 🎧 英文学习助手 ELA
+# 🎧 ELA — Everyday Language Assistant
 
 [English Version](./readme.md)
 
-英文学习助手 English learner Assistant
+Everyday Language Assistant
 
 🔗 https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
@@ -25,7 +25,7 @@
 
 ## ℹ️ 概述
 
-一款帮助您提升英语水平的 AI 工具，采用了最新的文字转语音（Text to Speech TTS）、大语言模型(Large Language Model LLM)等 AI 技术来支持您的学习。
+一款帮助您提升外语水平的 AI 工具，采用了最新的文字转语音（Text to Speech TTS）、大语言模型(Large Language Model LLM)等 AI 技术来支持您的学习。
 
 这款工具的易用性、高度定制性不仅适用于学习英语，还适合专业人士或学者深入阅读专业英文材料，以及用于学习其他语言，从而有效提高工作和学习效率。
 
@@ -41,12 +41,16 @@
 
 2. **🌐 翻译查词**：
 
-   - 使用最新的 AI 技术（openAI ChatGPT）进行英文翻译、单词查询。
-   - 帮助用户顺利阅读和扩大词汇量。
+   - 预置了【英翻中】和【查单词】按钮，开箱即用。
+   - 两个按钮均可在设置中修改或替换，适配任何语言或使用场景。
 
 3. **⚙️ 自定义设置**：
    - 允许用户根据具体学习需求自定义功能。
-   - 通过定义 prompt 来调整功能，实现个性化配置。
+   - 通过定义 prompt 来调整功能，实现个性化配置，适用于任何语言学习场景。
+
+4. **🌍 多语言支持**：
+   - 不限于英语。使用 ELA 收听和学习任何语言的内容——德语、法语、日语等均可。
+   - 自定义按钮可配置为任意语言对或学习任务。
 
 ## 📥 如何安装
 
@@ -74,7 +78,7 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 1. 打开侧边栏，打开右上角的开关。
 2. 选中想要处理的文字段落。文字将会出现在侧边栏内。
 3. 点击文字下方的【播放键】开始朗读。
-4. 点击【英翻中】【查单词】，将执行相应的功能。
+4. 点击预置的【英翻中】【查单词】按钮，或使用你在设置中配置的自定义按钮。
 
 - 📺 功能演示
   ![func](./doc/images/0.3/zh/func1.png)
@@ -92,9 +96,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 - ⏹️ 停止：停止播放。停止后，再次点击播放，将会重新生成声音并播放。
 - 💾 下载：将生成的音频下载为 MP3 格式文件。只有在音频生成成功后，下载按钮才会启用。
 
-- 🌐 英翻中：将英文翻译成中文。
-- 📖 查单词
-- ✏️ 自定义：自定义的功能。
+- 🌐 英翻中：预置的默认按钮，开箱即用，翻译成中文。可在设置中修改或替换。
+- 📖 查单词：预置的默认按钮，查询单词和词组。可在设置中修改或替换。
+- ✏️ 自定义按钮：在设置中定义你自己的 AI 功能，支持任意语言和任务场景。
 
 #### ⌨️ 打开/关闭侧边栏的快捷方式：
 
@@ -112,8 +116,8 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
   https://platform.openai.com/api-keys
 
 - **🔒 我的 OpenAI-API-Key 安全吗？**  
-  用户的 OpenAI-API-Key 只在调用接口时传递给 openAI。
-  除此之外，您的 OpenAI-API-Key 会保存在您的浏览器存储中。您可以在“选项”中，随时删除您的 OpenAI-API-Key。
+  安全。您的 API Key 仅保存在本地 Chrome Storage 中，只有在您触发请求时才会传递给 OpenAI，不会发送到 ELA 的任何服务器，开发者也无法访问。您可以随时在”选项”中删除您的 API Key。  
+  ELA 完全开源，您可以随时在 [GitHub](https://github.com/janewu77/ela-extension) 上查看代码自行验证。
 
 - **🌍 哪些地区可以使用？**  
   如果您所在的地区，openAI 并不提供服务，则同样的，你也无法在这里使用。

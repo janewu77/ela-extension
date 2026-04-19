@@ -18,7 +18,7 @@
 
 ### 1.1 Project Introduction
 
-ELA (English Learner Assistant) is a Chrome Extension-based English learning assistant that leverages OpenAI's TTS (Text-to-Speech) and LLM (Large Language Model) technologies to provide users with:
+ELA (Everyday Language Assistant) is a Chrome Extension-based language assistant that leverages OpenAI's TTS (Text-to-Speech) and LLM (Large Language Model) technologies to provide users with:
 
 - **Text-to-Speech**: Convert selected English text to speech playback
 - **Translation**: Translate English to Chinese

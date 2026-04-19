@@ -1,8 +1,8 @@
-# 🎧 English learner Assistant ELA
+# 🎧 Everyday Language Assistant ELA
 
 [中文说明](./readme_zh.md)
 
-English learner Assistant ELA
+Everyday Language Assistant ELA
 
 🔗 https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
 
@@ -41,12 +41,16 @@ With its user-friendly interface and high customizability, ELA is perfect not on
 
 2. **🌐 Translation and word lookup**:
 
-   - Uses the latest AI technology (openAI ChatGPT) for English translation and word lookup.
-   - Helps users read smoothly and expand their vocabulary.
+   - Comes pre-configured with [Translate] and [Word Lookup] buttons, ready to use out of the box.
+   - Both buttons can be modified or replaced in Settings to suit any language or workflow.
 
 3. **⚙️ Custom settings**:
    - Allows users to customize functions based on specific learning needs.
-   - Adjust functions by defining prompts for personalized configuration.
+   - Define your own prompt-based buttons — tailor ELA to any language, subject, or workflow.
+
+4. **🌍 Multi-language support**:
+   - Not limited to English. Use ELA to listen to and study content in any language — German, French, Japanese, and more.
+   - Custom buttons can be configured for any language pair or learning task.
 
 ## 📥 How to install
 
@@ -74,7 +78,7 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 1. Open the side panel, turn on the switch at the top right corner.
 2. Select the text paragraph you want to process. The text will appear in the side panel.
 3. Click the [Play] button below the text to start reading aloud.
-4. Use the [Translate to Chinese] and [Look up words] buttons to access these specific functions.
+4. Use the pre-configured [Translate] and [Word Lookup] buttons, or any custom buttons you've set up in Settings.
 
 - 📺 demo
   ![func](./doc/images/0.3/en/func1.png)
@@ -92,9 +96,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 - ⏹️ Stop: Stop playback. After stopped, clicking play again will regenerate the sound and play it.
 - 💾 Download: Download the generated audio as an MP3 file. The download button is only enabled after the audio has been successfully generated.
 
-- 🌐 Translate: Translate English into Chinese.
-- 📖 word: Look up words
-- ✏️ Custom functions
+- 🌐 Translate: Pre-configured default button — translates to Chinese out of the box. Can be modified or replaced in Settings.
+- 📖 Word Lookup: Pre-configured default button — looks up words and expressions. Can be modified or replaced in Settings.
+- ✏️ Custom buttons: Your own AI-powered actions, defined in Settings.
 
 #### ⌨️ Shortcut to Open/Close the side panel：
 
@@ -112,7 +116,8 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
   https://platform.openai.com/api-keys
 
 - **🔒 Is my OpenAI-API-Key safe？**  
-  Your OpenAI-API-Key is only transmitted to OpenAI when the interface is invoked. Additionally, your OpenAI-API-Key is saved in your browser's storage. You can delete your OpenAI-API-Key at any time from the "Options" menu.
+  Yes. Your API key is stored locally in Chrome Storage and is only transmitted to OpenAI when you trigger a request. It is never sent to any server operated by ELA, and the extension developer has no access to it. You can delete your API key at any time from the "Options" menu.  
+  ELA is fully open source — you can verify this yourself on [GitHub](https://github.com/janewu77/ela-extension).
 
 - **🌍 In which regions is this available?**  
   If OpenAI does not offer services in your area, you will also be unable to use this extension there.

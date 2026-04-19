@@ -1,10 +1,10 @@
 {
   "app_description": {
-    "message": "掌握英语，提升效率！集成了先进的TTS和LLM技术，提供个性化学习解决方案，适合帮助用户提高语言能力。",
+    "message": "AI 语言学习助手：朗读、翻译、查词，支持英语、德语、法语等多语言，AI 按钮完全可自定义。基于 OpenAI TTS 与 LLM。",
     "description": ""
   },
   "app_name": {
-    "message": "ELA-英文学习助手",
+    "message": "ELA-日常语言助手",
     "description": ""
   },
   "onoff_on": {

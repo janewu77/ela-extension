@@ -1,9 +1,9 @@
 {
   "app_description": {
-    "message": "Master English! Equipped with advanced TTS and LLM technology, this tool offers personalized learning to boost your language skills."
+    "message": "AI reading companion for language learners: text-to-speech, translation, word lookup, and fully customizable AI actions."
   },
   "app_name": {
-    "message": "ELA-English Learner Assistant"
+    "message": "ELA-Everyday Language Assistant"
   },
   "onoff_on": {
     "message": "ON"
