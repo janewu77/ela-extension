@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.0] - 2026-04-19
+
+### Updated
+- **AI Model Upgrade**
+  - Updated default chat model from `gpt-4.1-mini` to `gpt-5.4-mini`
+  - Replaced invalid model IDs with the correct GPT-5.4 series:
+    - `gpt-5-nano` → `gpt-5.4-nano`
+    - `gpt-5-mini` → `gpt-5.4-mini`
+    - `gpt-5.2` → `gpt-5.4`
+  - Removed non-existent TTS model `gpt-4o-mini-tts-2025-12-15`
+  - Retained `gpt-4.1-nano`, `gpt-4.1-mini`, `gpt-4.1`, and `gpt-4o-mini` for backward compatibility
+
+---
+
 ## [0.4.5] - 2026-01-20
 
 ### Added
@@ -179,4 +193,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-**Last Updated**: 2026-01-20
+**Last Updated**: 2026-04-19

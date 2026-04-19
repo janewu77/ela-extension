@@ -31,7 +31,7 @@ const default_tts_model = "gpt-4o-mini-tts"; // tts-1 tts-1-hd
 const default_tts_voice = "marin"; // alloy, ash, coral, echo, fable, onyx, nova, sage, shimmer
 
 // TTS 模型选项列表
-const arrTTSModel = ["tts-1", "tts-1-hd", "gpt-4o-mini-tts", "gpt-4o-mini-tts-2025-12-15"];
+const arrTTSModel = ["tts-1", "tts-1-hd", "gpt-4o-mini-tts"];
 
 // TTS 声音选项列表
 const arrTTSVoice = [
@@ -56,16 +56,16 @@ const arrTTSVoice = [
 
 // Chat 默认配置
 const default_chat_endpoint = "https://api.openai.com/v1/chat/completions";
-const default_chat_model = "gpt-4.1-mini";
+const default_chat_model = "gpt-5.4-mini";
 
 // Chat 模型选项列表
 const arrChatModel = [
-  "gpt-4.1-nano", // 翻译批量 / 超省钱
-  "gpt-4.1-mini", // 翻译默认（主力）
-  "gpt-4.1", // 翻译专业版（更稳/术语一致性更强）
-  "gpt-5-nano", // 问答省钱 / 快速草稿
-  "gpt-5-mini", // 问答默认 / 翻译+本地化改写（增强）
-  "gpt-5.2", // 最强（仅少量使用）
+  "gpt-4.1-nano", // 翻译批量 / 超省钱（旧）
+  "gpt-4.1-mini", // 翻译默认（旧）
+  "gpt-4.1", // 翻译专业版（旧）
+  "gpt-5.4-nano", // 问答省钱 / 快速草稿
+  "gpt-5.4-mini", // 问答默认 / 翻译+本地化改写（增强）
+  "gpt-5.4", // 最强（仅少量使用）
   "gpt-4o-mini", // 仅为了以前的兼容
 ];
 
