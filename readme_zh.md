@@ -60,8 +60,7 @@ Everyday Language Assistant
 
 ### 2. 用压缩包安装（开发者模式）
 
-step1: 下载 zip & 解压  
-archive/ela\_{最新的版本}.zip
+step1: 从 [GitHub Releases](https://github.com/janewu77/ela-extension/releases) 下载最新 zip 并解压
 
 step2: 根据安装指令进行安装  
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=zh-cn#load-unpacked

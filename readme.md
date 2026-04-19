@@ -60,8 +60,7 @@ With its user-friendly interface and high customizability, ELA is perfect not on
 
 ### 2. Install an unpacked extension in developer mode.
 
-step1: download zip & unzip
-archive/ela\_{The latest released version}.zip
+step1: download the latest zip from [GitHub Releases](https://github.com/janewu77/ela-extension/releases) & unzip
 
 step2: following the provided installation instructions
 https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=en#load-unpacked
