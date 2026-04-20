@@ -1,14 +1,8 @@
-# 🎧 Everyday Language Assistant ELA
+# 🎧 ELA — Everyday Language Assistant
 
-[中文说明](./readme_zh.md)
+[中文说明](./readme_zh.md) | [🛒 Chrome Web Store](https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga)
 
-Everyday Language Assistant ELA
-
-🔗 https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
-
-- 🧩 a Chrome extension
-- 🔊 based on OpenAI TTS (text-to-speech) model [https://platform.openai.com/docs/guides/text-to-speech]
-- 🤖 based on OpenAI gpt-4o, gpt-4o-mini model [https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo]
+A Chrome extension that reads, translates, and explains content on any webpage — powered by OpenAI TTS and GPT-5.4.
 
 ## 📑 Table of Contents
 
@@ -23,13 +17,13 @@ Everyday Language Assistant ELA
 - [How to Contribute](#how-to-contribute)
 - [Documentation](#documentation)
 
+![hero](./promo/01-hero.png)
+
 ## ℹ️ Info
 
-ELA is designed to boost your English(or other languages) proficiency, utilizing cutting-edge AI technologies including Text to Speech (TTS) and Large Language Models (LLM) to support your learning journey.
+ELA turns any webpage into a language learning workspace. Select any text — ELA reads it aloud, translates it, or explains it using AI, all inside Chrome's side panel.
 
-With its user-friendly interface and high customizability, ELA is perfect not only for individuals learning English but also for professionals and scholars needing to access specialized English content. Moreover, it can facilitate learning other languages, thereby significantly enhancing efficiency in your professional and educational pursuits.
-
-![demo](./assets/0.3/en/demo.png)
+Built for language learners, professionals reading in a foreign language, and anyone who wants to get more out of the web.
 
 ## ✨ Key Features
 

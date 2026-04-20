@@ -1,14 +1,8 @@
 # 🎧 ELA — Everyday Language Assistant
 
-[English Version](./readme.md)
+[English Version](./readme.md) | [🛒 Chrome 应用商店](https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga)
 
-Everyday Language Assistant
-
-🔗 https://chrome.google.com/webstore/detail/eepeblbmpkloajddpjlibamomldfhdga
-
-- 🧩 一个 Chrome 浏览器插件
-- 🔊 基于 OpenAI TTS (text-to-speech) 模型 [https://platform.openai.com/docs/guides/text-to-speech]
-- 🤖 基于 OpenAI gpt-4o, gpt-4o-mini, gpt-t 等模型 [https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo]
+一款 Chrome 插件，在网页上选中任意文字，即可朗读、翻译、AI 解析 —— 基于 OpenAI TTS 与 GPT-5.4。
 
 ## 📑 目录
 
@@ -23,13 +17,13 @@ Everyday Language Assistant
 - [如何贡献](#如何贡献)
 - [文档索引](#文档索引)
 
+![hero](./promo/01-hero-zh.png)
+
 ## ℹ️ 概述
 
-一款帮助您提升外语水平的 AI 工具，采用了最新的文字转语音（Text to Speech TTS）、大语言模型(Large Language Model LLM)等 AI 技术来支持您的学习。
+ELA 让任意网页变成你的语言学习空间。选中文字，ELA 就能在 Chrome 侧边栏里帮你朗读、翻译或用 AI 解析。
 
-这款工具的易用性、高度定制性不仅适用于学习英语，还适合专业人士或学者深入阅读专业英文材料，以及用于学习其他语言，从而有效提高工作和学习效率。
-
-![demo](./assets/0.3/zh/demo.png)
+适合外语学习者、需要阅读专业外文资料的职场人，以及所有想从网页内容中获得更多的人。
 
 ## ✨ 主要功能
 
