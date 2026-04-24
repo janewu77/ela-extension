@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/eepeblbmpkloajddpjlibamomldfhdga.svg)](https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga)
+[![Website](https://img.shields.io/badge/Website-janewu77.github.io-8b5cf6)](https://janewu77.github.io/ela-extension/)
 
 
 [中文说明](./readme_zh.md) 
