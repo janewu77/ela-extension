@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>隐私政策 — ELA</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 24px 64px;
+      color: #1a1a1a;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 4px; }
+    h2 { font-size: 1.15rem; margin-top: 2rem; border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; }
+    p  { margin: 0.6rem 0; }
+    a  { color: #0066cc; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f5f5f5; font-weight: 600; }
+    code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    ul, ol { padding-left: 1.4em; margin: 0.5rem 0; }
+    li { margin: 0.25rem 0; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    hr { border: none; border-top: 1px solid #e5e5e5; margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<h1>隐私政策 — ELA</h1>
+<p class="meta">最后更新：2026 年 4 月 24 日 &nbsp;·&nbsp; <a href="privacy.html">English</a></p>
+
+<p>ELA（以下简称"本扩展"）是一款 Chrome 扩展，通过文字转语音、AI 翻译和查词功能，帮助你更轻松地阅读外语内容——所有操作均在侧边栏中完成。本政策说明扩展会访问哪些数据、如何使用，以及数据何时（如有）会离开你的设备。</p>
+
+<hr>
+
+<h2>1. 我们存储的数据</h2>
+
+<p>ELA 使用 Chrome 内置的 <code>chrome.storage.local</code> API 将以下数据<strong>仅存储在你的本地设备上</strong>，不会发送到 ELA 运营的任何服务器。</p>
+
+<table>
+  <thead>
+    <tr><th>类别</th><th>示例</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>AI 服务设置</td><td>你的 OpenAI API Key、所选 TTS 语音模型</td></tr>
+    <tr><td>自定义按钮配置</td><td>你在设置页面定义的 AI 按钮名称和 Prompt 文本</td></tr>
+  </tbody>
+</table>
+
+<p>ELA <strong>不</strong>收集、存储或传输任何个人身份信息（如姓名、邮箱、地理位置、浏览历史等）。</p>
+
+<hr>
+
+<h2>2. 数据的使用方式</h2>
+
+<p>本地存储的数据仅用于：</p>
+<ul>
+  <li>代表你向 OpenAI API 发起认证请求（API Key）</li>
+  <li>确定生成语音时使用的声音模型（语音模型偏好）</li>
+  <li>显示并执行你配置的 AI 功能（自定义按钮 Prompt）</li>
+</ul>
+
+<hr>
+
+<h2>3. 发送给第三方服务的数据</h2>
+
+<p>ELA 的核心功能——文字转语音、翻译和查词——均由 <strong>OpenAI API</strong> 提供支持。当你使用这些功能时，以下数据将<strong>直接从你的浏览器发送至 OpenAI</strong>：</p>
+
+<table>
+  <thead>
+    <tr><th>功能</th><th>发送给 OpenAI 的数据</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>文字转语音（播放）</td><td>你在网页上选中的文字</td></tr>
+    <tr><td>AI 按钮（如翻译、查词、自定义功能）</td><td>选中的文字 + 该按钮对应的 Prompt</td></tr>
+  </tbody>
+</table>
+
+<p>上述数据<strong>直接从你的浏览器传输至 OpenAI</strong>，不经过 ELA 的任何服务器。你的 API Key 仅用于授权这些请求，开发者无法获取。</p>
+
+<p>请查阅 OpenAI 的隐私政策，了解其数据处理方式：<br>
+<a href="https://openai.com/policies/privacy-policy" target="_blank">https://openai.com/policies/privacy-policy</a></p>
+
+<p><strong>如果你不主动使用扩展功能，任何数据都不会被发送。</strong>ELA 不会在后台运行，也不会监控你的浏览行为。</p>
+
+<hr>
+
+<h2>4. 数据存储与保留</h2>
+
+<p>所有设置（API Key、语音模型、自定义 Prompt）均通过 <code>chrome.storage.local</code> 存储在本地，直到你：</p>
+<ul>
+  <li>在设置页面手动清除</li>
+  <li>卸载扩展（卸载后所有存储数据将被自动删除）</li>
+</ul>
+
+<p>ELA 的开发者无法访问你的本地数据，也无法代表你检索或删除这些数据。</p>
+
+<hr>
+
+<h2>5. 权限说明</h2>
+
+<table>
+  <thead>
+    <tr><th>权限</th><th>用途</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>storage</code></td><td>将 API Key、语音模型偏好和自定义按钮 Prompt 保存在本地设备上</td></tr>
+    <tr><td><code>sidePanel</code></td><td>显示 ELA 侧边栏，用于展示选中文字、播放控件和 AI 结果</td></tr>
+    <tr><td>内容脚本（<code>&lt;all_urls&gt;</code>）</td><td>检测你在任意网页上选中的文字，并将其传递到侧边栏。由于外语内容分布在数不清的网站上，因此需要广泛的主机权限。该脚本仅在你打开侧边栏且启用开关后才会激活，不会在其他情况下读取页面内容。</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>6. 数据共享</h2>
+
+<p>ELA <strong>不会</strong>：</p>
+<ul>
+  <li>向任何第三方出售、出租或共享你的数据</li>
+  <li>将你的数据传输至 ELA 或其开发者运营的任何服务器</li>
+  <li>将你的数据用于广告或数据分析</li>
+  <li>访问或存储你所访问网页的内容（仅限你主动选中的文字）</li>
+</ul>
+
+<hr>
+
+<h2>7. 未成年人隐私</h2>
+
+<p>ELA 是面向所有年龄段用户的通用语言学习工具，不收集任何用户（包括未成年人）的个人信息。</p>
+
+<hr>
+
+<h2>8. 开源声明</h2>
+
+<p>ELA 完全开源，你可以随时查阅完整源代码：<br>
+<a href="https://github.com/janewu77/ela-extension" target="_blank">https://github.com/janewu77/ela-extension</a></p>
+
+<hr>
+
+<h2>9. 政策变更</h2>
+
+<p>如本政策有所更新，页面顶部的"最后更新"日期将随之变更。在更新后继续使用本扩展，即视为接受修订后的政策。</p>
+
+<hr>
+
+<h2>10. 联系我们</h2>
+
+<p>如你对本隐私政策有任何疑问或意见，请通过以下方式联系：</p>
+<p>
+  <strong>邮箱：</strong><a href="mailto:support@littlellm.com">support@littlellm.com</a><br>
+  <strong>GitHub：</strong><a href="https://github.com/janewu77/ela-extension" target="_blank">https://github.com/janewu77/ela-extension</a>
+</p>
+
+</body>
+</html>

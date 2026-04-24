@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — ELA</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 24px 64px;
+      color: #1a1a1a;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 4px; }
+    h2 { font-size: 1.15rem; margin-top: 2rem; border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; }
+    p  { margin: 0.6rem 0; }
+    a  { color: #0066cc; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f5f5f5; font-weight: 600; }
+    code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    ul, ol { padding-left: 1.4em; margin: 0.5rem 0; }
+    li { margin: 0.25rem 0; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    hr { border: none; border-top: 1px solid #e5e5e5; margin: 2rem 0; }
+  </style>
+</head>
+<body>
+
+<h1>Privacy Policy — ELA</h1>
+<p class="meta">Last updated: April 24, 2026 &nbsp;·&nbsp; <a href="privacy-zh.html">中文版</a></p>
+
+<p>ELA ("the Extension") is a Chrome extension that helps you read and comprehend foreign-language content by providing text-to-speech playback, AI-powered translation, and word lookup — all from a side panel. This policy explains what data the extension accesses, how it is used, and when (if ever) it leaves your device.</p>
+
+<hr>
+
+<h2>1. Data We Store</h2>
+
+<p>ELA stores the following data <strong>locally on your device</strong> using Chrome's built-in <code>chrome.storage.local</code> API. This data is never sent to any server operated by ELA.</p>
+
+<table>
+  <thead>
+    <tr><th>Category</th><th>Examples</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>AI provider settings</td><td>Your OpenAI API key, selected TTS voice model</td></tr>
+    <tr><td>Custom button configuration</td><td>Names and prompt text for any AI buttons you define in Settings</td></tr>
+  </tbody>
+</table>
+
+<p>ELA does <strong>not</strong> collect, store, or transmit any personal identification information (name, email, location, browsing history, etc.).</p>
+
+<hr>
+
+<h2>2. How Your Data Is Used</h2>
+
+<p>The data stored locally is used solely to:</p>
+<ul>
+  <li>Authenticate requests to the OpenAI API on your behalf (API key)</li>
+  <li>Determine which voice model to use when generating speech (voice model preference)</li>
+  <li>Display and execute the AI actions you have configured (custom button prompts)</li>
+</ul>
+
+<hr>
+
+<h2>3. Data Sent to Third-Party Services</h2>
+
+<p>ELA's core features — text-to-speech, translation, and word lookup — are powered by the <strong>OpenAI API</strong>. When you use these features, the following data is sent <strong>directly from your browser to OpenAI</strong>:</p>
+
+<table>
+  <thead>
+    <tr><th>Feature</th><th>Data transmitted to OpenAI</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Text-to-Speech (Play)</td><td>The text you selected on the webpage</td></tr>
+    <tr><td>AI buttons (e.g., Translate, Word Lookup, custom actions)</td><td>The selected text and the prompt you configured for that button</td></tr>
+  </tbody>
+</table>
+
+<p>This data is transmitted <strong>directly from your browser to OpenAI</strong> — it is not routed through any ELA server. Your API key is used only to authorize these requests; the extension developer cannot access it.</p>
+
+<p>Please review OpenAI's privacy policy for details on how they handle data:
+<a href="https://openai.com/policies/privacy-policy" target="_blank">https://openai.com/policies/privacy-policy</a></p>
+
+<p><strong>If you do not interact with the extension, no data is sent anywhere.</strong> ELA does not run in the background or monitor your browsing.</p>
+
+<hr>
+
+<h2>4. Data Storage and Retention</h2>
+
+<p>All settings (API key, voice model, custom prompts) are stored locally using <code>chrome.storage.local</code> and remain on your device until you:</p>
+<ul>
+  <li>Manually clear them in the Settings page</li>
+  <li>Uninstall the extension (which removes all stored data)</li>
+</ul>
+
+<p>ELA's developer has no access to your stored data and cannot retrieve or delete it on your behalf.</p>
+
+<hr>
+
+<h2>5. Permissions Explanation</h2>
+
+<table>
+  <thead>
+    <tr><th>Permission</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>storage</code></td><td>Save your API key, voice model preference, and custom button prompts locally on your device</td></tr>
+    <tr><td><code>sidePanel</code></td><td>Display the ELA side panel where selected text, playback controls, and AI results are shown</td></tr>
+    <tr><td>Content script on <code>&lt;all_urls&gt;</code></td><td>Detect text you select on any webpage and pass it to the side panel. This is required because foreign-language content appears on countless different websites. The script only activates when you have the side panel open and the toggle enabled — it does not read page content otherwise.</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>6. Data Sharing</h2>
+
+<p>ELA does <strong>not</strong>:</p>
+<ul>
+  <li>Sell, rent, or share your data with any third party</li>
+  <li>Transmit your data to any server operated by ELA or its developer</li>
+  <li>Use your data for advertising or analytics</li>
+  <li>Access or store the content of webpages you visit beyond the text you explicitly select</li>
+</ul>
+
+<hr>
+
+<h2>7. Children's Privacy</h2>
+
+<p>ELA is a general-purpose language learning tool intended for users of all ages. The extension does not collect any personal information from any user, including minors.</p>
+
+<hr>
+
+<h2>8. Open Source</h2>
+
+<p>ELA is fully open source. You can inspect the complete source code at any time:
+<a href="https://github.com/janewu77/ela-extension" target="_blank">https://github.com/janewu77/ela-extension</a></p>
+
+<hr>
+
+<h2>9. Changes to This Policy</h2>
+
+<p>If this policy is updated, the "Last updated" date at the top of this page will reflect the change. Continued use of the extension after an update constitutes acceptance of the revised policy.</p>
+
+<hr>
+
+<h2>10. Contact</h2>
+
+<p>If you have questions or concerns about this privacy policy, please contact:</p>
+<p>
+  <strong>Email:</strong> <a href="mailto:support@littlellm.com">support@littlellm.com</a><br>
+  <strong>GitHub:</strong> <a href="https://github.com/janewu77/ela-extension" target="_blank">https://github.com/janewu77/ela-extension</a>
+</p>
+
+</body>
+</html>
