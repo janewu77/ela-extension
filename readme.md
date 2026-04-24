@@ -17,7 +17,7 @@ A Chrome extension that reads, translates, and explains content on any webpage �
 - [How to Contribute](#how-to-contribute)
 - [Documentation](#documentation)
 
-![hero](./promo/01-hero.png)
+![hero](./materials/promo/01-hero.png)
 
 ## ℹ️ Info
 
@@ -62,9 +62,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 ## ⚙️ Configuration
 
 - 🔑 Open the "Settings" and input your OpenAI-API-Key.
-  ![how to setting - key](./assets/0.3/en/setting1.png)
+  ![how to setting - key](./materials/screenshot/0.3/en/setting1.png)
 - 🎛️ Configure custom buttons
-  ![how to setting - 1](./assets/0.3/en/setting2.png)
+  ![how to setting - 1](./materials/screenshot/0.3/en/setting2.png)
 
 ## 🚀 How to Use
 
@@ -74,11 +74,11 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 4. Use the pre-configured [Translate] and [Word Lookup] buttons, or any custom buttons you've set up in Settings.
 
 - 📺 demo
-  ![func](./assets/0.3/en/func1.png)
+  ![func](./materials/screenshot/0.3/en/func1.png)
 
 #### 🎛️ Description of button functions
 
-![button functions](./assets/0.3/en/sidepanel.png)
+![button functions](./materials/screenshot/0.3/en/sidepanel.png)
 
 - 🔘 On/OFF: on, the content selected on the webpage will appear in the side panel.
 - ⚙️ Setting: Parameter settings. You can specify the AI model for sound and language in the settings.

@@ -17,7 +17,7 @@
 - [如何贡献](#如何贡献)
 - [文档索引](#文档索引)
 
-![hero](./promo/01-hero-zh.png)
+![hero](./materials/promo/01-hero-zh.png)
 
 ## ℹ️ 概述
 
@@ -62,9 +62,9 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 ## ⚙️ 配置
 
 - 🔑 打开“设置”填入 openAI-API-key  
-  ![how to setting - key](./assets/0.3/zh/setting1.png)
+  ![how to setting - key](./materials/screenshot/0.3/zh/setting1.png)
 - 🎛️ 配置自定义按钮
-  ![how to setting - 1](./assets/0.3/zh/setting2.png)
+  ![how to setting - 1](./materials/screenshot/0.3/zh/setting2.png)
 
 ## 🚀 如何使用
 
@@ -74,11 +74,11 @@ https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl
 4. 点击预置的【英翻中】【查单词】按钮，或使用你在设置中配置的自定义按钮。
 
 - 📺 功能演示
-  ![func](./assets/0.3/zh/func1.png)
+  ![func](./materials/screenshot/0.3/zh/func1.png)
 
 #### 🎛️ 按钮说明
 
-![button description](./assets/0.3/zh/sidepanel.png)
+![button description](./materials/screenshot/0.3/zh/sidepanel.png)
 
 - 🔘 开/关：打开，网页上选中的内容，会出现在侧边栏内；关闭，网页上选中的内容不会出现在侧边栏内。
 - ⚙️ 设置[选项]：进入参数设置。在设置里可以指定声音、语言的 AI 模型。
