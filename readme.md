@@ -1,6 +1,10 @@
 # 🎧 ELA — Everyday Language Assistant
 
-[中文说明](./readme_zh.md) | [🛒 Chrome Web Store](https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/eepeblbmpkloajddpjlibamomldfhdga.svg)](https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga)
+
+
+[中文说明](./readme_zh.md) 
 
 A Chrome extension that reads, translates, and explains content on any webpage — powered by OpenAI TTS and GPT-5.4.
 
