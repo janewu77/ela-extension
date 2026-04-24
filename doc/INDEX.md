@@ -12,23 +12,24 @@ This document provides an index of all documentation in the ELA Chrome Extension
 ela-extension/
 ├── readme.md                    # 📖 User Guide (English)
 ├── readme_zh.md                 # 📖 用户指南（中文）
+├── CHANGELOG.md                 # 📝 Changelog (English)
+├── CHANGELOG.zh.md              # 📝 更新日志（中文）
+├── materials/                   # 🗂️  Assets & Marketing Materials
+│   ├── screenshot/              # 🖼️  Screenshots (by version)
+│   ├── promo/                   # 🎨 Chrome Web Store promo images & HTML
+│   └── other/                   # 📄 Store listings & misc references
 └── doc/
     ├── INDEX.md                 # 📑 Documentation Index (this file)
     ├── DEVELOPMENT.md           # 👨‍💻 Developer Guide (English)
     ├── DEVELOPMENT.zh.md        # 👨‍💻 开发者指南（中文）
-    ├── ARCHITECTURE.md           # 🏗️  System Architecture (English)
-    ├── ARCHITECTURE.zh.md        # 🏗️  系统架构文档（中文）
+    ├── ARCHITECTURE.md          # 🏗️  System Architecture (English)
+    ├── ARCHITECTURE.zh.md       # 🏗️  系统架构文档（中文）
     ├── eslint-prettier-setup.md # ⚙️  Code Quality Tools
     ├── eslint-prettier-setup.zh.md # ⚙️  代码质量工具（中文）
     ├── RELEASE_NOTES_*.md       # 📝 Release Notes
-    ├── CHANGELOG.md             # 📝 Changelog (English)
-    ├── CHANGELOG.zh.md          # 📝 更新日志（中文）
-    ├── archive/                 # 📦 Archive
-    │   ├── readme-install.md    #    Old Installation Guide (Deprecated)
-    │   └── update.log.md        #    Legacy Changelog (Deprecated, see CHANGELOG.md)
-    ├── reference/               # 📚 Reference
-    │   └── svg.txt              #    SVG Icons Reference
-    └── images/                  # 🖼️  Screenshots and images
+    └── archive/                 # 📦 Archive
+        ├── readme-install.md    #    Old Installation Guide (Deprecated)
+        └── update.log.md        #    Legacy Changelog (Deprecated, see CHANGELOG.md)
 ```
 
 ---
@@ -49,7 +50,7 @@ ela-extension/
 
 - **[Release Notes 0.4.3–0.4.4](./RELEASE_NOTES_0.4.3_0.4.4.md)** - Release notes for versions 0.4.3 and 0.4.4
 - **[Release Notes 0.4.5](./RELEASE_NOTES_0.4.5.md)** - Release notes for version 0.4.5
-- **[Changelog](./CHANGELOG.md)** - Complete changelog history (English)
+- **[Changelog](../CHANGELOG.md)** - Complete changelog history (English)
 
 ### 📦 Archive
 
@@ -74,7 +75,7 @@ ela-extension/
 
 - **[发布说明 0.4.3–0.4.4](./RELEASE_NOTES_0.4.3_0.4.4.md)** - 版本 0.4.3 和 0.4.4 的发布说明
 - **[发布说明 0.4.5](./RELEASE_NOTES_0.4.5.md)** - 版本 0.4.5 的发布说明
-- **[更新日志](./CHANGELOG.zh.md)** - 完整的更新历史记录（中文）
+- **[更新日志](../CHANGELOG.zh.md)** - 完整的更新历史记录（中文）
 
 ### 📦 归档文档
 
@@ -98,9 +99,9 @@ ela-extension/
 
 ### Release Information
 
-- [Changelog](./CHANGELOG.md) | [更新日志](./CHANGELOG.zh.md)
+- [Changelog](../CHANGELOG.md) | [更新日志](../CHANGELOG.zh.md)
 - [Release Notes 0.4.3–0.4.4](./RELEASE_NOTES_0.4.3_0.4.4.md) | [Release Notes 0.4.5](./RELEASE_NOTES_0.4.5.md)
 
 ---
 
-**Last Updated**: 2026-02-09
+**Last Updated**: 2026-04-24
