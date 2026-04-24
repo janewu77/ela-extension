@@ -80,7 +80,7 @@ No account required. No data collected.
 ```
 
 ## privacy
-
+https://janewu77.github.io/ela-extension/privacy.html
 ---
 
 ## Permission Justifications

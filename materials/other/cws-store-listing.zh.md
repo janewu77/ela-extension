@@ -77,7 +77,7 @@ ELA 完全开源，你可以随时在 GitHub 上查看代码：https://github.co
 ```
 
 ## 隐私政策
-
+https://janewu77.github.io/ela-extension/privacy-zh.html
 ---
 
 ## 权限说明
