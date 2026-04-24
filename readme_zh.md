@@ -1,6 +1,6 @@
 # 🎧 ELA — Everyday Language Assistant
 
-[English Version](./readme.md) | [🛒 Chrome 应用商店](https://chromewebstore.google.com/detail/ela-%E8%8B%B1%E6%96%87%E5%AD%A6%E4%B9%A0%E5%8A%A9%E6%89%8B/eepeblbmpkloajddpjlibamomldfhdga)
+[English Version](./readme.md) | [🛒 Chrome 应用商店](https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga)
 
 一款 Chrome 插件，在网页上选中任意文字，即可朗读、翻译、AI 解析 —— 基于 OpenAI TTS 与 GPT-5.4。
 
