@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELA — Everyday Language Assistant</title>
+  <meta name="description" content="A Chrome extension that helps you read, hear, and understand any language on any webpage. AI-powered TTS, word lookup, translation, and custom learning actions." />
+  <meta property="og:title" content="ELA — Everyday Language Assistant" />
+  <meta property="og:description" content="Select any text. Hear it. Look it up. Translate it. Powered by OpenAI." />
+  <meta property="og:type" content="website" />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0a0a1a;
+      --bg2:       #0f0f24;
+      --purple:    #7c3aed;
+      --blue:      #4a6cf7;
+      --purple-lt: #a78bfa;
+      --blue-lt:   #60a5fa;
+      --green:     #34d399;
+      --text:      rgba(255,255,255,0.88);
+      --text-muted:#8892a4;
+      --border:    rgba(255,255,255,0.09);
+      --glass:     rgba(255,255,255,0.05);
+      --glass-hov: rgba(255,255,255,0.08);
+      --radius-lg: 20px;
+      --radius:    14px;
+      --radius-sm: 8px;
+      --shadow:    0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Global background grid ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Layout helpers ── */
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--purple-lt), var(--blue-lt));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Fade-in animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(18px);
+      background: rgba(10,10,26,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1160px; margin: 0 auto; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo-name { font-weight: 800; font-size: 17px; color: white; letter-spacing: 0.2px; }
+    .nav-links {
+      display: flex; align-items: center; gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: white; }
+    .btn-chrome {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: white; text-decoration: none;
+      font-size: 13px; font-weight: 700;
+      padding: 9px 20px; border-radius: 30px;
+      box-shadow: 0 4px 18px rgba(124,58,237,0.35);
+      transition: transform .2s, box-shadow .2s;
+      white-space: nowrap;
+    }
+    .btn-chrome:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,58,237,0.5); }
+    .btn-chrome svg { flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 110px 0 100px;
+      text-align: center;
+    }
+    /* background glows */
+    .hero-glow1 {
+      position: absolute; width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.22) 0%, transparent 65%);
+      top: -100px; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute; width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,108,247,0.16) 0%, transparent 65%);
+      top: 60px; left: 20%; pointer-events: none;
+    }
+    .hero-glow3 {
+      position: absolute; width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,108,247,0.12) 0%, transparent 65%);
+      top: 80px; right: 18%; pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--purple-lt);
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.25);
+      padding: 5px 16px; border-radius: 30px;
+      margin-bottom: 28px;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--purple-lt);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.75); }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 76px);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -2px;
+      color: white;
+      margin-bottom: 24px;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted); line-height: 1.7;
+      max-width: 580px; margin: 0 auto 44px;
+    }
+
+    .hero-ctas {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+    .btn-hero {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: white; text-decoration: none;
+      font-size: 16px; font-weight: 700;
+      padding: 15px 32px; border-radius: 40px;
+      box-shadow: 0 6px 28px rgba(124,58,237,0.4);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(124,58,237,0.55); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--text-muted); text-decoration: none;
+      font-size: 15px; font-weight: 600;
+      padding: 14px 24px; border-radius: 40px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.22); color: white; }
+
+    .hero-langs {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .lang-pill {
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      padding: 5px 14px; border-radius: 20px;
+    }
+
+    /* hero screenshot mock */
+    .hero-visual {
+      position: relative; max-width: 860px; margin: 72px auto 0;
+      z-index: 1;
+    }
+    .hero-browser {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    .browser-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .browser-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .browser-url {
+      flex: 1; text-align: center;
+      font-size: 12px; color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px; padding: 4px 12px;
+      max-width: 400px; margin: 0 auto;
+    }
+    .browser-body {
+      padding: 32px 40px;
+      display: flex; gap: 28px; align-items: flex-start;
+    }
+    .browser-main-text {
+      flex: 1; font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.8;
+    }
+    .browser-main-text .highlight-word {
+      background: linear-gradient(135deg, rgba(124,58,237,0.4), rgba(74,108,247,0.3));
+      border-radius: 4px; padding: 1px 4px;
+      color: rgba(255,255,255,0.9);
+      border-bottom: 2px solid var(--purple-lt);
+    }
+    .side-panel {
+      width: 260px; flex-shrink: 0;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .sp-header {
+      padding: 12px 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(74,108,247,0.15));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sp-header-logo { width: 20px; height: 20px; }
+    .sp-header-name { font-size: 12px; font-weight: 700; color: white; }
+    .sp-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .sp-tab {
+      flex: 1; text-align: center; padding: 8px 4px;
+      font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      border-bottom: 2px solid transparent;
+    }
+    .sp-tab.active {
+      color: var(--purple-lt);
+      border-bottom-color: var(--purple-lt);
+      background: rgba(167,139,250,0.06);
+    }
+    .sp-body { padding: 14px 16px; }
+    .sp-word { font-size: 18px; font-weight: 800; color: white; margin-bottom: 2px; }
+    .sp-phon { font-size: 11px; color: var(--purple-lt); margin-bottom: 10px; }
+    .sp-section-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 10px 0 5px; }
+    .sp-def { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 6px; }
+    .sp-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+    .sp-chip {
+      font-size: 10px; color: var(--blue-lt);
+      background: rgba(96,165,250,0.1);
+      border: 1px solid rgba(96,165,250,0.2);
+      padding: 2px 8px; border-radius: 10px;
+    }
+    .sp-btn-row { display: flex; gap: 6px; margin-top: 12px; }
+    .sp-btn {
+      flex: 1; font-size: 10px; font-weight: 700;
+      padding: 6px 0; border-radius: 6px; border: none; cursor: pointer;
+      text-align: center;
+    }
+    .sp-btn.primary {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: white;
+    }
+    .sp-btn.secondary {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ══════════════════════════════════════
+       SECTION HEADER
+    ══════════════════════════════════════ */
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--purple-lt);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 900; color: white;
+      letter-spacing: -1px; line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--text-muted);
+      max-width: 540px; margin: 0 auto; line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════
+       FEATURES
+    ══════════════════════════════════════ */
+    .features { padding: 100px 0; }
+
+    .feature-block {
+      display: flex; align-items: center; gap: 64px;
+      margin-bottom: 100px;
+    }
+    .feature-block:last-child { margin-bottom: 0; }
+    .feature-block.reverse { flex-direction: row-reverse; }
+
+    .feature-text { flex: 1; }
+    .feature-icon-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 52px; height: 52px; border-radius: 14px;
+      font-size: 24px; margin-bottom: 22px;
+    }
+    .badge-purple { background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.3); }
+    .badge-green  { background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.25); }
+    .badge-blue   { background: rgba(74,108,247,0.2);  border: 1px solid rgba(74,108,247,0.3); }
+    .badge-orange { background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.25); }
+
+    .feature-name {
+      font-size: 12px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .feature-name.purple { color: var(--purple-lt); }
+    .feature-name.green  { color: var(--green); }
+    .feature-name.blue   { color: var(--blue-lt); }
+    .feature-name.orange { color: #fb923c; }
+
+    .feature-h2 {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 900; color: white;
+      letter-spacing: -0.8px; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .feature-p {
+      font-size: 16px; color: var(--text-muted);
+      line-height: 1.75; margin-bottom: 24px;
+    }
+    .feature-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feature-bullets li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: rgba(255,255,255,0.65);
+    }
+    .feature-bullets li::before {
+      content: '✦'; font-size: 10px; flex-shrink: 0; margin-top: 4px;
+    }
+    .feature-bullets.purple li::before { color: var(--purple-lt); }
+    .feature-bullets.green  li::before { color: var(--green); }
+    .feature-bullets.blue   li::before { color: var(--blue-lt); }
+    .feature-bullets.orange li::before { color: #fb923c; }
+
+    /* Feature card UI mock */
+    .feature-card {
+      flex: 1;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: ''; position: absolute;
+      inset: 0; border-radius: inherit;
+      pointer-events: none;
+    }
+    .feature-card.purple::before {
+      background: radial-gradient(ellipse 80% 60% at 80% 20%, rgba(124,58,237,0.15) 0%, transparent 65%);
+    }
+    .feature-card.green::before {
+      background: radial-gradient(ellipse 80% 60% at 20% 80%, rgba(52,211,153,0.12) 0%, transparent 65%);
+    }
+    .feature-card.blue::before {
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,108,247,0.15) 0%, transparent 65%);
+    }
+    .feature-card.orange::before {
+      background: radial-gradient(ellipse 80% 60% at 80% 80%, rgba(251,146,60,0.12) 0%, transparent 65%);
+    }
+
+    /* TTS card */
+    .tts-bar-group { display: flex; align-items: flex-end; gap: 4px; margin: 16px 0; }
+    .tts-bar {
+      width: 10px; border-radius: 3px;
+      background: linear-gradient(180deg, var(--purple-lt), var(--blue));
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .tts-bar:nth-child(1) { height: 18px; animation-delay: 0s; }
+    .tts-bar:nth-child(2) { height: 32px; animation-delay: .1s; }
+    .tts-bar:nth-child(3) { height: 44px; animation-delay: .2s; }
+    .tts-bar:nth-child(4) { height: 56px; animation-delay: .3s; }
+    .tts-bar:nth-child(5) { height: 44px; animation-delay: .4s; }
+    .tts-bar:nth-child(6) { height: 36px; animation-delay: .5s; }
+    .tts-bar:nth-child(7) { height: 28px; animation-delay: .6s; }
+    .tts-bar:nth-child(8) { height: 44px; animation-delay: .7s; }
+    .tts-bar:nth-child(9) { height: 56px; animation-delay: .8s; }
+    .tts-bar:nth-child(10){ height: 36px; animation-delay: .9s; }
+    .tts-bar:nth-child(11){ height: 22px; animation-delay: 1.0s; }
+    .tts-bar:nth-child(12){ height: 14px; animation-delay: 1.1s; }
+    @keyframes wave {
+      0%, 100% { transform: scaleY(1); opacity: .8; }
+      50%       { transform: scaleY(0.4); opacity: .4; }
+    }
+    .tts-controls {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px 14px; margin-top: 8px;
+    }
+    .tts-ctrl-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+    .tts-ctrl-bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); position: relative; }
+    .tts-ctrl-progress { height: 100%; width: 45%; border-radius: 2px; background: linear-gradient(90deg, var(--purple-lt), var(--blue-lt)); }
+    .tts-voices { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tts-voice {
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 3px 10px; border-radius: 10px;
+    }
+    .tts-voice.active { color: var(--purple-lt); border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
+
+    /* Word Lookup card */
+    .wl-word { font-size: 26px; font-weight: 800; color: white; margin-bottom: 4px; }
+    .wl-phon { font-size: 13px; color: var(--green); margin-bottom: 12px; }
+    .wl-row { margin-bottom: 10px; }
+    .wl-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+    .wl-val { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .wl-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .wl-chip {
+      font-size: 11px; color: var(--green);
+      background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2);
+      padding: 2px 9px; border-radius: 10px;
+    }
+    .wl-example {
+      font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6;
+      border-left: 2px solid rgba(52,211,153,0.3); padding-left: 10px;
+      font-style: italic; margin-top: 10px;
+    }
+
+    /* Translation card */
+    .tl-step {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .tl-step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      font-size: 10px; font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .tl-step-num.s1 { background: rgba(74,108,247,0.25); color: var(--blue-lt); }
+    .tl-step-num.s2 { background: rgba(167,139,250,0.2); color: var(--purple-lt); }
+    .tl-step-num.s3 { background: rgba(52,211,153,0.2); color: var(--green); }
+    .tl-step-title { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+    .tl-step-text { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    .tl-arrow { text-align: center; color: rgba(255,255,255,0.15); font-size: 12px; margin: 2px 0; }
+
+    /* Custom actions card */
+    .ca-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .ca-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 8px;
+      text-align: center;
+    }
+    .ca-btn.active { border-color: rgba(251,146,60,0.3); background: rgba(251,146,60,0.08); }
+    .ca-btn-icon { font-size: 16px; margin-bottom: 3px; }
+    .ca-btn-label { font-size: 10px; color: rgba(255,255,255,0.55); font-weight: 600; }
+    .ca-btn.active .ca-btn-label { color: #fb923c; }
+    .ca-btn.empty { border-style: dashed; opacity: 0.4; }
+    .ca-btn.empty .ca-btn-label { color: rgba(255,255,255,0.25); }
+    .ca-tag {
+      margin-top: 14px;
+      font-size: 11px; color: rgba(255,255,255,0.3); text-align: center;
+    }
+
+    /* ══════════════════════════════════════
+       HOW IT WORKS
+    ══════════════════════════════════════ */
+    .how { padding: 100px 0; background: var(--bg2); }
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute; top: 32px; left: calc(16.66% + 16px); right: calc(16.66% + 16px);
+      height: 1px; background: linear-gradient(90deg, var(--purple), var(--blue));
+      opacity: 0.3; z-index: 0;
+    }
+    .step {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      text-align: center;
+      position: relative; z-index: 1;
+      transition: border-color .3s, background .3s;
+    }
+    .step:hover { border-color: rgba(124,58,237,0.4); background: var(--glass-hov); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(74,108,247,0.2));
+      border: 1px solid rgba(124,58,237,0.25);
+      font-size: 22px; font-weight: 900; color: var(--purple-lt);
+      margin-bottom: 20px;
+    }
+    .step h3 { font-size: 19px; font-weight: 800; color: white; margin-bottom: 10px; }
+    .step p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+    .step-hint {
+      display: inline-block; margin-top: 14px;
+      font-size: 11px; font-weight: 700;
+      color: var(--purple-lt);
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.2);
+      padding: 3px 11px; border-radius: 10px;
+    }
+
+    /* ══════════════════════════════════════
+       PRIVACY STRIP
+    ══════════════════════════════════════ */
+    .privacy-strip {
+      padding: 72px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .privacy-inner {
+      display: flex; align-items: center; justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+    .privacy-item {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .privacy-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--glass); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .privacy-item h4 { font-size: 14px; font-weight: 700; color: white; margin-bottom: 2px; }
+    .privacy-item p  { font-size: 12px; color: var(--text-muted); }
+
+    /* ══════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════ */
+    .testimonials { padding: 100px 0; }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .testimonial {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 28px;
+      transition: border-color .3s;
+    }
+    .testimonial:hover { border-color: rgba(167,139,250,0.3); }
+    .testimonial-stars { color: #fbbf24; font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; }
+    .testimonial-text { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.75; margin-bottom: 18px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .av-purple { background: rgba(124,58,237,0.3); color: var(--purple-lt); }
+    .av-blue   { background: rgba(74,108,247,0.3); color: var(--blue-lt); }
+    .av-green  { background: rgba(52,211,153,0.25); color: var(--green); }
+    .testimonial-name { font-size: 13px; font-weight: 700; color: white; }
+    .testimonial-role { font-size: 11px; color: var(--text-muted); }
+
+    /* ══════════════════════════════════════
+       FAQ
+    ══════════════════════════════════════ */
+    .faq { padding: 100px 0; background: var(--bg2); }
+    .faq-list { max-width: 720px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 4px;
+      font-size: 16px; font-weight: 700; color: white;
+      text-align: left; gap: 16px;
+      transition: color .2s;
+    }
+    .faq-q:hover { color: var(--purple-lt); }
+    .faq-icon {
+      flex-shrink: 0; width: 22px; height: 22px;
+      border-radius: 50%; border: 1px solid var(--border);
+      background: var(--glass);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--text-muted);
+      transition: transform .3s, background .2s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: rgba(124,58,237,0.2); color: var(--purple-lt);
+    }
+    .faq-a {
+      font-size: 14px; color: var(--text-muted); line-height: 1.75;
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s ease, padding .3s;
+      padding: 0 4px;
+    }
+    .faq-a a { color: var(--purple-lt); }
+    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 22px; }
+
+    /* ══════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════ */
+    .cta-section {
+      padding: 120px 0;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 65%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-size: clamp(34px, 5vw, 60px);
+      font-weight: 900; color: white;
+      letter-spacing: -1.5px; line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      font-size: 17px; color: var(--text-muted);
+      max-width: 480px; margin: 0 auto 40px; line-height: 1.7;
+    }
+    .cta-note {
+      margin-top: 20px;
+      font-size: 12px; color: rgba(255,255,255,0.3);
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-left { display: flex; align-items: center; gap: 10px; }
+    .footer-left img { width: 24px; height: 24px; opacity: 0.7; }
+    .footer-logo-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.4); }
+    .footer-links { display: flex; align-items: center; gap: 20px; }
+    .footer-links a {
+      font-size: 12px; color: rgba(255,255,255,0.3);
+      text-decoration: none; transition: color .2s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.7); }
+    .footer-right { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .feature-block, .feature-block.reverse { flex-direction: column; gap: 40px; }
+      .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .browser-body { flex-direction: column; }
+      .side-panel { width: 100%; }
+      .privacy-inner { gap: 28px; }
+      .nav-links { display: none; }
+      .hero-visual { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 80px 0 72px; }
+      .features, .how, .testimonials, .faq, .cta-section { padding: 72px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <img src="../src/images/j_logo_128.png" alt="ELA logo" />
+      <span class="nav-logo-name">ELA</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn-chrome" href="https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="4"/></svg>
+      Add to Chrome
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-glow3"></div>
+  <div class="container">
+    <div class="hero-tag fade-in visible">
+      <span class="hero-tag-dot"></span>
+      Free Chrome Extension
+    </div>
+    <h1 class="fade-in visible">
+      Read any language.<br>
+      <span class="gradient-text">Understand everything.</span>
+    </h1>
+    <p class="hero-sub fade-in visible">
+      Select any text on any webpage — hear it read aloud, look up vocabulary, or get an expert-quality translation. Works in English, German, French, Japanese, Spanish, and more.
+    </p>
+    <div class="hero-ctas fade-in visible">
+      <a class="btn-hero" href="https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="4"/></svg>
+        Add to Chrome — Free
+      </a>
+      <a class="btn-ghost" href="https://github.com/janewu77/ela-extension" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        View on GitHub
+      </a>
+    </div>
+    <div class="hero-langs fade-in visible">
+      <span style="font-size:12px;color:var(--text-muted);margin-right:4px;">Supports</span>
+      <span class="lang-pill">🇺🇸 English</span>
+      <span class="lang-pill">🇩🇪 Deutsch</span>
+      <span class="lang-pill">🇯🇵 日本語</span>
+      <span class="lang-pill">🇫🇷 Français</span>
+      <span class="lang-pill">🇪🇸 Español</span>
+      <span class="lang-pill">+ more</span>
+    </div>
+
+    <!-- UI mockup -->
+    <div class="hero-visual fade-in">
+      <div class="hero-browser">
+        <div class="browser-bar">
+          <div class="browser-dot" style="background:#ff5f57"></div>
+          <div class="browser-dot" style="background:#febc2e"></div>
+          <div class="browser-dot" style="background:#28c840"></div>
+          <div class="browser-url">theguardian.com/world/europe</div>
+        </div>
+        <div class="browser-body">
+          <div class="browser-main-text">
+            <p style="margin-bottom:14px;font-size:13px;color:rgba(255,255,255,0.35);font-weight:600;letter-spacing:1px;text-transform:uppercase;">News Article — Europe</p>
+            <p style="margin-bottom:12px;">The summit in Brussels concluded with an <span class="highlight-word">unprecedented</span> agreement on climate financing, with member states committing to a framework that analysts describe as a significant departure from previous negotiations.</p>
+            <p>Delegations from across the continent praised the outcome, noting that the <span style="background:rgba(52,211,153,0.15);border-radius:4px;padding:1px 4px;color:rgba(255,255,255,0.8);border-bottom:2px solid #34d399;">emergent consensus</span> reflected months of careful diplomatic work behind the scenes.</p>
+          </div>
+          <div class="side-panel">
+            <div class="sp-header">
+              <img class="sp-header-logo" src="../src/images/j_logo_128.png" alt="" />
+              <span class="sp-header-name">ELA</span>
+            </div>
+            <div class="sp-tabs">
+              <div class="sp-tab">🎧 TTS</div>
+              <div class="sp-tab active">📖 Word</div>
+              <div class="sp-tab">🌐 Trans.</div>
+              <div class="sp-tab">⚡ AI</div>
+            </div>
+            <div class="sp-body">
+              <div class="sp-word">unprecedented</div>
+              <div class="sp-phon">/ʌnˈpresɪdentɪd/</div>
+              <div class="sp-row">
+                <div class="sp-section-title">Definition</div>
+                <div class="sp-def">Never done or known before; without precedent.</div>
+                <div class="sp-def" style="color:rgba(255,255,255,0.4);">前所未有的；史无前例的</div>
+              </div>
+              <div class="sp-row">
+                <div class="sp-section-title">Collocations</div>
+                <div class="sp-chips">
+                  <span class="sp-chip">unprecedented scale</span>
+                  <span class="sp-chip">unprecedented move</span>
+                  <span class="sp-chip">unprecedented access</span>
+                </div>
+              </div>
+              <div class="sp-btn-row">
+                <div class="sp-btn primary">▶ Listen</div>
+                <div class="sp-btn secondary">📋 Copy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">Features</div>
+      <h2 class="section-title">Everything you need to<br><span class="gradient-text">master any language</span></h2>
+      <p class="section-sub">Four powerful tools, one lightweight extension. No subscriptions. No data collection. Just your API key and your learning.</p>
+    </div>
+
+    <!-- Feature 1: TTS -->
+    <div class="feature-block fade-in">
+      <div class="feature-text">
+        <div class="feature-icon-badge badge-purple">🎧</div>
+        <div class="feature-name purple">AI Text-to-Speech</div>
+        <h2 class="feature-h2">Hear it spoken by a<br>native-sounding voice</h2>
+        <p class="feature-p">Stop reading words in your head with the wrong pronunciation. ELA uses OpenAI's latest TTS models to read any selected text aloud in rich, natural voices — instantly.</p>
+        <ul class="feature-bullets purple">
+          <li>13 natural voices — nova, alloy, ash, coral, echo, shimmer, and more</li>
+          <li>3 TTS model tiers: gpt-4o-mini-tts, tts-1-hd, and tts-1</li>
+          <li>Loop playback for shadowing and pronunciation practice</li>
+          <li>Download as MP3 to review offline</li>
+        </ul>
+      </div>
+      <div class="feature-card purple">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Now playing — "unprecedented agreement"</div>
+        <div class="tts-bar-group">
+          <div class="tts-bar"></div><div class="tts-bar"></div><div class="tts-bar"></div>
+          <div class="tts-bar"></div><div class="tts-bar"></div><div class="tts-bar"></div>
+          <div class="tts-bar"></div><div class="tts-bar"></div><div class="tts-bar"></div>
+          <div class="tts-bar"></div><div class="tts-bar"></div><div class="tts-bar"></div>
+        </div>
+        <div class="tts-controls">
+          <div class="tts-ctrl-btn">⏸</div>
+          <div class="tts-ctrl-bar"><div class="tts-ctrl-progress"></div></div>
+          <div style="font-size:11px;color:var(--text-muted);">0:03 / 0:06</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.3);">↻</div>
+        </div>
+        <div style="margin-top:16px;font-size:11px;color:var(--text-muted);margin-bottom:8px;">Voice</div>
+        <div class="tts-voices">
+          <span class="tts-voice active">nova</span>
+          <span class="tts-voice">alloy</span>
+          <span class="tts-voice">ash</span>
+          <span class="tts-voice">coral</span>
+          <span class="tts-voice">echo</span>
+          <span class="tts-voice">shimmer</span>
+          <span class="tts-voice">+7 more</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Word Lookup -->
+    <div class="feature-block reverse fade-in">
+      <div class="feature-text">
+        <div class="feature-icon-badge badge-green">📖</div>
+        <div class="feature-name green">Word Lookup</div>
+        <h2 class="feature-h2">Every word, fully<br>understood in seconds</h2>
+        <p class="feature-p">Don't just know what a word means — know how to use it. ELA gives you a complete word profile: pronunciation, bilingual definition, collocations, and a usage example pulled straight from your reading context.</p>
+        <ul class="feature-bullets green">
+          <li>IPA phonetic notation with pronunciation guide</li>
+          <li>Bilingual definitions: English explanation + your target language</li>
+          <li>Common collocations so you know how words really behave</li>
+          <li>In-context usage example from the actual article you're reading</li>
+        </ul>
+      </div>
+      <div class="feature-card green">
+        <div class="wl-word">emergent</div>
+        <div class="wl-phon">/ɪˈmɜːrdʒənt/ · adjective</div>
+        <div class="wl-row">
+          <div class="wl-label">Definition</div>
+          <div class="wl-val">In the process of coming into being or becoming prominent.</div>
+          <div class="wl-val" style="color:rgba(255,255,255,0.4);margin-top:4px;">正在出现的；新兴的</div>
+        </div>
+        <div class="wl-row" style="margin-top:12px;">
+          <div class="wl-label">Common Collocations</div>
+          <div class="wl-chips">
+            <span class="wl-chip">emergent behavior</span>
+            <span class="wl-chip">emergent property</span>
+            <span class="wl-chip">emergent capability</span>
+            <span class="wl-chip">emergent technology</span>
+          </div>
+        </div>
+        <div class="wl-example">"The emergent consensus reflected months of careful diplomatic work behind the scenes."</div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Translation -->
+    <div class="feature-block fade-in">
+      <div class="feature-text">
+        <div class="feature-icon-badge badge-blue">🌐</div>
+        <div class="feature-name blue">Expert Translation</div>
+        <h2 class="feature-h2">Not just translated.<br>Actually understood.</h2>
+        <p class="feature-p">Most translators give you words. ELA gives you understanding. A built-in 3-step methodology — literal, review, rewrite — produces translations that are accurate, fluent, and fully explained.</p>
+        <ul class="feature-bullets blue">
+          <li>Step 1: Literal translation — preserves structure and meaning</li>
+          <li>Step 2: AI review — flags awkward phrasing and translation issues</li>
+          <li>Step 3: Idiomatic rewrite — polished, native-speaker quality</li>
+          <li>Fully customizable for any language pair</li>
+        </ul>
+      </div>
+      <div class="feature-card blue">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Translating selected paragraph…</div>
+        <div class="tl-step">
+          <div class="tl-step-num s1">1</div>
+          <div class="tl-step-title">Literal Translation</div>
+          <div class="tl-step-text">该峰会以气候融资方面前所未有的协议结束，成员国承诺建立一个框架...</div>
+        </div>
+        <div class="tl-arrow">↓</div>
+        <div class="tl-step">
+          <div class="tl-step-num s2">2</div>
+          <div class="tl-step-title">Problem Review</div>
+          <div class="tl-step-text">⚠ "承诺建立框架" — slightly formal; "analysts describe as" needs idiomatic handling.</div>
+        </div>
+        <div class="tl-arrow">↓</div>
+        <div class="tl-step">
+          <div class="tl-step-num s3">3</div>
+          <div class="tl-step-title">Idiomatic Rewrite ✓</div>
+          <div class="tl-step-text">峰会以气候融资领域的历史性协议收场，分析人士认为这标志着谈判格局的重大转变。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4: Custom Actions -->
+    <div class="feature-block reverse fade-in">
+      <div class="feature-text">
+        <div class="feature-icon-badge badge-orange">⚡</div>
+        <div class="feature-name orange">Custom AI Actions</div>
+        <h2 class="feature-h2">Your learning.<br>Your workflow.</h2>
+        <p class="feature-p">Everyone learns differently. With up to 6 fully customizable buttons, you can build any AI-powered action you want: summarize, simplify, grammar check, make flashcards — all powered by your own prompts.</p>
+        <ul class="feature-bullets orange">
+          <li>6 configurable prompt slots — define any action you need</li>
+          <li>Toggle buttons on or off to keep your panel clean</li>
+          <li>All prompts run via your own OpenAI API key — 100% private</li>
+          <li>No data sent to any server other than OpenAI</li>
+        </ul>
+      </div>
+      <div class="feature-card orange">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Your custom action buttons</div>
+        <div class="ca-grid">
+          <div class="ca-btn active"><div class="ca-btn-icon">🌐</div><div class="ca-btn-label">Translate</div></div>
+          <div class="ca-btn active"><div class="ca-btn-icon">📖</div><div class="ca-btn-label">Word Lookup</div></div>
+          <div class="ca-btn active"><div class="ca-btn-icon">📝</div><div class="ca-btn-label">Summarize</div></div>
+          <div class="ca-btn"><div class="ca-btn-icon">✏️</div><div class="ca-btn-label">Simplify</div></div>
+          <div class="ca-btn"><div class="ca-btn-icon">✅</div><div class="ca-btn-label">Grammar</div></div>
+          <div class="ca-btn empty"><div class="ca-btn-icon">＋</div><div class="ca-btn-label">Custom…</div></div>
+        </div>
+        <div class="ca-tag">All prompts stay local · powered by your API key</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">How it works</div>
+      <h2 class="section-title">Up and running<br><span class="gradient-text">in three steps</span></h2>
+      <p class="section-sub">ELA fits naturally into your reading flow. No tab-switching, no copy-pasting. Just select and learn.</p>
+    </div>
+    <div class="steps">
+      <div class="step fade-in">
+        <div class="step-num">1</div>
+        <h3>Select any text</h3>
+        <p>Highlight a word, sentence, or whole paragraph on any webpage — an article, a forum post, a document, anything.</p>
+        <span class="step-hint">Works on any website</span>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">2</div>
+        <h3>Open the side panel</h3>
+        <p>ELA lives in Chrome's side panel. Press <strong style="color:var(--purple-lt);">⌘ Shift S</strong> (or click the icon) to open it alongside your page — no interruption to your reading.</p>
+        <span class="step-hint">⌘ Shift S</span>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">3</div>
+        <h3>Click and learn</h3>
+        <p>Choose TTS to hear it, Word Lookup to dissect it, Translation to understand it, or a custom action to process it your way.</p>
+        <span class="step-hint">Your API key · Your data</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRIVACY STRIP ── -->
+<section class="privacy-strip fade-in">
+  <div class="container">
+    <div class="privacy-inner">
+      <div class="privacy-item">
+        <div class="privacy-icon">🔑</div>
+        <div>
+          <h4>Your API key. Your data.</h4>
+          <p>All requests go directly from your browser to OpenAI. Nothing passes through ELA's servers — because there are none.</p>
+        </div>
+      </div>
+      <div class="privacy-item">
+        <div class="privacy-icon">🔒</div>
+        <div>
+          <h4>Stored locally only</h4>
+          <p>Your API key and all settings are stored in Chrome's local storage. Never transmitted, never logged.</p>
+        </div>
+      </div>
+      <div class="privacy-item">
+        <div class="privacy-icon">🌍</div>
+        <div>
+          <h4>Open source · MIT</h4>
+          <p>The entire codebase is open on GitHub. Read it, fork it, trust it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">What learners say</div>
+      <h2 class="section-title">Built for real<br><span class="gradient-text">language learners</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial fade-in">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I've been learning German for two years and ELA has completely changed how I read news articles. The 3-step translation actually explains why something is phrased the way it is — that's what I was missing with every other tool."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar av-purple">M</div>
+          <div>
+            <div class="testimonial-name">Maya R.</div>
+            <div class="testimonial-role">German learner · San Francisco</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-in">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"As a PhD student reading English academic papers, the word lookup feature is invaluable. Collocations especially — I finally stopped writing 'make a research' instead of 'conduct a research.'"</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar av-blue">K</div>
+          <div>
+            <div class="testimonial-name">Kenji T.</div>
+            <div class="testimonial-role">Researcher · Tokyo</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial fade-in">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The TTS feature alone is worth it. I shadow the audio for pronunciation practice while reading. Being able to loop specific sentences and then download the MP3 for my commute is a feature I didn't know I needed."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar av-green">S</div>
+          <div>
+            <div class="testimonial-name">Sofia M.</div>
+            <div class="testimonial-role">English learner · Barcelona</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Common questions</h2>
+    </div>
+    <div class="faq-list fade-in">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need an OpenAI API key?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes. ELA connects directly to OpenAI's API using your own key, so you pay only for what you use (typically fractions of a cent per request). Your key is stored only in your browser — ELA has no backend server and never sees it. You can get a key at <a href="https://platform.openai.com" target="_blank">platform.openai.com</a>.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Which languages does ELA support?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">ELA works for any language OpenAI supports, which is most major world languages. The built-in defaults are optimised for English learners and those studying German, French, Japanese, and Spanish — but you can configure the prompts to use any language pair. The TTS feature supports all OpenAI TTS languages.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is my data private? What gets sent to OpenAI?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Only the text you explicitly select and submit to a feature is sent to OpenAI's API — nothing else. ELA does not collect analytics, does not have a server, and does not transmit your API key or browsing history anywhere. Your key is stored locally in Chrome storage on your device only.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How much does it cost to use?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">ELA itself is completely free and open source. You only pay OpenAI for API usage, which is extremely inexpensive for typical use — a full day of active learning usually costs less than $0.10. TTS is slightly more expensive than text models but still very affordable. You stay in full control of your spending via OpenAI's usage dashboard.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I customise the AI prompts?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes — that's one of ELA's core features. In the settings page you can rewrite the translation prompt, the word lookup prompt, and configure up to 6 fully custom action buttons with your own prompts. Whether you want grammar correction, flashcard generation, or B1-level rewrites, you can build exactly that.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <h2 class="fade-in">Start reading<br><span class="gradient-text">like a native</span></h2>
+    <p class="fade-in">Free. Open source. Powered by your own OpenAI key. No subscriptions, no data collection, no compromise.</p>
+    <a class="btn-hero fade-in" href="https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga" target="_blank" rel="noopener" style="font-size:17px;padding:17px 36px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="4"/></svg>
+      Add to Chrome — It's Free
+    </a>
+    <div class="cta-note fade-in">Available on Chrome and Chromium-based browsers &nbsp;·&nbsp; v0.5.0 &nbsp;·&nbsp; MIT License</div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <img src="../src/images/j_logo_128.png" alt="ELA" />
+        <span class="footer-logo-name">ELA · Everyday Language Assistant</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/janewu77/ela-extension" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://janewu77.github.io/ela-extension/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+        <a href="https://chromewebstore.google.com/detail/ela-everyday-language-ass/eepeblbmpkloajddpjlibamomldfhdga" target="_blank" rel="noopener">Chrome Web Store</a>
+      </div>
+      <div class="footer-right">© 2025 ELA · MIT License</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
