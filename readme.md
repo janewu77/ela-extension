@@ -142,3 +142,9 @@ For more details, see: [Developer Guide](./doc/DEVELOPMENT.md)
 ## 📑 Documentation
 
 Full documentation index (user guide, developer guide, architecture, changelog): [doc/INDEX.md](./doc/INDEX.md)
+
+<div align="center">
+
+Built in Hamburg 🇩🇪 by [Jane Wu](https://github.com/janewu77)
+
+</div>
