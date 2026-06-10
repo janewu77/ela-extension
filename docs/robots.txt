@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://janewu77.github.io/ela-extension/sitemap.xml
